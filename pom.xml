@@ -55,7 +55,7 @@
               <archive>
                 <manifest>
                   <mainClass>
-                    pl.com.lanpro.games.torcs.tools.utils.TrackEditor
+                    utils.TrackEditor
                   </mainClass>
                 </manifest>
               </archive>
