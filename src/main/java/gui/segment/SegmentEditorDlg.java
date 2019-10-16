@@ -94,7 +94,6 @@ public class SegmentEditorDlg extends JDialog implements SliderListener {
       setShape(shape);
 
       initialize();
-      //			pack();
       this.setVisible(true);
     }
     catch (Exception ex) {

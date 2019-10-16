@@ -40,7 +40,9 @@ import java.util.Vector;
  * @version 0.1a
  */
 
-public class CircuitView extends JComponent implements KeyListener, MouseListener, MouseMotionListener, WindowListener //,Scrollable
+public class CircuitView
+    extends JComponent
+    implements KeyListener, MouseListener, MouseMotionListener, WindowListener //,Scrollable
 {
   //private Properties			properties						= Properties.getInstance();
   /**
@@ -59,14 +61,7 @@ public class CircuitView extends JComponent implements KeyListener, MouseListene
    * bounding rectangle of all elements of the circuits, in meters
    */
   Rectangle2D.Double boundingRectangle = new Rectangle2D.Double(0, 0, 0, 0);
-  /**
-   * width of zone outside circuit terrain, shown on screen
-   */
-  double outZoneWidth = 100;                  // meters
-  /**
-   * height of zone outside circuit terrain, shown on screen
-   */
-  double outZoneHeight = 100;                  // meters
+
   /**
    * situation on circuit terrain of the screen center
    */
@@ -247,11 +242,11 @@ public class CircuitView extends JComponent implements KeyListener, MouseListene
    *
    * @return
    */
-  /*
+
   public boolean isFocusTraversable() {
     return (true);
   }
-  */
+
   public void screenToReal(MouseEvent e, Point2D.Double point) {
     point.setLocation(e.getX(), e.getY());
     inverseAffineTransform.transform(point, point);
@@ -884,7 +879,6 @@ public class CircuitView extends JComponent implements KeyListener, MouseListene
   /**
    * Look for an object under mouse position
    *
-   * @param e Event containing mouse position (mouse move event)
    * @return Object under mouse pos, or null if none
    */
   protected Segment findObjAtMousePos() {
@@ -934,10 +928,11 @@ public class CircuitView extends JComponent implements KeyListener, MouseListene
    */
   public void decZoomFactor() {
     Rectangle r = getVisibleRect();
-    Rectangle2D.Double visibleRect = new Rectangle2D.Double(r.getX() / zoomFactor - outZoneWidth
-        + boundingRectangle.getX(), r.getY() / zoomFactor - outZoneHeight + boundingRectangle.getY(), r
-        .getWidth()
-        / zoomFactor, r.getHeight() / zoomFactor);
+    Rectangle2D.Double visibleRect = new Rectangle2D.Double(
+        r.getX() / zoomFactor + boundingRectangle.getX(),
+        r.getY() / zoomFactor + boundingRectangle.getY(),
+        r.getWidth() / zoomFactor,
+        r.getHeight() / zoomFactor);
 
     //		if (boundingRectangle.getWidth() < visibleRect.getWidth()
     //				&& boundingRectangle.getHeight() < visibleRect.getHeight())
@@ -959,38 +954,38 @@ public class CircuitView extends JComponent implements KeyListener, MouseListene
       // new visible part of screen in pixels
       Rectangle r = getVisibleRect();
 
-      // out zone size in meters
-      outZoneWidth = (r.getWidth() / 2) / zoomFactor;
-      outZoneHeight = (r.getHeight() / 2) / zoomFactor;
-
       // new visible part of screen in meters
-      Rectangle2D.Double visibleRect = new Rectangle2D.Double(r.getX() / zoomFactor + boundingRectangle.getX()
-          - outZoneWidth, r.getY() / zoomFactor + boundingRectangle.getY() - outZoneHeight, r.getWidth()
-          / zoomFactor, r.getHeight() / zoomFactor);
+      Rectangle2D.Double visibleRect = new Rectangle2D.Double(
+          r.getX() / zoomFactor + boundingRectangle.getX(),
+          r.getY() / zoomFactor + boundingRectangle.getY(),
+          r.getWidth() / zoomFactor,
+          r.getHeight() / zoomFactor);
 
       // set new screen size in pixels
       setMaximumSize(new Dimension(
-          (int) (newZoomFactor * (boundingRectangle.getWidth() + visibleRect.getWidth())),
-          (int) (newZoomFactor * (boundingRectangle.getHeight() + visibleRect.getHeight()))));
+          (int) (newZoomFactor * (boundingRectangle.getWidth() + 1)),
+          (int) (newZoomFactor * (boundingRectangle.getHeight() + 1))));
       setMinimumSize(getMaximumSize());
       setPreferredSize(getMaximumSize());
       setSize(getMaximumSize());
 
       // define affine transformation
       affineTransform.setToIdentity();
-      affineTransform.translate((outZoneWidth + boundingRectangle.getWidth() / 2) * zoomFactor,
-          (outZoneHeight + boundingRectangle.getHeight() / 2) * zoomFactor);
-      affineTransform.scale(zoomFactor, -zoomFactor);
-      affineTransform.translate(-boundingRectangle.getX() - boundingRectangle.getWidth() / 2, -boundingRectangle
-          .getY()
-          - boundingRectangle.getHeight() / 2);
+      affineTransform.translate(
+          (boundingRectangle.getWidth() / 2) * zoomFactor,
+          (boundingRectangle.getHeight() / 2) * zoomFactor);
+      affineTransform.scale(zoomFactor, - zoomFactor);
+      affineTransform.translate(
+          - boundingRectangle.getX() - boundingRectangle.getWidth() / 2,
+          - boundingRectangle.getY() - boundingRectangle.getHeight() / 2);
       inverseAffineTransform = affineTransform.createInverse();
 
       // scroll to keep same screen center as previously
-      scrollRectToVisible(new Rectangle((int) (zoomFactor
-          * (screenCenter.getX() - boundingRectangle.getX() + outZoneWidth) - r.getWidth() / 2) + 1,
-          (int) (zoomFactor * (screenCenter.getY() - boundingRectangle.getY() + outZoneHeight) - r
-              .getHeight() / 2) + 1, (int) (r.getWidth()) - 2, (int) (r.getHeight()) - 2));
+      scrollRectToVisible(new Rectangle(
+          (int) (zoomFactor * (screenCenter.getX() - boundingRectangle.getX()) - r.getWidth() / 2) + 1,
+          (int) (zoomFactor * (screenCenter.getY() - boundingRectangle.getY()) - r.getHeight() / 2) + 1,
+          (int) (r.getWidth()) - 2,
+          (int) (r.getHeight()) - 2));
       //			scrollRectToVisible( new Rectangle( (int)( zoomFactor * (
       // screenCenter.getX() ) - r.getWidth() / 2 ) + 1,
       //												(int)( zoomFactor * ( screenCenter.getY() ) - r.getHeight() / 2 )
@@ -1016,33 +1011,28 @@ public class CircuitView extends JComponent implements KeyListener, MouseListene
   public void paint(Graphics g) {
     if (TrackData.getTrackData() != null) {
 
-
       // visible part of screen in pixels
       Rectangle r = getVisibleRect();
 
-      // out zone size in meters
-      outZoneWidth = (r.getWidth() / 2) / zoomFactor;
-      outZoneHeight = (r.getHeight() / 2) / zoomFactor;
+      Rectangle2D.Double visibleRect = new Rectangle2D.Double(
+          r.getX() / zoomFactor + boundingRectangle.getX(),
+          r.getY() / zoomFactor + boundingRectangle.getY(),
+          r.getWidth() / zoomFactor,
+          r.getHeight() / zoomFactor);
 
-      Rectangle2D.Double visibleRect = new Rectangle2D.Double(r.getX() / zoomFactor + boundingRectangle.getX()
-          - outZoneWidth, r.getY() / zoomFactor + boundingRectangle.getY() - outZoneHeight, r.getWidth()
-          / zoomFactor, r.getHeight() / zoomFactor);
 
       // visible part of screen center in meters
-      screenCenter = new Point2D.Double(visibleRect.getX() + visibleRect.getWidth() / 2, visibleRect.getY()
-          + visibleRect.getHeight() / 2);
+      screenCenter = new Point2D.Double(
+          visibleRect.getX() + visibleRect.getWidth() / 2,
+          visibleRect.getY() + visibleRect.getHeight() / 2);
 
       // Paints background image
-
       if (showBackground && backgroundImg != null) {
-        Segment firstObj = (Segment) TrackData.getTrackData().get(0);
         Point2D.Double p1 = new Point2D.Double(0, 0);
-        p1.setLocation(firstObj.points[0]);
-        p1.setLocation(p1.getX() + Editor.getProperties().getImgOffset().getX(), p1.getY() + Editor.getProperties().getImgOffset().getY());
-        Point2D.Double p2 = new Point2D.Double(backgroundRectangle.getWidth(), backgroundRectangle.getHeight());
-        p2.setLocation(p2.getX(), p2.getY());
+        Point2D.Double p2 = new Point2D.Double(
+            backgroundRectangle.getWidth(), backgroundRectangle.getHeight());
 
-        p1 = (Point2D.Double) affineTransform.transform(p1, null);
+    //    p1 = (Point2D.Double) affineTransform.transform(p1, null);
 
         g.drawImage(backgroundImg.getImage(), (int) (p1.getX()), (int) (p1.getY()),
             (int) (p2.getX() * zoomFactor), (int) (p2.getY() * zoomFactor), null);

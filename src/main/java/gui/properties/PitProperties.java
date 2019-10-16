@@ -282,10 +282,11 @@ public class PitProperties extends JPanel {
     }
     side.setBorderHeight(0);
     side.setBorderWidth(0);
-    side.setSideEndWidth(Editor.getProperties().getPitWidth() * 3);
+    side.setSideEndWidth(Editor.getProperties().getPitWidth() * 3 + 1);
     side.setSideSurface("road1");
     side.setBarrierHeight(1);
-    side.setBarrierWidth(0.1);
+    side.setBarrierSurface("tire-wall");
+    side.setBarrierWidth(1);
 
     if (pitExit == null) {
       System.out.println("No pit exit");
@@ -298,11 +299,12 @@ public class PitProperties extends JPanel {
       side = pitExit.getRight();
     }
     side.setBorderHeight(0);
-    side.setBorderWidth(0);
-    side.setSideStartWidth(Editor.getProperties().getPitWidth() * 3);
+    side.setBorderWidth(0.0);
+    side.setSideStartWidth(Editor.getProperties().getPitWidth() * 3 + 1);
     side.setSideSurface("road1");
     side.setBarrierHeight(1);
-    side.setBarrierWidth(0.1);
+    side.setBarrierSurface("tire-wall");
+    side.setBarrierWidth(1);
 
     if (pitStart == null || pitEnd == null) {
       System.out.println("No pit start or end");
@@ -319,12 +321,15 @@ public class PitProperties extends JPanel {
       else {
         side = ((Segment) data.get(i)).getRight();
       }
-      side.setBorderHeight(1);
-      side.setBorderWidth(0.1);
-      side.setBorderStyle("wall");
+      side.setBorderHeight(0);
+      side.setBorderWidth(1);
+      side.setBorderSurface("asphalt-pits");
+      side.setBorderStyle("plan");
       side.setSideStartWidth(Editor.getProperties().getPitWidth() * 3);
       side.setSideEndWidth(Editor.getProperties().getPitWidth() * 3);
       side.setSideSurface("road1-pits");
+      side.setBarrierStyle("plan");
+      side.setBarrierSurface("barrier");
       side.setBarrierHeight(1);
       side.setBarrierWidth(0.1);
     }
