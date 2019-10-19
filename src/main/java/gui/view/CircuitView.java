@@ -286,8 +286,7 @@ public class CircuitView
           break;
 
           case STATE_CREATE_LEFT_SEGMENT: {
-            if (handledShape == null)
-              return;
+            if (handledShape == null) return;
 
             // create a standard curve segment
             Vector data = TrackData.getTrackData();
