@@ -12,6 +12,16 @@
   <name>TorcsJTE</name>
   <description>Torcs Java Track Editor</description>
 
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    <java.version>1.11</java.version>
+    <!--jetty.plugin.version>6.1.24</jetty.plugin.version> <jetty.version>9.1.1.v20140108</jetty.version -->
+    <maven.compiler.target>11</maven.compiler.target>
+    <maven.compiler.source>11</maven.compiler.source>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+
   <dependencies>
     <dependency>
       <groupId>org.beanshell</groupId>

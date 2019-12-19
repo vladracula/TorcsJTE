@@ -154,6 +154,10 @@ public class XmlReader {
     shape.setHeightEnd(endHeight);
     // height values handle
 
+    // profil value handle
+    String profil = getAttrStrValue(seg, "profil");
+    shape.setProfil(profil);
+
     if (shape.getType().equals("str")) {
       shape.setLength(getAttrNumValue(seg, "lg"));
     }

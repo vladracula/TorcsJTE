@@ -59,9 +59,9 @@ public class GroupButton extends JPanel {
     this.setBounds(0, 0, 70, 32);
     this.setBorder(javax.swing.BorderFactory.createEtchedBorder(javax.swing.border.EtchedBorder.LOWERED));
     rightLabel.setText("Right");
-    rightLabel.setBounds(1, 1, 40, 16);
+    rightLabel.setBounds(4, 1, 45, 16);
     leftLabel.setText("Left");
-    leftLabel.setBounds(1, 16, 40, 15);
+    leftLabel.setBounds(4, 16, 45, 15);
     this.add(getLeftButton(), null);
     this.add(getRightButton(), null);
     this.add(rightLabel, null);
@@ -84,7 +84,7 @@ public class GroupButton extends JPanel {
         }
 
       });
-      leftButton.setBounds(47, 16, 15, 15);
+      leftButton.setBounds(47, 16, 18, 15);
     }
     return leftButton;
   }
@@ -101,7 +101,7 @@ public class GroupButton extends JPanel {
 
       });
       //rightButton.setSelected(true);
-      rightButton.setBounds(47, 1, 15, 15);
+      rightButton.setBounds(47, 1, 18, 15);
     }
     return rightButton;
   }

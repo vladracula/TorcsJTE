@@ -27,6 +27,7 @@ import utils.circuit.SegmentSide;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Arrays;
 
 /**
  * @author babis
@@ -113,6 +114,10 @@ public class SegmentSideProperties extends JPanel implements SliderListener {
   public SegmentSideProperties(SegmentEditorDlg parent, SegmentSide side) {
     this.parent = parent;
     setSide(side);
+    Arrays.sort(roadSurfaceItems);
+    Arrays.sort(borderSurfaceItems);
+    Arrays.sort(sideSurfaceItems);
+    Arrays.sort(fenceSurfaceItems);
     initialize();
   }
 
@@ -126,13 +131,12 @@ public class SegmentSideProperties extends JPanel implements SliderListener {
     this.setLayout(null);
     this.setBorder(javax.swing.BorderFactory.createEtchedBorder(javax.swing.border.EtchedBorder.LOWERED));
     this.setLocation(0, 0);
-    this.setSize(400, 471);
-    titleLabel.setBounds(165, 5, 70, 20);
+    this.setSize(440, 471);
+    titleLabel.setBounds(185, 5, 70, 20);
     titleLabel.setText("Right");
     titleLabel.setFont(new java.awt.Font("Dialog", java.awt.Font.BOLD, 18));
     this.add(getPanel(), null);
     this.add(titleLabel, null);
-
   }
 
   /**
@@ -332,7 +336,7 @@ public class SegmentSideProperties extends JPanel implements SliderListener {
   private SegmentSlider getSideStartWidthSlider() {
     if (sideStartWidthSlider == null) {
       sideStartWidthSlider = new SegmentSlider();
-      sideStartWidthSlider.setBounds(145, 25, 50, 290);
+      sideStartWidthSlider.setBounds(135, 25, 60, 290);
       sideStartWidthSlider.setSection("Width");
       sideStartWidthSlider.setAttr("Start");
       sideStartWidthSlider.setMin(0);
@@ -376,7 +380,7 @@ public class SegmentSideProperties extends JPanel implements SliderListener {
   private SegmentSlider getSideEndWidthSlider() {
     if (sideEndWidthSlider == null) {
       sideEndWidthSlider = new SegmentSlider();
-      sideEndWidthSlider.setBounds(200, 25, 50, 290);
+      sideEndWidthSlider.setBounds(200, 25, 60, 290);
       sideEndWidthSlider.setSection("Width");
       sideEndWidthSlider.setAttr("End");
       sideEndWidthSlider.setMin(0);

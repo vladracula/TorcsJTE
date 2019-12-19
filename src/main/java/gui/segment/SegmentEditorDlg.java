@@ -31,6 +31,7 @@ import utils.circuit.Straight;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Arrays;
 
 /**
  * @author babis
@@ -56,15 +57,16 @@ public class SegmentEditorDlg extends JDialog implements SliderListener {
   private JLabel nameLabel = null;
   private JTextField nameTextField = null;
   private JComboBox surfaceComboBox = null;
+  private JComboBox profilComboBox = null;
 
   private SegmentSlider heightStartSlider = null;
   private SegmentSlider heightEndSlider = null;
-  JComboBox combo = null;
   private SegmentSideProperties rightPanel = null;
   private SegmentSideProperties leftPanel = null;
 
   private GroupButton groupButton = null;
 
+  private String[] profilItems = {"spline", "linear"};
   private String[] roadSurfaceItems =
       {"asphalt-lines", "asphalt-l-left", "asphalt-l-right",
           "asphalt-l-both", "asphalt-pits", "asphalt", "dirt", "dirt-b", "asphalt2", "road1", "road1-pits",
@@ -81,11 +83,12 @@ public class SegmentEditorDlg extends JDialog implements SliderListener {
    */
   public SegmentEditorDlg() {
     super((Frame) null, "", true);
+    Arrays.sort(roadSurfaceItems);
   }
 
   public SegmentEditorDlg(CircuitView view, EditorFrame frame, String title, boolean modal, Segment shape) {
     super(frame, title, modal);
-
+    Arrays.sort(roadSurfaceItems);
     enableEvents(AWTEvent.WINDOW_EVENT_MASK);
 
     try {
@@ -106,7 +109,7 @@ public class SegmentEditorDlg extends JDialog implements SliderListener {
    */
   private void initialize() {
     this.setTitle("Segment Editor");
-    this.setSize(403, 533);
+    this.setSize(415, 533);
     Point p = frame.getLocation();
     p.x = frame.getProject().getSegmentEditorX();
     p.y = frame.getProject().getSegmentEditorY();
@@ -169,6 +172,7 @@ public class SegmentEditorDlg extends JDialog implements SliderListener {
       centerPanel.add(getHeightStartSlider(), null);
       centerPanel.add(getHeightEndSlider(), null);
       centerPanel.add(getGroupButton(), null);
+      centerPanel.add(getProfilComboBox(), null);
     }
     return centerPanel;
   }
@@ -181,7 +185,7 @@ public class SegmentEditorDlg extends JDialog implements SliderListener {
   private SegmentSlider getRadiusStartSlider() {
     if (radiusStartSlider == null) {
       radiusStartSlider = new SegmentSlider();
-      radiusStartSlider.setBounds(115, 40, 50, 390);
+      radiusStartSlider.setBounds(135, 40, 60, 390);
       radiusStartSlider.setSection("Radius");
       radiusStartSlider.setAttr("Start");
       radiusStartSlider.setMin(1);
@@ -206,7 +210,7 @@ public class SegmentEditorDlg extends JDialog implements SliderListener {
   private SegmentSlider getRadiusEndSlider() {
     if (radiusEndSlider == null) {
       radiusEndSlider = new SegmentSlider();
-      radiusEndSlider.setBounds(170, 40, 50, 390);
+      radiusEndSlider.setBounds(200, 40, 60, 390);
       radiusEndSlider.setSection("Radius");
       radiusEndSlider.setAttr("End");
       radiusEndSlider.setMin(1);
@@ -232,7 +236,7 @@ public class SegmentEditorDlg extends JDialog implements SliderListener {
   private SegmentSlider getArcSlider() {
     if (arcSlider == null) {
       arcSlider = new SegmentSlider();
-      arcSlider.setBounds(60, 40, 50, 390);
+      arcSlider.setBounds(70, 40, 60, 390);
       arcSlider.setSection("Arc");
       arcSlider.setAttr("");
       arcSlider.setMin(1);
@@ -257,7 +261,7 @@ public class SegmentEditorDlg extends JDialog implements SliderListener {
   private SegmentSlider getLengthSlider() {
     if (lengthSlider == null) {
       lengthSlider = new SegmentSlider();
-      lengthSlider.setBounds(5, 40, 50, 390);
+      lengthSlider.setBounds(5, 40, 60, 390);
       lengthSlider.setSection("Length");
       lengthSlider.setAttr("");
       lengthSlider.setMin(0.001);
@@ -280,7 +284,7 @@ public class SegmentEditorDlg extends JDialog implements SliderListener {
   private SegmentSlider getHeightStartSlider() {
     if (heightStartSlider == null) {
       heightStartSlider = new SegmentSlider();
-      heightStartSlider.setBounds(280, 40, 50, 390);
+      heightStartSlider.setBounds(280, 40, 60, 390);
       heightStartSlider.setSection("Height");
       heightStartSlider.setAttr("Start");
       heightStartSlider.setMin(0);
@@ -302,7 +306,7 @@ public class SegmentEditorDlg extends JDialog implements SliderListener {
   private SegmentSlider getHeightEndSlider() {
     if (heightEndSlider == null) {
       heightEndSlider = new SegmentSlider();
-      heightEndSlider.setBounds(335, 40, 50, 390);
+      heightEndSlider.setBounds(345, 40, 60, 390);
       heightEndSlider.setSection("Height");
       heightEndSlider.setAttr("End");
       heightEndSlider.setMin(0);
@@ -344,7 +348,7 @@ public class SegmentEditorDlg extends JDialog implements SliderListener {
     if (surfaceComboBox == null) {
       surfaceComboBox = new JComboBox();
       surfaceComboBox.setModel(new DefaultComboBoxModel(roadSurfaceItems));
-      surfaceComboBox.setBounds(190, 10, 120, 20);
+      surfaceComboBox.setBounds(190, 10, 130, 20);
       surfaceComboBox.addActionListener(new ActionListener() {
 
         public void actionPerformed(ActionEvent e) {
@@ -361,6 +365,33 @@ public class SegmentEditorDlg extends JDialog implements SliderListener {
 
     }
     return surfaceComboBox;
+  }
+
+  /**
+   * This method initializes profilComboBox
+   *
+   * @return javax.swing.JComboBox
+   */
+  private JComboBox getProfilComboBox() {
+    if (profilComboBox == null) {
+      profilComboBox = new JComboBox();
+      profilComboBox.setModel(new DefaultComboBoxModel(profilItems));
+      profilComboBox.setBounds(10, 455, 120, 20);
+      profilComboBox.addActionListener(new ActionListener() {
+
+        public void actionPerformed(ActionEvent e) {
+          shape.setProfil((String) profilComboBox.getSelectedItem());
+          try {
+            view.redrawCircuit();
+          }
+          catch (Exception e1) {
+            e1.printStackTrace();
+          }
+          frame.documentIsModified = true;
+        }
+      });
+    }
+    return profilComboBox;
   }
 
   public void setShape(Segment shape) {
@@ -383,7 +414,6 @@ public class SegmentEditorDlg extends JDialog implements SliderListener {
         this.getArcSlider().setValue(curve.getArc());
         this.getRadiusStartSlider().setValue(curve.getRadiusStart());
         this.getRadiusEndSlider().setValue(curve.getRadiusEnd());
-
       }
       else {
         this.getRadiusStartSlider().setEnabled(false);
@@ -398,6 +428,7 @@ public class SegmentEditorDlg extends JDialog implements SliderListener {
       getSurfaceComboBox().setSelectedItem(shape.getSurface());
       this.getHeightStartSlider().setValue(shape.getHeightStart());
       this.getHeightEndSlider().setValue(shape.getHeightEnd());
+      getProfilComboBox().setSelectedItem(shape.getProfil());
     }
     catch (Exception e) {
       e.printStackTrace();
@@ -468,7 +499,7 @@ public class SegmentEditorDlg extends JDialog implements SliderListener {
   private GroupButton getGroupButton() {
     if (groupButton == null) {
       groupButton = new GroupButton();
-      groupButton.setBounds(320, 2, 70, 33);
+      groupButton.setBounds(330, 2, 70, 33);
       groupButton.setParent(this);
     }
     return groupButton;

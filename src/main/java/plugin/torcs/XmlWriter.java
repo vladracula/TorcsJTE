@@ -275,6 +275,10 @@ public class XmlWriter {
     segment.addContent(el);
     el = attnumElement("z end", "m", shape.getHeightEnd() + "");
     segment.addContent(el);
+
+    el = attstrElement("profil", shape.getProfil());
+    segment.addContent(el);
+
     el = attstrElement("surface", shape.getSurface());
     segment.addContent(el);
     com = new Comment("Left part of segment");
@@ -373,8 +377,8 @@ public class XmlWriter {
   private synchronized static String getCredit() {
     String tmp = "\n";
     tmp += "file                : " + Editor.getProperties().getTrackName() + ".xml\n";
-    tmp += "auto generated      : by Track Editor\n";
-    tmp += "version             : v 0.6.0 24/4/2005\n";
+    tmp += "auto generated      : by TorcsJTE\n";
+    tmp += "version             : v 0.6.4 14/10/2019\n";
     tmp += "copyright           : (C) 2005 by Charalampos Alexopoulos\n";
     tmp += "email               : \n";
 

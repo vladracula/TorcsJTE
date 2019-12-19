@@ -65,6 +65,8 @@ public class Segment implements Cloneable {
   protected double heightStart;
   protected double heightEnd;
 
+  protected String profil = "linear";
+
   // shape to be drawn
   public Point2D.Double points[];
   public Point2D.Double trPoints[];
@@ -313,6 +315,20 @@ public class Segment implements Cloneable {
   }
 
   /**
+   * @return returns the profile.
+   */
+  public String getProfil(){
+    return profil;
+  }
+
+  /**
+   * @param profil the profil to set
+   */
+  public void setProfil(String profil){
+    this.profil = profil;
+  }
+
+  /**
    * @return Returns the length.
    */
   public double getLength() {
@@ -411,6 +427,7 @@ public class Segment implements Cloneable {
       s.type = this.type;
       s.heightEnd = this.heightEnd;
       s.heightStart = this.heightStart;
+      s.profil = this.profil;
       s.length = this.length;
       s.surface = this.surface;
 
