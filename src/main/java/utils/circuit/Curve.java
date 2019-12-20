@@ -27,12 +27,14 @@ import java.awt.geom.Point2D;
 
 /**
  * @author Patrice Espie , Charalampos Alexopoulos
+ * @author Adam Kubon
  * <p>
  * TODO To change the template for this generated type comment go to
  * Window - Preferences - Java - Code Style - Code Templates
  */
 
 public class Curve extends Segment implements Cloneable {
+
   // miscel datas
 //	static public final int	arc			= distFromCircuitStart + 1;
 //	static public final int	radiusStart		= arc + 1;
@@ -50,7 +52,8 @@ public class Curve extends Segment implements Cloneable {
 
   public Curve(String type, Segment prev) {
     super(type);
-    this.previousShape = prev;
+    this.setPreviousShape(prev);
+    if (prev != null) prev.setNextShape(this);
   }
 
   public Segment copyTo(Segment _shape) throws CloneNotSupportedException {

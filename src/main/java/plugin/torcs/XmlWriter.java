@@ -35,6 +35,7 @@ import java.util.Vector;
 
 /**
  * @author Charalampos Alexopoulos
+ * @author Adam Kubon
  * <p>
  * TODO To change the template for this generated type comment go to Window -
  * Preferences - Java - Code Style - Code Templates
@@ -221,7 +222,7 @@ public class XmlWriter {
 
     for (int i = 0; i < segments.size(); i++) {
       Segment shape = (Segment) segments.get(i);
-      shape.previousShape = prev;
+      shape.setPreviousShape(prev);
       com = new Comment("******************************");
       trackSegs.addContent(com);
       com = new Comment("     Segment " + (i + 1) + "                ");

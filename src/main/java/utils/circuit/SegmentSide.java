@@ -26,12 +26,14 @@ import java.util.Vector;
 
 /**
  * @author Charalampos Alexopoulos
+ * @author Adam Kubon
  * <p>
  * TODO To change the template for this generated type comment go to Window -
  * Preferences - Java - Code Style - Code Templates
  */
 public class SegmentSide implements Cloneable {
-  private Vector sideListeners = new Vector();
+
+  private Vector<SegmentSideListener> sideListeners = new Vector<>();
   private SegmentSide prev = null;
   private SegmentSide props = null;
 
@@ -406,7 +408,7 @@ public class SegmentSide implements Cloneable {
   }
 
   public synchronized void addSideListener(SegmentSideListener l) {
-    Vector v = sideListeners == null ? new Vector(2) : (Vector) sideListeners.clone();
+    Vector<SegmentSideListener> v = sideListeners == null ? new Vector<>(2) : new Vector<>(sideListeners);
     if (!v.contains(l)) {
       v.addElement(l);
       sideListeners = v;
@@ -645,8 +647,7 @@ public class SegmentSide implements Cloneable {
       s.sideEndWidth = this.sideEndWidth;
       s.sideStartWidth = this.sideStartWidth;
       s.sideSurface = this.sideSurface;
-      s.sideListeners = (Vector) this.sideListeners.clone();
-
+      s.sideListeners = new Vector<>(this.sideListeners);
     }
     catch (CloneNotSupportedException e) {
       // TODO Auto-generated catch block

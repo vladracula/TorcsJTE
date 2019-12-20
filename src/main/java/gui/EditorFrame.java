@@ -45,58 +45,60 @@ import java.util.Vector;
 
 /**
  * @author Patrice Espie , Charalampos Alexopoulos
+ * @auhor Adam Kubon
  * <p>
  * TODO To change the template for this generated type comment go to Window -
  * Preferences - Java - Code Style - Code Templates
  */
 public class EditorFrame extends JFrame {
+
   //private Properties			properties							= Properties.getInstance();
-  UndoAction undoAction = null;
-  RedoAction redoAction = null;
-  DeleteAction deleteAction = null;
-  ZoomPlusAction zoomPlusAction = null;
-  ZoomOneAction zoomOneAction = null;
-  ZoomMinusAction zoomMinusAction = null;
-  StraightAction straightAction = null;
-  RightAction rightAction = null;
-  LeftAction leftAction = null;
-  NewAction newAction = null;
-  OpenAction openAction = null;
-  SaveAction saveAction = null;
-  ShowArrowsAction showArrowsAction = null;
-  ShowBackgroundAction showBackgroundAction = null;
-  MoveAction moveAction = null;
-  HelpAction helpAction = null;
-  ExportAllAction allAction = null;
-  ExportAC3Action ac3Action = null;
-  PropertiesAction propertiesAction = null;
-  CalcDeltaAction calcDeltaAction = null;
+  private UndoAction undoAction = null;
+  private RedoAction redoAction = null;
+  private DeleteAction deleteAction = null;
+  private ZoomPlusAction zoomPlusAction = null;
+  private ZoomOneAction zoomOneAction = null;
+  private ZoomMinusAction zoomMinusAction = null;
+  private StraightAction straightAction = null;
+  private RightAction rightAction = null;
+  private LeftAction leftAction = null;
+  private NewAction newAction = null;
+  private OpenAction openAction = null;
+  private SaveAction saveAction = null;
+  private ShowArrowsAction showArrowsAction = null;
+  private ShowBackgroundAction showBackgroundAction = null;
+  private MoveAction moveAction = null;
+  private HelpAction helpAction = null;
+  private ExportAllAction allAction = null;
+  private ExportAC3Action ac3Action = null;
+  private PropertiesAction propertiesAction = null;
+  private CalcDeltaAction calcDeltaAction = null;
 
   private JPanel jContentPane = null;
 
   public boolean documentIsModified;
 
-  CircuitView view;
+  private CircuitView view;
 
   // UI
-  JMenuBar mainMenuBar = new JMenuBar();
-  JMenu menuFile = new JMenu();
-  JMenuItem itemSaveCircuit = null;
-  JMenuItem itemCloseCircuit = new JMenuItem();
-  JScrollPane mainScrollPane = new JScrollPane();
-  GridBagLayout gridBagLayout1 = new GridBagLayout();
-  JButton buttonZoomPlus = null;
-  JButton buttonZoomMinus = null;
-  JButton buttonZoomOne = null;
-  public JToggleButton toggleButtonCreateStraightSegment = null;
-  public JToggleButton toggleButtonCreateLeftSegment = null;
-  public JToggleButton toggleButtonCreateRightSegment = null;
+  private JMenuBar mainMenuBar = new JMenuBar();
+  private JMenu menuFile = new JMenu();
+  private JMenuItem itemSaveCircuit = null;
+  private JMenuItem itemCloseCircuit = new JMenuItem();
+  private JScrollPane mainScrollPane = new JScrollPane();
+  private GridBagLayout gridBagLayout1 = new GridBagLayout();
+  private JButton buttonZoomPlus = null;
+  private JButton buttonZoomMinus = null;
+  private JButton buttonZoomOne = null;
+  private  JToggleButton toggleButtonCreateStraightSegment = null;
+  private  JToggleButton toggleButtonCreateLeftSegment = null;
+  private  JToggleButton toggleButtonCreateRightSegment = null;
   public JToggleButton toggleButtonDelete = null;
-  JButton undoButton = null;
-  JButton redoButton = null;
-  JMenu viewMenu = new JMenu();
-  JMenuItem menuItemAddBackground = new JMenuItem();
-  JMenuItem menuItemShoStartPoint = new JMenuItem();
+  private JButton undoButton = null;
+  private JButton redoButton = null;
+  private JMenu viewMenu = new JMenu();
+  private JMenuItem menuItemAddBackground = new JMenuItem();
+  private JMenuItem menuItemShoStartPoint = new JMenuItem();
 
   private JToolBar jToolBar = null;
   private JMenuItem newMenuItem = null;
@@ -157,6 +159,7 @@ public class EditorFrame extends JFrame {
         Thread.sleep(100);
       }
       catch (InterruptedException ex) {
+        System.err.println("Thread interrupted: " + ex.getMessage());
       }
     }
 
@@ -164,38 +167,27 @@ public class EditorFrame extends JFrame {
 
     ClassLoader cldr = this.getClass().getClassLoader();
 
-    undoAction = new UndoAction("Undo", createNavigationIcon("Undo24", cldr), "Undo.", new Integer(KeyEvent.VK_Z));
-    redoAction = new RedoAction("Redo", createNavigationIcon("Redo24", cldr), "Redo.", new Integer(KeyEvent.VK_R));
-    deleteAction = new DeleteAction("Delete", createNavigationIcon("Cut24", cldr), "Delete.", new Integer(KeyEvent.VK_L));
-    zoomPlusAction = new ZoomPlusAction("Zoom in", createNavigationIcon("ZoomIn24", cldr), "Zoom in.", new Integer(
-        KeyEvent.VK_M));
-    zoomOneAction = new ZoomOneAction("Zoom 1:1", createNavigationIcon("Zoom24", cldr), "Zoom 1:1.", new Integer(
-        KeyEvent.VK_N));
-    zoomMinusAction = new ZoomMinusAction("Zoom out", createNavigationIcon("ZoomOut24", cldr), "Zoom out.", new Integer(
-        KeyEvent.VK_O));
-    straightAction = new StraightAction("Add straight", createNavigationIcon("Straight24", cldr),
-        "Add a straight segment.", new Integer(KeyEvent.VK_P));
-    rightAction = new RightAction("Add right", createNavigationIcon("TurnRight24", cldr), "Add a right turn segment.",
-        new Integer(KeyEvent.VK_Q));
-    leftAction = new LeftAction("Add left", createNavigationIcon("TurnLeft24", cldr), "Add a left turn segment.",
-        new Integer(KeyEvent.VK_S));
-    newAction = new NewAction("New", createNavigationIcon("New24", cldr), "New circuit.", new Integer(KeyEvent.VK_S));
-    openAction = new OpenAction("Open", createNavigationIcon("Open24", cldr), "Open existing circuit.", new Integer(
-        KeyEvent.VK_S));
-    saveAction = new SaveAction("Save", createNavigationIcon("Save24", cldr), "Save the circuit.", new Integer(
-        KeyEvent.VK_S));
-    moveAction = new MoveAction("Move", createNavigationIcon("Export24", cldr), "Move.", new Integer(KeyEvent.VK_S));
-    showArrowsAction = new ShowArrowsAction("Show arrows", createNavigationIcon("FindAgain24", cldr), "Show arrows.",
-        new Integer(KeyEvent.VK_S));
-    showBackgroundAction = new ShowBackgroundAction("Show background", createNavigationIcon("Search24", cldr),
-        "Show background image.", new Integer(KeyEvent.VK_S));
-    helpAction = new HelpAction("Help", createNavigationIcon("Help24", cldr), "Help.", new Integer(KeyEvent.VK_S));
+    undoAction = new UndoAction("Undo", createNavigationIcon("Undo24", cldr), "Undo.", KeyEvent.VK_Z);
+    redoAction = new RedoAction("Redo", createNavigationIcon("Redo24", cldr), "Redo.", KeyEvent.VK_R);
+    deleteAction = new DeleteAction("Delete", createNavigationIcon("Cut24", cldr), "Delete.", KeyEvent.VK_L);
+    zoomPlusAction = new ZoomPlusAction("Zoom in", createNavigationIcon("ZoomIn24", cldr), "Zoom in.", KeyEvent.VK_M);
+    zoomOneAction = new ZoomOneAction("Zoom 1:1", createNavigationIcon("Zoom24", cldr), "Zoom 1:1.", KeyEvent.VK_N);
+    zoomMinusAction = new ZoomMinusAction("Zoom out", createNavigationIcon("ZoomOut24", cldr), "Zoom out.", KeyEvent.VK_O);
+    straightAction = new StraightAction("Add straight", createNavigationIcon("Straight24", cldr), "Add a straight segment.", KeyEvent.VK_P);
+    rightAction = new RightAction("Add right", createNavigationIcon("TurnRight24", cldr), "Add a right turn segment.", KeyEvent.VK_Q);
+    leftAction = new LeftAction("Add left", createNavigationIcon("TurnLeft24", cldr), "Add a left turn segment.", KeyEvent.VK_S);
+    newAction = new NewAction("New", createNavigationIcon("New24", cldr), "New circuit.", KeyEvent.VK_S);
+    openAction = new OpenAction("Open", createNavigationIcon("Open24", cldr), "Open existing circuit.", KeyEvent.VK_S);
+    saveAction = new SaveAction("Save", createNavigationIcon("Save24", cldr), "Save the circuit.", KeyEvent.VK_S);
+    moveAction = new MoveAction("Move", createNavigationIcon("Export24", cldr), "Move.", KeyEvent.VK_S);
+    showArrowsAction = new ShowArrowsAction("Show arrows", createNavigationIcon("FindAgain24", cldr), "Show arrows.", KeyEvent.VK_S);
+    showBackgroundAction = new ShowBackgroundAction("Show background", createNavigationIcon("Search24", cldr), "Show background image.", KeyEvent.VK_S);
+    helpAction = new HelpAction("Help", createNavigationIcon("Help24", cldr), "Help.", KeyEvent.VK_S);
     /** ******************************************************************* */
-    allAction = new ExportAllAction("All", null, "Export both XML file and AC3 file.", new Integer(KeyEvent.VK_S));
-    ac3Action = new ExportAC3Action("AC3", null, "Create AC3 file.", new Integer(KeyEvent.VK_S));
-    propertiesAction = new PropertiesAction("Properties", null, "Properties dialog.", new Integer(KeyEvent.VK_S));
-    calcDeltaAction = new CalcDeltaAction("Delta's", createNavigationIcon("Calc24", cldr), "Calculate Delta's for x,y,z and angle.", new Integer(KeyEvent.VK_S));
-
+    allAction = new ExportAllAction("All", null, "Export both XML file and AC3 file.", KeyEvent.VK_S);
+    ac3Action = new ExportAC3Action("AC3", null, "Create AC3 file.", KeyEvent.VK_S);
+    propertiesAction = new PropertiesAction("Properties", null, "Properties dialog.", KeyEvent.VK_S);
+    calcDeltaAction = new CalcDeltaAction("Delta's", createNavigationIcon("Calc24", cldr), "Calculate Delta's for x,y,z and angle.", KeyEvent.VK_S);
 
     try {
       view = new CircuitView(this);
@@ -205,7 +197,6 @@ public class EditorFrame extends JFrame {
         public void actionPerformed(ActionEvent e) {
           //view.setBackgroundImage(properties.getImage());
           documentIsModified = true;
-
         }
 
       });
@@ -262,7 +253,6 @@ public class EditorFrame extends JFrame {
       File file = new File(tmp);
       torcsPlugin.readFile(file);
     }
-
   }
 
   /**
@@ -320,13 +310,12 @@ public class EditorFrame extends JFrame {
     }
   }
 
-
   /**
    *
    */
   private void createNewCircuit() {
     Segment shape;
-    Vector track = new Vector();
+    Vector<Segment> track = new Vector<Segment>();
 
     shape = new Straight();
     shape.setLength(100);
@@ -399,6 +388,7 @@ public class EditorFrame extends JFrame {
       Thread.sleep(100);
     }
     catch (InterruptedException ex) {
+      System.err.println("thread interrupted: " + ex.getMessage());
     }
     menuItemAddBackground.setText("Add ...");
     menuItemAddBackground.addActionListener(new java.awt.event.ActionListener() {
@@ -443,6 +433,7 @@ public class EditorFrame extends JFrame {
       Thread.sleep(1000);
     }
     catch (InterruptedException ex) {
+      System.err.println("Thread interrupted" + ex.getMessage());
     }
     this.setVisible(true);
   }

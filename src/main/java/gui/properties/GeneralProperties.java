@@ -27,25 +27,22 @@ import java.io.File;
 
 /**
  * @author babis
+ * @author Adam Kubon
  * <p>
  * TODO To change the template for this generated type comment go to Window -
  * Preferences - Java - Code Style - Code Templates
  */
 public class GeneralProperties extends JPanel {
+
   //private Properties	properties				= Properties.getInstance();
   private JTextField projectNameTextField = null;
-  private JLabel projectNameLabel = null;
 
   //add
   private JComboBox trackTypeComboBox = null;
-  private JLabel trackTypeLabel = null;
 
-  private JLabel pathLabel = null;
   private JTextField pathTextField = null;
   private JButton browseButton = null;
-  private JLabel authorLabel = null;
   private JTextField authorTextField = null;
-  private JLabel descriptionLabel = null;
   private JTextField descriptionTextField = null;
 
   private String sep = System.getProperty("file.separator");
@@ -62,13 +59,13 @@ public class GeneralProperties extends JPanel {
    *
    */
   private void initialize() {
-    authorLabel = new JLabel();
-    descriptionLabel = new JLabel();
-    pathLabel = new JLabel();
-    projectNameLabel = new JLabel();
+    JLabel authorLabel = new JLabel();
+    JLabel descriptionLabel = new JLabel();
+    JLabel pathLabel = new JLabel();
+    JLabel projectNameLabel = new JLabel();
 
     //add
-    trackTypeLabel = new JLabel();
+    JLabel trackTypeLabel = new JLabel();
 
     this.setLayout(null);
     projectNameLabel.setBounds(15, 15, 100, 30);
@@ -133,7 +130,7 @@ public class GeneralProperties extends JPanel {
     if (trackTypeComboBox == null) {
       String trackTypes[] = {"road", "oval", "dirt"};
 
-      trackTypeComboBox = new JComboBox(trackTypes);
+      trackTypeComboBox = new JComboBox<>(trackTypes);
       trackTypeComboBox.setBounds(135, 60, 170, 30);
       trackTypeComboBox.addActionListener(new java.awt.event.ActionListener() {
         public void actionPerformed(java.awt.event.ActionEvent e) {
@@ -143,7 +140,6 @@ public class GeneralProperties extends JPanel {
     }
     return trackTypeComboBox;
   }
-
 
   /**
    * This method initializes pathTextField

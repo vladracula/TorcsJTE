@@ -28,20 +28,19 @@ import java.io.File;
 
 /**
  * @author babis
+ * @author Adam Kubon
  * <p>
  * TODO To change the template for this generated type comment go to
  * Window - Preferences - Java - Code Style - Code Templates
  */
 public class ImageProperties extends JPanel {
+
   //private Properties		properties				= Properties.getInstance();
-  private JLabel pathLabel = null;
   private JTextField pathTextField = null;
   private JButton browseButton = null;
-  private JLabel imageScaleLabel = null;
   private JTextField imageScaleTextField = null;
 
   private String sep = System.getProperty("file.separator");
-
 
   /**
    *
@@ -55,8 +54,8 @@ public class ImageProperties extends JPanel {
    *
    */
   private void initialize() {
-    imageScaleLabel = new JLabel();
-    pathLabel = new JLabel();
+    JLabel imageScaleLabel = new JLabel();
+    JLabel pathLabel = new JLabel();
     this.setLayout(null);
     pathLabel.setBounds(10, 10, 60, 30);
     pathLabel.setText("Path");

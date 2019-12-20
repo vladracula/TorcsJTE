@@ -25,13 +25,15 @@ import java.util.Vector;
 
 /**
  * @author Charalampos Alexopoulos
+ * @author Adam Kubon
  * <p>
  * TODO To change the template for this generated type comment go to Window -
  * Preferences - Java - Code Style - Code Templates
  */
 public class Undo {
-  private static Vector undoSegments = new Vector();
-  private static Vector redoSegments = new Vector();
+
+  private static Vector<UndoInterface> undoSegments = new Vector<>();
+  private static Vector<UndoInterface> redoSegments = new Vector<>();
 
   /**
    *
@@ -47,7 +49,7 @@ public class Undo {
    */
   public static void undo() {
     if (undoSegments.size() > 0) {
-      UndoInterface last = (UndoInterface) undoSegments.lastElement();
+      UndoInterface last = undoSegments.lastElement();
       undoSegments.remove(last);
       redoSegments.add(last);
       last.undo();
@@ -61,7 +63,7 @@ public class Undo {
    */
   public static void redo() {
     if (redoSegments.size() > 0) {
-      UndoInterface last = (UndoInterface) redoSegments.lastElement();
+      UndoInterface last = redoSegments.lastElement();
       redoSegments.remove(last);
       undoSegments.add(last);
       last.redo();

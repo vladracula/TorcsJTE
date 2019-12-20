@@ -28,16 +28,19 @@ import javax.swing.event.ChangeListener;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.text.DecimalFormat;
 import java.util.Vector;
 
 /**
  * @author Charalampos Alexopoulos
+ * @author Adam Kubon
  * <p>
  * TODO To change the template for this generated type comment go to Window -
  * Preferences - Java - Code Style - Code Templates
  */
 public class SegmentSlider extends JPanel {
-  private Vector sliderListeners = new Vector();
+
+  private Vector<SliderListener> sliderListeners = new Vector<>();
   private JLabel sectionLabel = null;
   private JTextField textField = null;
   private JLabel attLabel = null;
@@ -55,6 +58,7 @@ public class SegmentSlider extends JPanel {
   private String method;
   private Object parent;
   private double value;
+  private DecimalFormat format = new DecimalFormat("#.##");
 
   //private Segment shape;
 
@@ -287,7 +291,8 @@ public class SegmentSlider extends JPanel {
    */
   public void setValue(double val) {
     this.value = val * this.realToTextCoeff;
-    getTextField().setText(value + "");
+    getTextField().setText(format.format(value));
+//    getTextField().setText(Double.toString(value));
     getSlider().setValue((int) value);
 
   }
@@ -310,7 +315,7 @@ public class SegmentSlider extends JPanel {
   }
 
   public synchronized void addSliderListener(SliderListener l) {
-    Vector v = sliderListeners == null ? new Vector(2) : (Vector) sliderListeners.clone();
+    Vector<SliderListener> v = sliderListeners == null ? new Vector<>(2) : new Vector<>(sliderListeners);
     if (!v.contains(l)) {
       v.addElement(l);
       sliderListeners = v;
@@ -342,7 +347,6 @@ public class SegmentSlider extends JPanel {
             checkBoxChanged();
           }
         });
-
       getTextField().setEnabled(true);
       getTextField().addKeyListener(new KeyAdapter() {
         public void keyReleased(KeyEvent e) {
@@ -362,6 +366,9 @@ public class SegmentSlider extends JPanel {
     }
 
     public void sliderChanged() {
+
+
+
       try {
         if (!getTextField().getText().equals("")) {
           double tmp1 = getSlider().getValue();
@@ -382,10 +389,19 @@ public class SegmentSlider extends JPanel {
      */
     protected void textFieldChanged() {
       if (!getTextField().getText().equals("")) {
-        double tmp = Double.parseDouble(getTextField().getText()) * multCoeff;
-        setValueInternal(tmp);
+        try {
+          double tmp = Double.parseDouble(getTextField().getText()) * multCoeff;
+          setValueInternal(tmp);
+        }
+        catch (NumberFormatException nfe) {
+          System.err.println("Bad double value: " + nfe.getMessage());
+        }
       }
     }
 
+  }
+
+  public void setFormat(DecimalFormat format) {
+    this.format = format;
   }
 } //  @jve:decl-index=0:visual-constraint="10,10"

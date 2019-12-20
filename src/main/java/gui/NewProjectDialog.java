@@ -28,11 +28,13 @@ import java.io.File;
 
 /**
  * @author babis
+ * @author Adam Kubon
  * <p>
  * TODO To change the template for this generated type comment go to Window -
  * Preferences - Java - Code Style - Code Templates
  */
 public class NewProjectDialog extends JDialog {
+
   //private Properties properties					= Properties.getInstance();
   public static boolean APPROVE = false;
   private JPanel jPanel = null;
@@ -40,7 +42,7 @@ public class NewProjectDialog extends JDialog {
   private JLabel projectNameLabel = null;
 
   //add
-  private JComboBox trackTypeComboBox = null;
+  private JComboBox<String> trackTypeComboBox = null;
   private JLabel trackTypeLabel = null;
 
   private JLabel pathLabel = null;
@@ -159,7 +161,7 @@ public class NewProjectDialog extends JDialog {
     if (trackTypeComboBox == null) {
       String trackTypes[] = {"road", "oval", "dirt"};
 
-      trackTypeComboBox = new JComboBox(trackTypes);
+      trackTypeComboBox = new JComboBox<>(trackTypes);
       trackTypeComboBox.setBounds(135, 60, 170, 30);
       trackTypeComboBox.addActionListener(new java.awt.event.ActionListener() {
         public void actionPerformed(java.awt.event.ActionEvent e) {

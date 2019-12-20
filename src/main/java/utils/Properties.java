@@ -23,23 +23,25 @@ package utils;
 import utils.circuit.SegmentSide;
 
 import java.awt.event.ActionListener;
+import java.util.EventListener;
 import java.util.Vector;
-
 
 /**
  * @author babis
+ * @author Adam Kubon
  * <p>
  * TODO To change the template for this generated type comment go to Window -
  * Preferences - Java - Code Style - Code Templates
  */
 public class Properties {
+
   private static Properties instance = new Properties();
-  private Vector propertiesListeners = new Vector();
+  private Vector<EventListener> propertiesListeners = new Vector<>();
   //private Vector				trackData;
 //	public final String			title				= "Track Editor";
   public String title = "Track Editor";
   //	public final String			version				= "v0.6.3";
-  public String version = "v0.6.3c";
+  public String version = "v0.6.4-SNAPSHOT";
   //	public final String			version				= "v0.6.3c";
   public String vendor = "vendor";
   private String category;
@@ -79,7 +81,6 @@ public class Properties {
   private double profileStepLength = 4;
   private int curveNameCount = 0;
   private int straightNameCount = 0;
-
 
   /**
    *
@@ -376,7 +377,7 @@ public class Properties {
   }
 
   public synchronized void addPropertiesListener(ActionListener l) {
-    Vector v = propertiesListeners == null ? new Vector(2) : (Vector) propertiesListeners.clone();
+    Vector<EventListener> v = propertiesListeners == null ? new Vector<>(2) : new Vector<>(propertiesListeners);
     if (!v.contains(l)) {
       v.addElement(l);
       propertiesListeners = v;
@@ -385,7 +386,7 @@ public class Properties {
 
   public void valueChanged() {
     if (propertiesListeners != null) {
-      Vector listeners = propertiesListeners;
+      Vector<EventListener> listeners = propertiesListeners;
       int count = listeners.size();
       for (int i = 0; i < count; i++) {
         ((ActionListener) listeners.elementAt(i)).actionPerformed(null);

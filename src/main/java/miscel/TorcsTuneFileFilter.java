@@ -7,6 +7,7 @@ package miscel;
  * <p>Socit : </p>
  *
  * @author Patrice Espie
+ * @author Adam Kubon
  * @version 0.1a
  */
 
@@ -33,13 +34,14 @@ import java.util.Hashtable;
  *
  * @version 1.12 12/03/01
  * @author Jeff Dinkins
+ * @author Adam Kubon
  */
 public class TorcsTuneFileFilter extends FileFilter {
 
   private static String TYPE_UNKNOWN = "Type Unknown";
   private static String HIDDEN_FILE = "Hidden File";
 
-  private Hashtable filters = null;
+  private Hashtable<String, TorcsTuneFileFilter> filters = null;
   private String description = null;
   private String fullDescription = null;
   private boolean useExtensionsInDescription = true;
@@ -51,7 +53,7 @@ public class TorcsTuneFileFilter extends FileFilter {
    * @see #addExtension
    */
   public TorcsTuneFileFilter() {
-    this.filters = new Hashtable();
+    this.filters = new Hashtable<>();
   }
 
   /**
@@ -164,7 +166,7 @@ public class TorcsTuneFileFilter extends FileFilter {
    */
   public void addExtension(String extension) {
     if (filters == null) {
-      filters = new Hashtable(5);
+      filters = new Hashtable<>(5);
     }
     filters.put(extension.toLowerCase(), this);
     fullDescription = null;

@@ -39,11 +39,13 @@ import java.util.Vector;
 
 /**
  * @author Charalampos Alexopoulos
+ * @author Adam Kubon
  * <p>
  * TODO To change the template for this generated type comment go to Window -
  * Preferences - Java - Code Style - Code Templates
  */
 public class XmlReader {
+
   //private static Properties properties = Properties.getInstance();
   private static List segments;
 
@@ -108,20 +110,21 @@ public class XmlReader {
   }
 
   private synchronized static void setSegments() {
-    Vector trackData = new Vector();
+    Vector<Segment> trackData = new Vector<>();
     Iterator it;
     Segment prev = null;
     Segment shape = null;
-
+    Segment first = null;
+    boolean firstTime = true;
     it = segments.iterator();
     while (it.hasNext()) {
       Element e = (Element) it.next();
       String type = getAttrStrValue(e, "type");
       if (type.equals("str")) {
-        shape = new Straight();
+        shape = new Straight(prev);
       }
       else {
-        shape = new Curve(getAttrStrValue(e, "type"), null);
+        shape = new Curve(getAttrStrValue(e, "type"), prev);
       }
       shape = setSegment(e, shape, prev);
       shape.setProfilStepLength(4);
@@ -132,9 +135,17 @@ public class XmlReader {
         // TODO Auto-generated catch block
         e1.printStackTrace();
       }
+
       trackData.add(shape);
       prev = shape;
+      if (firstTime) {
+        firstTime = false;
+        first = shape;
+      }
     }
+    first.setPreviousShape(shape);
+    shape.setNextShape(first);
+
     TrackData.setTrackData(trackData);
   }
 
@@ -180,7 +191,7 @@ public class XmlReader {
     if (name.startsWith("curve ")) {
       String tmp = name.substring(6);
       try {
-        Integer tmpInt = new Integer(tmp);
+        Integer tmpInt = Integer.parseInt(tmp);
         int i = tmpInt.intValue();
         if (i > Editor.getProperties().getCurveNameCount()) {
           Editor.getProperties().setCurveNameCount(i);
@@ -194,7 +205,7 @@ public class XmlReader {
     if (name.startsWith("straight ")) {
       String tmp = name.substring(9);
       try {
-        Integer tmpInt = new Integer(tmp);
+        Integer tmpInt = Integer.parseInt(tmp);
         int i = tmpInt.intValue();
         if (i > Editor.getProperties().getStraightNameCount()) {
           Editor.getProperties().setStraightNameCount(i);

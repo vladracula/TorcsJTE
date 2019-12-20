@@ -20,28 +20,32 @@
  */
 package utils;
 
+import utils.circuit.Segment;
+
 import java.util.Vector;
 
 /**
  * @author Charalampos Alexopoulos
+ * @author Adam Kubon
  * <p>
  * TODO To change the template for this generated type comment go to
  * Window - Preferences - Java - Code Style - Code Templates
  */
 public final class TrackData {
-  private static Vector trackData;
+
+  private static Vector<Segment> trackData;
 
   /**
    * @return Returns the trackData.
    */
-  public static Vector getTrackData() {
+  public static Vector<Segment> getTrackData() {
     return trackData;
   }
 
   /**
    * @param trackData The trackData to set.
    */
-  public static void setTrackData(Vector data) {
+  public static void setTrackData(Vector<Segment> data) {
     trackData = data;
   }
 

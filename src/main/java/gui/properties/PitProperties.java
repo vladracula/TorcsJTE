@@ -31,6 +31,7 @@ import java.util.Vector;
 
 /**
  * @author babis
+ * @author Adam Kubon
  * <p>
  * TODO To change the template for this generated type comment go to Window -
  * Preferences - Java - Code Style - Code Templates
@@ -124,7 +125,7 @@ public class PitProperties extends JPanel {
     if (jComboBox == null) {
       String[] items =
           {"right", "left"};
-      jComboBox = new JComboBox(items);
+      jComboBox = new JComboBox<>(items);
       jComboBox.setSelectedItem(Editor.getProperties().getPitSide());
       jComboBox.setBounds(100, 10, 80, 20);
     }

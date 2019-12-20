@@ -27,16 +27,17 @@ import java.util.Vector;
 
 /**
  * @author Charalampos Alexopoulos
+ * @author Adam Kubon
  * <p>
  * TODO To change the template for this generated type comment go to
  * Window - Preferences - Java - Code Style - Code Templates
  */
 public class UndoSegmentChange implements UndoInterface {
+
   //private Properties			properties	= Properties.getInstance();
   private Segment original;
   private Segment clone;
   private int pos;
-
 
   /**
    *
@@ -50,7 +51,7 @@ public class UndoSegmentChange implements UndoInterface {
    * @see utils.undo.UndoInterface#undo()
    */
   public void undo() {
-    Vector data = TrackData.getTrackData();
+    Vector<Segment> data = TrackData.getTrackData();
     pos = data.indexOf(original);
     data.set(pos, clone);
   }
@@ -59,7 +60,7 @@ public class UndoSegmentChange implements UndoInterface {
    * @see utils.undo.UndoInterface#redo()
    */
   public void redo() {
-    Vector data = TrackData.getTrackData();
+    Vector<Segment> data = TrackData.getTrackData();
     pos = data.indexOf(clone);
     data.set(pos, original);
   }

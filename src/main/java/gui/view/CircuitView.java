@@ -21,7 +21,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Vector;
 
-
 /**
  * <p>
  * Titre : Torcs Tune
@@ -30,13 +29,14 @@ import java.util.Vector;
  * Description : Torcs tuning
  * </p>
  * <p>
- * Copyright : Copyright (c) 2002 Patrice Espie
+ * Copyright : Copyright (c) 2002-2019 Patrice Espie, Adam Kubon
  * </p>
  * <p>
  * Soci�t� :
  * </p>
  *
  * @author Patrice Espie
+ * @author Adam Kubon
  * @version 0.1a
  */
 
@@ -48,24 +48,24 @@ public class CircuitView
   /**
    * zooming factor
    */
-  double zoomFactor = 1.0;
+  private double zoomFactor = 1.0;
   /**
    * affine transformation
    */
-  AffineTransform affineTransform = new AffineTransform();
-  AffineTransform inverseAffineTransform = new AffineTransform();
+  private AffineTransform affineTransform = new AffineTransform();
+  private AffineTransform inverseAffineTransform = new AffineTransform();
 
   /** xml document containing current circuit */
   //	EPXMLDocument circuit;
   /**
    * bounding rectangle of all elements of the circuits, in meters
    */
-  Rectangle2D.Double boundingRectangle = new Rectangle2D.Double(0, 0, 0, 0);
+  private Rectangle2D.Double boundingRectangle = new Rectangle2D.Double(0, 0, 0, 0);
 
   /**
    * situation on circuit terrain of the screen center
    */
-  Point2D.Double screenCenter = new Point2D.Double(0, 0);      // meters
+  private Point2D.Double screenCenter = new Point2D.Double(0, 0);      // meters
 
   /**
    * pits shape
@@ -74,44 +74,44 @@ public class CircuitView
   /**
    * terrain shape
    */
-  ObjShapeTerrain terrain;
+  private ObjShapeTerrain terrain;
 
   /**
    * event to fire when selection has changed
    */
-  CircuitViewSelectionEvent selectionChangedEvent = new CircuitViewSelectionEvent(this);
+  private CircuitViewSelectionEvent selectionChangedEvent = new CircuitViewSelectionEvent(this);
   /**
    * current selected shape
    */
-  public Segment selectedShape = null;
+  private Segment selectedShape = null;
   /**
    * current handled shape
    */
-  public Segment handledShape = null;
+  private Segment handledShape = null;
   /**
    * current dragging state
    */
-  boolean dragging = false;
+  private boolean dragging = false;
   /**
    * mouse pressed point, in meters
    */
-  Point2D.Double clickPoint = new Point2D.Double(0, 0);
+  private Point2D.Double clickPoint = new Point2D.Double(0, 0);
   /**
    * mouse current point, in meters
    */
-  Point2D.Double mousePoint = new Point2D.Double(0, 0);
+  private Point2D.Double mousePoint = new Point2D.Double(0, 0);
   /**
    * handles to be shown
    */
-  ArrayList handles = new ArrayList();
+  private ArrayList<ObjShapeHandle> handles = new ArrayList<>();
   /**
    * temp handle for calculs
    */
-  ObjShapeHandle handle = new ObjShapeHandle();
+  private ObjShapeHandle handle = new ObjShapeHandle();
   /**
    * dragging handle index
    */
-  int handleDragging = -1;
+  private int handleDragging = -1;
   /**
    * current moved shape, for undo management
    */
@@ -125,14 +125,14 @@ public class CircuitView
   /**
    * UI dialog
    */
-  public SegmentEditorDlg segmentParamDialog;
+  private SegmentEditorDlg segmentParamDialog;
 
   /** upward link to parent frame */
   //	EditorFrameTest parentFrame;
   /**
    * current operating state
    */
-  int currentState;
+  private int currentState;
 
   /**
    * operating states
@@ -162,12 +162,12 @@ public class CircuitView
   /**
    * show terrain border
    */
-  boolean terrainBorderMustBeShown = true;
+  private boolean terrainBorderMustBeShown = true;
 
   /**
    * selection listener management
    */
-  private transient Vector selectionListeners;
+  private transient Vector<CircuitViewSelectionListener> selectionListeners;
 
   //private double				imgCo							= 1.0; //3.4;
   //private Point2D.Double		imgOffset						= new Point2D.Double(0, 0);
@@ -176,22 +176,22 @@ public class CircuitView
   /**
    * background image
    */
-  ImageIcon backgroundImg = null;
+  private ImageIcon backgroundImg = null;
   /**
    * background image position, in meters
    */
-  Rectangle2D.Double backgroundRectangle = new Rectangle2D.Double();
+  private Rectangle2D.Double backgroundRectangle = new Rectangle2D.Double();
   /**
    * background image showing state
    */
-  public boolean showBackground = true;
+  private boolean showBackground = true;
 
   private int currentCount = 0;
 
   /**
    * upward link to parent frame
    */
-  EditorFrame parentFrame;
+  private EditorFrame parentFrame;
 
   /**
    * constructor
@@ -243,9 +243,9 @@ public class CircuitView
    * @return
    */
 
-  public boolean isFocusTraversable() {
-    return (true);
-  }
+ // public boolean isFocusTraversable() {
+ //   return (true);
+ // }
 
   public void screenToReal(MouseEvent e, Point2D.Double point) {
     point.setLocation(e.getX(), e.getY());
@@ -289,7 +289,7 @@ public class CircuitView
             if (handledShape == null) return;
 
             // create a standard curve segment
-            Vector data = TrackData.getTrackData();
+            Vector<Segment> data = TrackData.getTrackData();
             int pos = data.indexOf(handledShape);
             Curve newShape = new Curve("lft", handledShape);
             newShape.setArc(Math.PI / 2);
@@ -299,6 +299,7 @@ public class CircuitView
             int count = Editor.getProperties().getCurveNameCount() + 1;
             Editor.getProperties().setCurveNameCount(count);
             newShape.setName("curve " + count);
+            makeLinkedList(data, pos, newShape);
             data.insertElementAt(newShape, pos + 1);
             Undo.add(new UndoAddSegment(newShape));
             selectedShape = newShape;
@@ -308,12 +309,13 @@ public class CircuitView
             this.redrawCircuit();
           }
           break;
+
           case STATE_CREATE_RIGHT_SEGMENT: {
             if (handledShape == null)
               return;
 
             // create a standard curve segment
-            Vector data = TrackData.getTrackData();
+            Vector<Segment> data = TrackData.getTrackData();
             int pos = data.indexOf(handledShape);
             Curve newShape = new Curve("rgt", handledShape);
             newShape.setArc(Math.PI / 2);
@@ -323,6 +325,7 @@ public class CircuitView
             int count = Editor.getProperties().getCurveNameCount() + 1;
             Editor.getProperties().setCurveNameCount(count);
             newShape.setName("curve " + count);
+            makeLinkedList(data, pos, newShape);
             data.insertElementAt(newShape, pos + 1);
             Undo.add(new UndoAddSegment(newShape));
             selectedShape = newShape;
@@ -338,13 +341,14 @@ public class CircuitView
               return;
 
             // create a standard straight segment
-            Vector data = TrackData.getTrackData();
+            Vector<Segment> data = TrackData.getTrackData();
             int pos = data.indexOf(handledShape);
             Straight newShape = new Straight();
             newShape.setLength(50);
             int count = Editor.getProperties().getStraightNameCount() + 1;
             Editor.getProperties().setStraightNameCount(count);
             newShape.setName("straight " + count);
+            makeLinkedList(data, pos, newShape);
             data.insertElementAt(newShape, pos + 1);
             Undo.add(new UndoAddSegment(newShape));
             selectedShape = newShape;
@@ -373,10 +377,15 @@ public class CircuitView
               }
 
               // must check for a segment under the mouse
-              Vector data = TrackData.getTrackData();
+              Vector<Segment> data = TrackData.getTrackData();
               int pos = data.indexOf(handledShape);
               Undo.add(new UndoDeleteSegment(handledShape));
+
+              Segment previous = (Segment) data.get(pos - 1);
+              Segment next = getNextSegment(data, pos);
               data.remove(pos);
+              makeLinkedList(previous, next);
+
               handledShape = null;
               //selectedShape = newShape;
 
@@ -541,7 +550,7 @@ public class CircuitView
    */
   public void mouseDragged(MouseEvent e) {
     //		System.out.println(e.getModifiers());
-    if (e.getModifiers() == 4) {
+    if (e.getModifiersEx() == 4) {
       EditorPoint offset = Editor.getProperties().getImgOffset();
       Point2D.Double tmp = new Point2D.Double(0, 0);
       screenToReal(e, tmp);
@@ -973,10 +982,10 @@ public class CircuitView
       affineTransform.translate(
           (boundingRectangle.getWidth() / 2) * zoomFactor,
           (boundingRectangle.getHeight() / 2) * zoomFactor);
-      affineTransform.scale(zoomFactor, - zoomFactor);
+      affineTransform.scale(zoomFactor, -zoomFactor);
       affineTransform.translate(
-          - boundingRectangle.getX() - boundingRectangle.getWidth() / 2,
-          - boundingRectangle.getY() - boundingRectangle.getHeight() / 2);
+          -boundingRectangle.getX() - boundingRectangle.getWidth() / 2,
+          -boundingRectangle.getY() - boundingRectangle.getHeight() / 2);
       inverseAffineTransform = affineTransform.createInverse();
 
       // scroll to keep same screen center as previously
@@ -1031,7 +1040,7 @@ public class CircuitView
         Point2D.Double p2 = new Point2D.Double(
             backgroundRectangle.getWidth(), backgroundRectangle.getHeight());
 
-    //    p1 = (Point2D.Double) affineTransform.transform(p1, null);
+        //    p1 = (Point2D.Double) affineTransform.transform(p1, null);
 
         g.drawImage(backgroundImg.getImage(), (int) (p1.getX()), (int) (p1.getY()),
             (int) (p2.getX() * zoomFactor), (int) (p2.getY() * zoomFactor), null);
@@ -1261,14 +1270,15 @@ public class CircuitView
 
   public synchronized void removeSelectionListener(CircuitViewSelectionListener l) {
     if (selectionListeners != null && selectionListeners.contains(l)) {
-      Vector v = (Vector) selectionListeners.clone();
+      Vector<CircuitViewSelectionListener> v = new Vector<>(selectionListeners);
       v.removeElement(l);
       selectionListeners = v;
     }
   }
 
   public synchronized void addSelectionListener(CircuitViewSelectionListener l) {
-    Vector v = selectionListeners == null ? new Vector(2) : (Vector) selectionListeners.clone();
+    Vector<CircuitViewSelectionListener> v =
+        selectionListeners == null ? new Vector<>(2) : new Vector<>(selectionListeners);
     if (!v.contains(l)) {
       v.addElement(l);
       selectionListeners = v;
@@ -1332,6 +1342,102 @@ public class CircuitView
       segmentParamDialog = new SegmentEditorDlg(this, parentFrame, "", false, shape);
       segmentParamDialog.addWindowListener(this);
     }
+  }
+
+  /**
+   * making links with neighbours for new Segment
+   * @param data
+   * @param pos
+   * @param newShape
+   */
+  private void makeLinkedList(Vector data, int pos, Segment newShape) {
+    Segment previous = (Segment) data.get(pos);
+    Segment next = getNextSegment(data, pos);
+    previous.setNextShape(newShape);
+    next.setPreviousShape(newShape);
+    newShape.setPreviousShape(previous);
+    newShape.setNextShape(next);
+    next.setPreviousShape(newShape);
+    continousDataValues(previous, newShape, next);
+  }
+
+  /**
+   * making links between neighbours
+   * @param previous
+   * @param next
+   */
+  private void makeLinkedList(Segment previous, Segment next) {
+    previous.setNextShape(next);
+    next.setPreviousShape(previous);
+    continousDataValues(previous, next);
+  }
+
+  /**
+   * find next segment in data
+   * @param data
+   * @param pos
+   * @return
+   */
+  private Segment getNextSegment(Vector data, int pos) {
+    Segment next = null;
+    if (pos > data.size()) {
+      next = (Segment) data.get(0);
+    }
+    else {
+      next = (Segment) data.get(pos + 1);
+    }
+    return next;
+  }
+
+  /**
+   * synchronize values between three neighbours
+   *
+   * @param previous
+   * @param current
+   * @param next
+   */
+  private void continousDataValues(Segment previous, Segment current, Segment next) {
+    // height start/end fit
+    current.setHeightStart(previous.getHeightEnd());
+    current.setHeightEnd(next.getHeightStart());
+
+    current.setSurface(previous.getSurface());
+    current.setProfil(previous.getProfil());
+
+    continousSideValues(previous.getLeft(), current.getLeft());
+    continousSideValues(previous.getRight(), current.getRight());
+  }
+
+  /**
+   * function copying side values from previous segment to current
+   * @param previous
+   * @param current
+   */
+  private void continousSideValues(SegmentSide previous, SegmentSide current){
+    current.setBarrierHeight(previous.getBarrierHeight());
+    current.setBarrierWidth(previous.getBarrierWidth());
+    current.setBarrierSurface(previous.getBarrierSurface());
+    current.setBarrierStyle(previous.getBarrierStyle());
+
+    current.setSideStartWidth(previous.getSideStartWidth());
+    current.setSideEndWidth(previous.getSideEndWidth());
+    current.setSideSurface(previous.getSideSurface());
+
+    current.setBorderHeight(previous.getBorderHeight());
+    current.setBorderWidth(previous.getBorderWidth());
+    current.setBorderSurface(previous.getBorderSurface());
+    current.setBorderStyle(previous.getBorderStyle());
+  }
+
+  /**
+   * synchronize values between two neighbours
+   *
+   * @param previous
+   * @param next
+   */
+  private void continousDataValues(Segment previous, Segment next) {
+    next.setHeightStart(previous.getHeightEnd());
+    previous.setHeightEnd(next.getHeightStart());
   }
 
   /* (non-Javadoc)

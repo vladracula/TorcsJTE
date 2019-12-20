@@ -27,19 +27,22 @@ import java.awt.geom.Point2D;
 
 /**
  * @author Patrice Espie , Charalampos Alexopoulos
+ * @author Adam Kubon
  * <p>
  * TODO To change the template for this generated type comment go to Window -
  * Preferences - Java - Code Style - Code Templates
  */
 
 public class Straight extends Segment implements Cloneable {
+
   public Straight() {
     this(null);
   }
 
   public Straight(Segment prev) {
     super("str");
-    this.previousShape = prev;
+    this.setPreviousShape(prev);
+    if (prev != null) prev.setNextShape(this);
   }
 
   public void calcShape(Segment previousShape) throws Exception {

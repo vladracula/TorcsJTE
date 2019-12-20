@@ -31,11 +31,13 @@ import java.util.Arrays;
 
 /**
  * @author babis
+ * @author Adam Kubon
  * <p>
  * TODO To change the template for this generated type comment go to Window -
  * Preferences - Java - Code Style - Code Templates
  */
 public class SegmentSideProperties extends JPanel implements SliderListener {
+
   private SegmentEditorDlg editor;
   //private int side;
   private SegmentSide side;
@@ -86,7 +88,7 @@ public class SegmentSideProperties extends JPanel implements SliderListener {
   private String[] surfaceItems =
       {};
 
-  public JPanel panel = null;
+  private JPanel panel = null;
   private JLabel borderLabel = null;
   private JLabel borderSurfaceLabel = null;
   private JLabel borderStyleLabel = null;
@@ -208,7 +210,7 @@ public class SegmentSideProperties extends JPanel implements SliderListener {
     if (borderSurfaceComboBox == null) {
       borderSurfaceComboBox = new SegmentComboBox();
       borderSurfaceComboBox.setBounds(270, 350, 120, 20);
-      borderSurfaceComboBox.setModel(new DefaultComboBoxModel(borderSurfaceItems));
+      borderSurfaceComboBox.setModel(new DefaultComboBoxModel<>(borderSurfaceItems));
       borderSurfaceComboBox.addActionListener(new ActionListener() {
 
         public void actionPerformed(ActionEvent e) {
@@ -229,7 +231,7 @@ public class SegmentSideProperties extends JPanel implements SliderListener {
     if (borderStyleComboBox == null) {
       borderStyleComboBox = new SegmentComboBox();
       borderStyleComboBox.setBounds(270, 400, 120, 20);
-      borderStyleComboBox.setModel(new DefaultComboBoxModel(styleItems));
+      borderStyleComboBox.setModel(new DefaultComboBoxModel<>(styleItems));
       borderStyleComboBox.addActionListener(new ActionListener() {
 
         public void actionPerformed(ActionEvent e) {
@@ -251,7 +253,7 @@ public class SegmentSideProperties extends JPanel implements SliderListener {
     if (sideSurfaceComboBox == null) {
       sideSurfaceComboBox = new SegmentComboBox();
       sideSurfaceComboBox.setBounds(137, 350, 120, 20);
-      sideSurfaceComboBox.setModel(new DefaultComboBoxModel(sideSurfaceItems));
+      sideSurfaceComboBox.setModel(new DefaultComboBoxModel<>(sideSurfaceItems));
       sideSurfaceComboBox.addActionListener(new ActionListener() {
 
         public void actionPerformed(ActionEvent e) {
@@ -272,7 +274,7 @@ public class SegmentSideProperties extends JPanel implements SliderListener {
     if (barrierSurfaceComboBox == null) {
       barrierSurfaceComboBox = new SegmentComboBox();
       barrierSurfaceComboBox.setBounds(5, 350, 120, 20);
-      barrierSurfaceComboBox.setModel(new DefaultComboBoxModel(fenceSurfaceItems));
+      barrierSurfaceComboBox.setModel(new DefaultComboBoxModel<>(fenceSurfaceItems));
       barrierSurfaceComboBox.addActionListener(new ActionListener() {
 
         public void actionPerformed(ActionEvent e) {
@@ -293,7 +295,7 @@ public class SegmentSideProperties extends JPanel implements SliderListener {
     if (barrierStyleComboBox == null) {
       barrierStyleComboBox = new SegmentComboBox();
       barrierStyleComboBox.setBounds(5, 400, 120, 20);
-      barrierStyleComboBox.setModel(new DefaultComboBoxModel(styleItems));
+      barrierStyleComboBox.setModel(new DefaultComboBoxModel<>(styleItems));
       barrierStyleComboBox.addActionListener(new ActionListener() {
 
         public void actionPerformed(ActionEvent e) {

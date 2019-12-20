@@ -23,7 +23,6 @@ package utils.circuit;
 import utils.Editor;
 
 import java.awt.*;
-import java.awt.event.ActionListener;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
@@ -31,18 +30,20 @@ import java.util.Vector;
 
 /**
  * @author Patrice Espie , Charalampos Alexopoulos
+ * @author Adam Kubon
  * <p>
  * TODO To change the template for this generated type comment go to Window -
  * Preferences - Java - Code Style - Code Templates
  */
 
 public class Segment implements Cloneable {
+
   //protected Properties	properties			= Properties.getInstance();
   private Vector segmentListeners = new Vector();
 
   // neighbours
-  public Segment previousShape;
-  public Segment nextShape;
+  private Segment previousShape;
+  private Segment nextShape;
 
   protected String name = "";
 
@@ -298,6 +299,11 @@ public class Segment implements Cloneable {
    */
   public void setHeightEnd(double heightEnd) {
     this.heightEnd = heightEnd;
+    if (nextShape != null) {
+      if (nextShape.getHeightStart() != heightEnd) {
+        nextShape.setHeightStart(heightEnd);
+      }
+    }
   }
 
   /**
@@ -312,19 +318,24 @@ public class Segment implements Cloneable {
    */
   public void setHeightStart(double heightStart) {
     this.heightStart = heightStart;
+    if (previousShape != null) {
+      if (previousShape.getHeightEnd() != heightStart) {
+        previousShape.setHeightEnd(heightStart);
+      }
+    }
   }
 
   /**
    * @return returns the profile.
    */
-  public String getProfil(){
+  public String getProfil() {
     return profil;
   }
 
   /**
    * @param profil the profil to set
    */
-  public void setProfil(String profil){
+  public void setProfil(String profil) {
     this.profil = profil;
   }
 
@@ -399,24 +410,39 @@ public class Segment implements Cloneable {
   }
 
   /**
+   * @return Returns the nextShape.
+   */
+  public Segment getNextShape() {
+    return nextShape;
+  }
+
+  /**
+   * @param nextShape The nextShape to set.
+   */
+  public void setNextShape(Segment next) {
+    this.nextShape = next;
+  }
+
+  /**
    *
    */
   private void setProperties() {
 
   }
 
-  public synchronized void removeSideListener(ActionListener l) {
+  /*
+    public synchronized void removeSideListener(ActionListener l) {
 
-  }
-
-  public synchronized void addSideListener(SegmentSideListener l) {
-    Vector v = segmentListeners == null ? new Vector(2) : (Vector) segmentListeners.clone();
-    if (!v.contains(l)) {
-      v.addElement(l);
-      segmentListeners = v;
     }
-  }
 
+    public synchronized void addSideListener(SegmentSideListener l) {
+      Vector v = segmentListeners == null ? new Vector(2) : (Vector) segmentListeners.clone();
+      if (!v.contains(l)) {
+        v.addElement(l);
+        segmentListeners = v;
+      }
+    }
+  */
   public Object clone() {
     Segment s = null;
     try {
@@ -466,4 +492,5 @@ public class Segment implements Cloneable {
   public double getDy() {
     return dy;
   }
+
 }
