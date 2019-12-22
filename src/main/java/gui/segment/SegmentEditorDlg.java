@@ -249,7 +249,7 @@ public class SegmentEditorDlg extends JDialog implements SliderListener {
       arcSlider.setMax(360);
       arcSlider.setExtent(10);
       arcSlider.setTickSpacing(1);
-      arcSlider.setFormat(new DecimalFormat("#.####"));
+      arcSlider.setFormat("#.####");
       arcSlider.setRealToTextCoeff(180 / Math.PI);
 //			if (!shape.getType().equals("str"))
 //			{
@@ -277,7 +277,7 @@ public class SegmentEditorDlg extends JDialog implements SliderListener {
       lengthSlider.setTickSpacing(0.1);
       lengthSlider.setRealToTextCoeff(1);
       lengthSlider.setMethod("Length");
-      lengthSlider.setFormat(new DecimalFormat("#.###"));
+      lengthSlider.setFormat("#.###");
       lengthSlider.setValue(shape.getLength());
       lengthSlider.addSliderListener(this);
     }
@@ -300,7 +300,7 @@ public class SegmentEditorDlg extends JDialog implements SliderListener {
       heightStartSlider.setExtent(2);
       heightStartSlider.setTickSpacing(0.5);
       heightStartSlider.setRealToTextCoeff(1);
-      heightStartSlider.setFormat(new DecimalFormat("#.##"));
+      heightStartSlider.setFormat("#.##");
       heightStartSlider.setMethod("HeightStart");
       heightStartSlider.addSliderListener(this);
     }
@@ -323,7 +323,7 @@ public class SegmentEditorDlg extends JDialog implements SliderListener {
       heightEndSlider.setExtent(2);
       heightEndSlider.setTickSpacing(0.5);
       heightEndSlider.setRealToTextCoeff(1);
-      heightEndSlider.setFormat(new DecimalFormat("#.##"));
+      heightEndSlider.setFormat("#.##");
       heightEndSlider.setMethod("HeightEnd");
       heightEndSlider.addSliderListener(this);
     }

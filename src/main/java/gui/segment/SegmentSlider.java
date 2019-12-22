@@ -29,6 +29,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.util.Locale;
 import java.util.Vector;
 
 /**
@@ -58,7 +60,9 @@ public class SegmentSlider extends JPanel {
   private String method;
   private Object parent;
   private double value;
-  private DecimalFormat format = new DecimalFormat("#.##");
+  private DecimalFormatSymbols otherSymbols;
+  private DecimalFormat decimalFormat;
+  private String format;
 
   /**
    *
@@ -91,6 +95,10 @@ public class SegmentSlider extends JPanel {
     this.add(attLabel, null);
     this.add(getTextField(), null);
     this.add(getSlider(), null);
+    this.format = "#.##";
+    otherSymbols = new DecimalFormatSymbols(Locale.ENGLISH);
+    otherSymbols.setDecimalSeparator('.');
+    decimalFormat = new DecimalFormat(format, otherSymbols);
   }
 
   /**
@@ -289,7 +297,7 @@ public class SegmentSlider extends JPanel {
    */
   public void setValue(double val) {
     this.value = val * this.realToTextCoeff;
-    getTextField().setText(format.format(value));
+    getTextField().setText(decimalFormat.format(value));
 //    getTextField().setText(Double.toString(value));
     getSlider().setValue((int) value);
 
@@ -399,7 +407,7 @@ public class SegmentSlider extends JPanel {
 
   }
 
-  public void setFormat(DecimalFormat format) {
+  public void setFormat(String format) {
     this.format = format;
   }
 }
