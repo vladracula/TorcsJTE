@@ -22,10 +22,13 @@ package gui.segment;
 
 /**
  * @author Charalampos Alexopoulos
+ * @author Adam Kubon
  * <p>
  * TODO To change the template for this generated type comment go to
  * Window - Preferences - Java - Code Style - Code Templates
  */
 public interface SliderListener {
-  public void sliderChanged(SegmentSlider slider);
+
+  void sliderChanged(SegmentSlider slider);
+
 }

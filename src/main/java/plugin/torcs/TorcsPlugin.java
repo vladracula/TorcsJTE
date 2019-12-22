@@ -37,10 +37,9 @@ import java.util.Vector;
  * Preferences - Java - Code Style - Code Templates
  */
 public class TorcsPlugin implements Plugin {
-  //private Properties		properties	= Properties.getInstance();
+
   protected EditorFrame editor;
   private Vector trackData = new Vector();
-  ;
   private ImportAction importAction;
   private ExportAction exportAction;
   private JMenuItem importMenuItem;
@@ -132,6 +131,7 @@ public class TorcsPlugin implements Plugin {
   }
 
   public class ImportAction extends AbstractAction {
+
     public ImportAction(String text, ImageIcon icon, String desc, Integer mnemonic) {
       super(text, icon);
       putValue(SHORT_DESCRIPTION, desc);
@@ -141,9 +141,11 @@ public class TorcsPlugin implements Plugin {
     public void actionPerformed(ActionEvent e) {
       importTrack();
     }
+
   }
 
   private class ExportAction extends AbstractAction {
+
     public ExportAction(String text, ImageIcon icon, String desc, Integer mnemonic) {
       super(text, icon);
       putValue(SHORT_DESCRIPTION, desc);
@@ -154,6 +156,7 @@ public class TorcsPlugin implements Plugin {
       System.out.println("Call exportXml");
       exportTrack();
     }
+
   }
 
 }

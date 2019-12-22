@@ -29,15 +29,16 @@ import java.awt.*;
 
 /**
  * @author babis
+ * @author Adam Kubon
  * <p>
  * TODO To change the template for this generated type comment go to
  * Window - Preferences - Java - Code Style - Code Templates
  */
 public class SplashPanel extends JPanel {
-  //private Properties				properties	= Properties.getInstance();
-  ImageIcon image = null;
-  JButton splash = new JButton();
-  JLabel headerLabel = new JLabel();
+
+  private ImageIcon image = null;
+  private JButton splash = new JButton();
+  private JLabel headerLabel = new JLabel();
   private String header = Editor.getProperties().title;
   private String version = Editor.getProperties().version;
   private StatusBar status = new StatusBar();
@@ -52,9 +53,6 @@ public class SplashPanel extends JPanel {
 
     ClassLoader cldr = this.getClass().getClassLoader();
     image = new ImageIcon(cldr.getResource(iconName));
-
-//		image = new ImageIcon(SplashPanel.class.getResource(iconName));
-
     splash.setIcon(image);
     headerLabel.setOpaque(true);
     headerLabel.setBackground(Color.blue);
@@ -64,7 +62,6 @@ public class SplashPanel extends JPanel {
     this.add(headerLabel, BorderLayout.NORTH);
     this.add(splash, BorderLayout.CENTER);
     this.add(status, BorderLayout.SOUTH);
-
   }
 
   /**
@@ -94,4 +91,5 @@ public class SplashPanel extends JPanel {
   public void incProgress(int i) {
     this.status.incProgress(i);
   }
+
 }

@@ -386,4 +386,5 @@ public class Curve extends Segment implements Cloneable {
 
     return s; // return the clone
   }
+
 }

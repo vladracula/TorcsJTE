@@ -20,15 +20,17 @@
  */
 package utils.undo;
 
-
 /**
  * @author Charalampos Alexopoulos
+ * @author Adam Kubon
  * <p>
  * TODO To change the template for this generated type comment go to
  * Window - Preferences - Java - Code Style - Code Templates
  */
 public interface UndoInterface {
-  public void undo();
 
-  public void redo();
+  void undo();
+
+  void redo();
+
 }

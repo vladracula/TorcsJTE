@@ -19,22 +19,22 @@ import java.util.Hashtable;
 /**
  * A convenience implementation of FileFilter that filters out
  * all files except for those type extensions that it knows about.
- *
+ * <p>
  * Extensions are of the type ".foo", which is typically found on
  * Windows and Unix boxes, but not on Macinthosh. Case is ignored.
- *
+ * <p>
  * Example - create a new filter that filerts out all files
  * but gif and jpg image files:
+ * <p>
+ * JFileChooser chooser = new JFileChooser();
+ * TorcsTuneFileFilter filter = new TorcsTuneFileFilter(
+ * new String{"gif", "jpg"}, "JPEG & GIF Images")
+ * chooser.addChoosableFileFilter(filter);
+ * chooser.showOpenDialog(this);
  *
- *     JFileChooser chooser = new JFileChooser();
- *     TorcsTuneFileFilter filter = new TorcsTuneFileFilter(
- *                   new String{"gif", "jpg"}, "JPEG & GIF Images")
- *     chooser.addChoosableFileFilter(filter);
- *     chooser.showOpenDialog(this);
- *
- * @version 1.12 12/03/01
  * @author Jeff Dinkins
  * @author Adam Kubon
+ * @version 1.12 12/03/01
  */
 public class TorcsTuneFileFilter extends FileFilter {
 
@@ -69,7 +69,7 @@ public class TorcsTuneFileFilter extends FileFilter {
   /**
    * Creates a file filter that accepts the given file type.
    * Example: new TorcsTuneFileFilter("jpg", "JPEG Image Images");
-   *
+   * <p>
    * Note that the "." before the extension is not needed. If
    * provided, it will be ignored.
    *
@@ -84,7 +84,7 @@ public class TorcsTuneFileFilter extends FileFilter {
   /**
    * Creates a file filter from the given string array.
    * Example: new TorcsTuneFileFilter(String {"gif", "jpg"});
-   *
+   * <p>
    * Note that the "." before the extension is not needed adn
    * will be ignored.
    *
@@ -97,7 +97,7 @@ public class TorcsTuneFileFilter extends FileFilter {
   /**
    * Creates a file filter from the given string array and description.
    * Example: new TorcsTuneFileFilter(String {"gif", "jpg"}, "Gif and JPG Images");
-   *
+   * <p>
    * Note that the "." before the extension is not needed and will be ignored.
    *
    * @see #addExtension
@@ -114,7 +114,7 @@ public class TorcsTuneFileFilter extends FileFilter {
   /**
    * Return true if this file should be shown in the directory pane,
    * false if it shouldn't.
-   *
+   * <p>
    * Files that begin with "." are ignored.
    *
    * @see #getExtension
@@ -154,14 +154,14 @@ public class TorcsTuneFileFilter extends FileFilter {
 
   /**
    * Adds a filetype "dot" extension to filter against.
-   *
+   * <p>
    * For example: the following code will create a filter that filters
    * out all files except those that end in ".jpg" and ".tif":
-   *
-   *   TorcsTuneFileFilter filter = new TorcsTuneFileFilter();
-   *   filter.addExtension("jpg");
-   *   filter.addExtension("tif");
-   *
+   * <p>
+   * TorcsTuneFileFilter filter = new TorcsTuneFileFilter();
+   * filter.addExtension("jpg");
+   * filter.addExtension("tif");
+   * <p>
    * Note that the "." before the extension is not needed and will be ignored.
    */
   public void addExtension(String extension) {
@@ -219,7 +219,7 @@ public class TorcsTuneFileFilter extends FileFilter {
   /**
    * Determines whether the extension list (.jpg, .gif, etc) should
    * show up in the human readable description.
-   *
+   * <p>
    * Only relevent if a description was provided in the constructor
    * or using setDescription();
    *
@@ -235,7 +235,7 @@ public class TorcsTuneFileFilter extends FileFilter {
   /**
    * Returns whether the extension list (.jpg, .gif, etc) should
    * show up in the human readable description.
-   *
+   * <p>
    * Only relevent if a description was provided in the constructor
    * or using setDescription();
    *
@@ -246,4 +246,5 @@ public class TorcsTuneFileFilter extends FileFilter {
   public boolean isExtensionListInDescription() {
     return useExtensionsInDescription;
   }
+
 }

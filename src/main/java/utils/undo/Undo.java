@@ -22,7 +22,6 @@ package utils.undo;
 
 import java.util.Vector;
 
-
 /**
  * @author Charalampos Alexopoulos
  * @author Adam Kubon

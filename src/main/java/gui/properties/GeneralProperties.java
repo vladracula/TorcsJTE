@@ -34,12 +34,8 @@ import java.io.File;
  */
 public class GeneralProperties extends JPanel {
 
-  //private Properties	properties				= Properties.getInstance();
   private JTextField projectNameTextField = null;
-
-  //add
   private JComboBox trackTypeComboBox = null;
-
   private JTextField pathTextField = null;
   private JButton browseButton = null;
   private JTextField authorTextField = null;
@@ -63,8 +59,6 @@ public class GeneralProperties extends JPanel {
     JLabel descriptionLabel = new JLabel();
     JLabel pathLabel = new JLabel();
     JLabel projectNameLabel = new JLabel();
-
-    //add
     JLabel trackTypeLabel = new JLabel();
 
     this.setLayout(null);
@@ -88,8 +82,6 @@ public class GeneralProperties extends JPanel {
     this.add(getBrowseButton(), null);
     this.add(getProjectNameTextField(), null);
     this.add(projectNameLabel, null);
-
-    //add
     this.add(getTrackTypeComboBox(), null);
     this.add(trackTypeLabel, null);
 
@@ -118,7 +110,6 @@ public class GeneralProperties extends JPanel {
     }
     return projectNameTextField;
   }
-
 
   /**
    * This method initializes trackTypeComboBox
@@ -249,4 +240,4 @@ public class GeneralProperties extends JPanel {
     Editor.getProperties().valueChanged();
   }
 
-} //  @jve:decl-index=0:visual-constraint="10,10"
+}

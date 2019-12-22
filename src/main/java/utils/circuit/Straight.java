@@ -24,7 +24,6 @@ import utils.Editor;
 
 import java.awt.geom.Point2D;
 
-
 /**
  * @author Patrice Espie , Charalampos Alexopoulos
  * @author Adam Kubon

@@ -46,7 +46,6 @@ import java.util.Vector;
  */
 public class XmlReader {
 
-  //private static Properties properties = Properties.getInstance();
   private static List segments;
 
   public static void readXml(String filename) {

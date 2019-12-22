@@ -41,7 +41,7 @@ import java.util.Vector;
  * Preferences - Java - Code Style - Code Templates
  */
 public class XmlWriter {
-  //private static Properties	properties	= Properties.getInstance();
+
   static Document doc;
   private boolean optimize = true;
   static boolean job;
@@ -524,4 +524,5 @@ public class XmlWriter {
       System.err.println(e);
     }
   }
+
 }

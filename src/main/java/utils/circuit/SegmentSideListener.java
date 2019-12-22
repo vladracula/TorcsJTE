@@ -24,31 +24,33 @@ import java.awt.event.ActionListener;
 
 /**
  * @author Charalampos Alexopoulos
+ * @author Aadm Kubon
  * <p>
  * TODO To change the template for this generated type comment go to
  * Window - Preferences - Java - Code Style - Code Templates
  */
 public interface SegmentSideListener extends ActionListener {
 
-  public void barrierHeightChanged();
+  void barrierHeightChanged();
 
-  public void barrierStyleChanged();
+  void barrierStyleChanged();
 
-  public void barrierSurfaceChanged();
+  void barrierSurfaceChanged();
 
-  public void barrierWidthChanged();
+  void barrierWidthChanged();
 
-  public void borderHeightChanged();
+  void borderHeightChanged();
 
-  public void borderStyleChanged();
+  void borderStyleChanged();
 
-  public void borderSurfaceChanged();
+  void borderSurfaceChanged();
 
-  public void borderWidthChanged();
+  void borderWidthChanged();
 
-  public void sideEndWidthChanged();
+  void sideEndWidthChanged();
 
-  public void sideStartWidthChanged();
+  void sideStartWidthChanged();
 
-  public void sideSurfaceChanged();
+  void sideSurfaceChanged();
+
 }

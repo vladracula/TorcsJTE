@@ -31,6 +31,7 @@ import java.awt.event.ActionListener;
  * Preferences - Java - Code Style - Code Templates
  */
 public class GroupButton extends JPanel {
+
   private JRadioButton leftButton = null;
   private JRadioButton rightButton = null;
   Action leftAction = null;
@@ -151,4 +152,5 @@ public class GroupButton extends JPanel {
     leftLabel.setEnabled(enabled);
 
   }
-} //  @jve:decl-index=0:visual-constraint="10,10"
+
+}

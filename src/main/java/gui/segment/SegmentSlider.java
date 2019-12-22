@@ -60,8 +60,6 @@ public class SegmentSlider extends JPanel {
   private double value;
   private DecimalFormat format = new DecimalFormat("#.##");
 
-  //private Segment shape;
-
   /**
    *
    */
@@ -404,4 +402,4 @@ public class SegmentSlider extends JPanel {
   public void setFormat(DecimalFormat format) {
     this.format = format;
   }
-} //  @jve:decl-index=0:visual-constraint="10,10"
+}

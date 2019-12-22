@@ -30,6 +30,7 @@ import java.awt.*;
  * Preferences - Java - Code Style - Code Templates
  */
 public class SplashScreen extends JWindow {
+
   private static SplashScreen instance;
 
   private SplashPanel panel = null;
@@ -64,8 +65,6 @@ public class SplashScreen extends JWindow {
 
     pack();
   }
-
-  ////////////////////////////////////////////////////////////////
 
   public void setStatus(String s) {
     panel.setStatus(s);

@@ -11,9 +11,11 @@ package miscel;
  */
 
 public class EPMath {
+
   static public double PI_MUL_2 = Math.PI * 2;
   static public double PI_DIV_2 = Math.PI / 2;
 
   public EPMath() {
   }
+
 }

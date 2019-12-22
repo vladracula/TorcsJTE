@@ -437,112 +437,6 @@ public class SegmentSide implements Cloneable {
    */
   public void setPrevius(SegmentSide previus) {
     this.prev = previus;
-
-    /**
-     * TODO : I have to wrie some kind of interaction when previus change,
-     * but for the moment i can figure out what. eg. If the side end of
-     * previus segment change then the side start of this segment must
-     * change, except in the case that user have already change the side
-     * start.
-     */
-    //		prev.addSideListener(new SegmentSideListener()
-    //				{
-    //			public void barrierHeightChanged()
-    //			{
-    //				if(prev != null && !thisBarrierHeightChanged)
-    //				{
-    //					barrierHeight = prev.barrierHeight;
-    //					thisBarrierHeightChanged = true;
-    //				}
-    //			}
-    //
-    //			public void barrierStyleChanged()
-    //			{
-    //				if(prev != null && !thisBarrierStyleChanged)
-    //				{
-    //					barrierStyle = prev.barrierStyle;
-    //					thisBarrierStyleChanged = true;
-    //				}
-    //			}
-    //
-    //			public void barrierSurfaceChanged()
-    //			{
-    //				if(prev != null && !thisBarrierSurfaceChanged)
-    //				{
-    //					barrierSurface = prev.barrierSurface;
-    //					thisBarrierSurfaceChanged = true;
-    //				}
-    //			}
-    //
-    //			public void barrierWidthChanged()
-    //			{
-    //				if(prev != null && !thisBarrierWidthChanged)
-    //				{
-    //					barrierWidth = prev.barrierWidth;
-    //					thisBarrierWidthChanged = true;
-    //				}
-    //			}
-    //
-    //			public void borderHeightChanged()
-    //			{
-    //				if(prev != null && !thisBorderHeightChanged)
-    //				{
-    //					borderHeight = prev.borderHeight;
-    //				}
-    //			}
-    //
-    //			public void borderStyleChanged()
-    //			{
-    //				if(prev != null && !thisBorderStyleChanged)
-    //				{
-    //					borderStyle = prev.borderStyle;
-    //				}
-    //			}
-    //
-    //			public void borderSurfaceChanged()
-    //			{
-    //				if(prev != null && !thisBorderSurfaceChanged)
-    //				{
-    //					borderSurface = prev.borderSurface;
-    //				}
-    //			}
-    //
-    //			public void borderWidthChanged()
-    //			{
-    //				if(prev != null && !thisBorderWidthChanged)
-    //				{
-    //					borderWidth = prev.borderWidth;
-    //				}
-    //			}
-    //
-    //			public void sideEndWidthChanged()
-    //			{
-    //				if(prev != null && !thisSideStartWidthChanged)
-    //				{
-    //					sideStartWidth = prev.sideEndWidth;
-    //					prevSideEndWidthChanged = true;
-    //				}
-    //			}
-    //
-    //			public void sideStartWidthChanged()
-    //			{
-    //				// Do nothing when previus side start width
-    //				// change.
-    //			}
-    //
-    //			public void sideSurfaceChanged()
-    //			{
-    //				if(prev != null && !thisSideSurfaceChanged)
-    //				{
-    //					sideSurface = prev.sideSurface;
-    //				}
-    //			}
-    //
-    //			public void actionPerformed(ActionEvent arg0)
-    //			{
-    //
-    //			}
-    //				});
   }
 
   /**
@@ -655,4 +549,5 @@ public class SegmentSide implements Cloneable {
     }
     return s; // return the clone
   }
+
 }

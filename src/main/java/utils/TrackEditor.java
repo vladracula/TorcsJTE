@@ -22,9 +22,6 @@ package utils;
 
 import gui.EditorFrame;
 
-//import napkin.NapkinLookAndFeel;
-//import gui.EditorGui;
-
 /**
  * @author babis
  * <p>
@@ -32,6 +29,7 @@ import gui.EditorFrame;
  * Preferences - Java - Code Style - Code Templates
  */
 public class TrackEditor {
+
   private static EditorFrame gui;
 
   public static void main(String[] args) {
@@ -42,4 +40,5 @@ public class TrackEditor {
     System.out.println("OS version      : " + System.getProperty("os.version"));
     gui = new EditorFrame();
   }
+
 }

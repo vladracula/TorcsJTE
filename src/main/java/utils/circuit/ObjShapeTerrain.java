@@ -3,7 +3,6 @@ package utils.circuit;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
-
 /**
  * <p>
  * Titre : Torcs Tune
@@ -23,6 +22,7 @@ import java.awt.geom.Rectangle2D;
  */
 
 public class ObjShapeTerrain extends Segment {
+
   public ObjShapeTerrain() {
     super("terrain");
   }
@@ -50,4 +50,5 @@ public class ObjShapeTerrain extends Segment {
     points[3].x = boundingRectangle.getX();
     points[3].y = boundingRectangle.getY() + boundingRectangle.getHeight();
   }
+
 }

@@ -32,6 +32,7 @@ import javax.swing.*;
  * Preferences - Java - Code Style - Code Templates
  */
 public class SegmentComboBox extends JComboBox<String> {
+
   private SegmentEditorDlg editor;
   private String sectionName;
   private String attType;
@@ -52,39 +53,7 @@ public class SegmentComboBox extends JComboBox<String> {
    */
   private void initialize() {
 
-//        this.addItemListener(new ItemListener()
-//		        {
-//		            public void itemStateChanged(ItemEvent e)
-//		            {
-//		                test();
-//
-//		            }
-//		        });
-    //		this.addActionListener(new ActionListener()
-    //		{
-    //
-    //			public void actionPerformed(ActionEvent e)
-    //			{
-    //				comboChanged();
-    //			}
-    //
-    //		});
   }
-
-//    /**
-//     * 
-//     */
-//    protected void test()
-//    {
-//        System.out.println("Border style = "+this.getSelectedItem());
-//    }
-//
-//    private void comboChanged()
-//    {
-//        attUnit = null;
-//        System.out.println("Combo changed : " + this.getSelectedItem());
-//
-//    }
 
   /**
    * @return Returns the attName.
@@ -176,4 +145,5 @@ public class SegmentComboBox extends JComboBox<String> {
   public void setDataIdx(int dataIdx) {
     this.dataIdx = dataIdx;
   }
+
 }

@@ -31,15 +31,16 @@ import java.util.Vector;
 
 /**
  * @author babis
+ * @author Adam Kubon
  * <p>
  * TODO To change the template for this generated type comment go to Window -
  * Preferences - Java - Code Style - Code Templates
  */
 public class TrackgenPanel extends JDialog implements Runnable {
+
   public static Vector args = new Vector();
-  //private Properties properties = Properties.getInstance();
   public EditorFrame parent;
-  Thread ac3d = new Thread(this);
+  private Thread ac3d = new Thread(this);
 
   private JPanel jPanel = null;
   private JLabel nameLabel = null;
@@ -51,7 +52,6 @@ public class TrackgenPanel extends JDialog implements Runnable {
   private JLabel ySizeLabel = null;
   private JTextField nodesTextField = null;
   private JPanel jPanel1 = null;
-  private JLabel trackgenLabel = null;
   private JLabel waitLabel = null;
 
   public TrackgenPanel(Frame parent) {
@@ -156,7 +156,7 @@ public class TrackgenPanel extends JDialog implements Runnable {
    */
   private JPanel getJPanel() {
     if (jPanel == null) {
-      trackgenLabel = new JLabel();
+      JLabel trackgenLabel = new JLabel();
       waitLabel = new JLabel();
       jPanel = new JPanel();
       jPanel.setLayout(null);
@@ -231,5 +231,5 @@ public class TrackgenPanel extends JDialog implements Runnable {
     }
     return jPanel1;
   }
-} //  @jve:decl-index=0:visual-constraint="10,10"
 
+}

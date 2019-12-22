@@ -2,7 +2,6 @@ package gui.view;
 
 import java.util.EventObject;
 
-
 /**
  * <p>Titre : Torcs Tune</p>
  * <p>Description : Torcs tuning</p>
@@ -14,6 +13,7 @@ import java.util.EventObject;
  */
 
 public class CircuitViewSelectionEvent extends EventObject {
+
   public CircuitView circuitView;
 
   public CircuitViewSelectionEvent(CircuitView source) {
@@ -21,4 +21,5 @@ public class CircuitViewSelectionEvent extends EventObject {
 
     circuitView = source;
   }
+
 }

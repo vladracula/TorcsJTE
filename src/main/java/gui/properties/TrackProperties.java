@@ -31,7 +31,7 @@ import javax.swing.*;
  * Window - Preferences - Java - Code Style - Code Templates
  */
 public class TrackProperties extends JPanel {
-  //private Properties properties = Properties.getInstance();
+
   private JLabel widthLabel = null;
   private JTextField widthTextField = null;
 
@@ -85,4 +85,5 @@ public class TrackProperties extends JPanel {
       Editor.getProperties().setTrackWidth(Double.NaN);
     }
   }
-}  //  @jve:decl-index=0:visual-constraint="10,10"
+
+}

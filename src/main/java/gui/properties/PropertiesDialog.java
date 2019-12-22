@@ -27,13 +27,14 @@ import java.awt.*;
 
 /**
  * @author babis
+ * @author Adam Kubon
  * <p>
  * TODO To change the template for this generated type comment go to Window -
  * Preferences - Java - Code Style - Code Templates
  */
 public class PropertiesDialog extends JDialog {
-  //private Properties properties = Properties.getInstance();
-  public static boolean APPROVE = false;
+
+  private static boolean APPROVE = false;
   private EditorFrame parent;
   private JTabbedPane tabbedPane = null;
   private GeneralProperties generalProperties = null;
@@ -221,4 +222,5 @@ public class PropertiesDialog extends JDialog {
   protected void cancel() {
     this.dispose();
   }
-} //  @jve:decl-index=0:visual-constraint="6,6"
+
+}

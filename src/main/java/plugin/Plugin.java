@@ -25,31 +25,34 @@ import java.io.File;
 
 /**
  * @author Charalampos Alexopoulos
+ * @author Adam Kubon
  * <p>
  * TODO To change the template for this generated type comment go to
  * Window - Preferences - Java - Code Style - Code Templates
  */
 public interface Plugin {
-  public abstract void importTrack();
 
-  public abstract void exportTrack();
+  void importTrack();
+
+  void exportTrack();
 
   /**
    * This method initializes importMenuItem
    *
    * @return javax.swing.JMenuItem
    */
-  public abstract JMenuItem getImportMenuItem();
+  JMenuItem getImportMenuItem();
 
   /**
    * This method initializes exportMenuItem
    *
    * @return javax.swing.JMenuItem
    */
-  public abstract JMenuItem getExportMenuItem();
+  JMenuItem getExportMenuItem();
 
   /**
    * @param selectedFile
    */
-  public abstract void readFile(File selectedFile);
+  void readFile(File selectedFile);
+
 }

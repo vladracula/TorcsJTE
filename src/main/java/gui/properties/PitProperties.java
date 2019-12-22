@@ -37,7 +37,7 @@ import java.util.Vector;
  * Preferences - Java - Code Style - Code Templates
  */
 public class PitProperties extends JPanel {
-  //private Properties	properties		= Properties.getInstance();
+
   private JLabel sideLabel = null;
   private JComboBox jComboBox = null;
   private JLabel entryLabel = null;
@@ -358,4 +358,5 @@ public class PitProperties extends JPanel {
     }
     return generatePitsCheckBox;
   }
-} //  @jve:decl-index=0:visual-constraint="10,10"
+
+}

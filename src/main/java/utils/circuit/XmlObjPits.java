@@ -24,6 +24,7 @@ import java.util.ArrayList;
  */
 
 public class XmlObjPits extends Segment {
+
   public XmlObjPits() {
   }
 //
@@ -35,4 +36,5 @@ public class XmlObjPits extends Segment {
   public void calcShape(double datas[], ArrayList paintTrackSegments) throws Exception {
     // todo
   }
+
 }

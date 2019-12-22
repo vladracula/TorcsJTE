@@ -35,26 +35,17 @@ import java.io.File;
  */
 public class NewProjectDialog extends JDialog {
 
-  //private Properties properties					= Properties.getInstance();
   public static boolean APPROVE = false;
   private JPanel jPanel = null;
   private JTextField projectNameTextField = null;
-  private JLabel projectNameLabel = null;
-
-  //add
   private JComboBox<String> trackTypeComboBox = null;
-  private JLabel trackTypeLabel = null;
-
-  private JLabel pathLabel = null;
   private JTextField pathTextField = null;
   private JButton browseButton = null;
   private JButton okButton = null;
   private JButton cancelButton = null;
 
   private EditorFrame parent;
-  private JLabel authorLabel = null;
   private JTextField authorTextField = null;
-  private JLabel descriptionLabel = null;
   private JTextField descriptionTextField = null;
 
   private String sep = System.getProperty("file.separator");
@@ -90,13 +81,11 @@ public class NewProjectDialog extends JDialog {
    */
   private JPanel getJPanel() {
     if (jPanel == null) {
-      authorLabel = new JLabel();
-      descriptionLabel = new JLabel();
-      pathLabel = new JLabel();
-      projectNameLabel = new JLabel();
-
-      //add
-      trackTypeLabel = new JLabel();
+      JLabel authorLabel = new JLabel();
+      JLabel descriptionLabel = new JLabel();
+      JLabel pathLabel = new JLabel();
+      JLabel projectNameLabel = new JLabel();
+      JLabel trackTypeLabel = new JLabel();
 
       jPanel = new JPanel();
       jPanel.setLayout(null);
@@ -150,7 +139,6 @@ public class NewProjectDialog extends JDialog {
     }
     return projectNameTextField;
   }
-
 
   /**
    * This method initializes trackTypeComboBox
@@ -322,4 +310,5 @@ public class NewProjectDialog extends JDialog {
   protected void cancel() {
     this.dispose();
   }
-} //  @jve:decl-index=0:visual-constraint="6,6"
+
+}

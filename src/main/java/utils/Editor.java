@@ -22,12 +22,12 @@ package utils;
 
 /**
  * @author Charalampos Alexopoulos
+ * @author Adam Kubon
  * <p>
  * TODO To change the template for this generated type comment go to
  * Window - Preferences - Java - Code Style - Code Templates
  */
 public class Editor {
-  //private static Properties properties;
 
   /**
    * @return Returns the properties.
@@ -41,7 +41,6 @@ public class Editor {
    */
   public static void setProperties(Properties props) {
     Properties.setInstance(props);
-    //properties = props;
   }
 
   /**

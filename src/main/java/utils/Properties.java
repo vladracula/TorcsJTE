@@ -38,7 +38,7 @@ public class Properties {
   private static Properties instance = new Properties();
   private Vector<EventListener> propertiesListeners = new Vector<>();
   //private Vector				trackData;
-//	public final String			title				= "Track Editor";
+  //public final String			title				= "Track Editor";
   public String title = "Track Editor";
   //	public final String			version				= "v0.6.3";
   public String version = "v0.6.4-SNAPSHOT";
@@ -576,4 +576,5 @@ public class Properties {
   public void setStraightNameCount(int straightNameCount) {
     this.straightNameCount = straightNameCount;
   }
+
 }

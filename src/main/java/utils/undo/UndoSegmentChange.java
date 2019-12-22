@@ -34,7 +34,6 @@ import java.util.Vector;
  */
 public class UndoSegmentChange implements UndoInterface {
 
-  //private Properties			properties	= Properties.getInstance();
   private Segment original;
   private Segment clone;
   private int pos;

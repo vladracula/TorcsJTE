@@ -35,7 +35,6 @@ import java.io.File;
  */
 public class ImageProperties extends JPanel {
 
-  //private Properties		properties				= Properties.getInstance();
   private JTextField pathTextField = null;
   private JButton browseButton = null;
   private JTextField imageScaleTextField = null;
@@ -171,4 +170,4 @@ public class ImageProperties extends JPanel {
     Editor.getProperties().valueChanged();
   }
 
-}  //  @jve:decl-index=0:visual-constraint="10,10"
+}

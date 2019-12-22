@@ -32,7 +32,9 @@ import java.io.StringReader;
  * Preferences - Java - Code Style - Code Templates
  */
 public class NoOpEntityResolver implements EntityResolver {
+
   public InputSource resolveEntity(String publicId, String systemId) {
     return new InputSource(new StringReader(""));
   }
+
 }

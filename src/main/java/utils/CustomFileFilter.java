@@ -78,4 +78,5 @@ public class CustomFileFilter extends FileFilter {
   public void addInvalid(String str) {
     invalid.addElement(str);
   }
+
 }

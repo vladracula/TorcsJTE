@@ -22,14 +22,17 @@ package utils.circuit;
 
 /**
  * @author Charalampos Alexopoulos
+ * @author Adam Kubon
  * <p>
  * TODO To change the template for this generated type comment go to
  * Window - Preferences - Java - Code Style - Code Templates
  */
 public interface SegmentListener {
-  public void heightStartChanged();
 
-  public void heightEndChanged();
+  void heightStartChanged();
 
-  public void surfaceChanged();
+  void heightEndChanged();
+
+  void surfaceChanged();
+
 }

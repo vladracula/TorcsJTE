@@ -40,11 +40,9 @@ import java.util.Vector;
  * @version 0.1a
  */
 
-public class CircuitView
-    extends JComponent
-    implements KeyListener, MouseListener, MouseMotionListener, WindowListener //,Scrollable
-{
-  //private Properties			properties						= Properties.getInstance();
+public class CircuitView extends JComponent
+    implements KeyListener, MouseListener, MouseMotionListener, WindowListener {
+
   /**
    * zooming factor
    */
@@ -242,10 +240,6 @@ public class CircuitView
    *
    * @return
    */
-
- // public boolean isFocusTraversable() {
- //   return (true);
- // }
 
   public void screenToReal(MouseEvent e, Point2D.Double point) {
     point.setLocation(e.getX(), e.getY());
@@ -1346,6 +1340,7 @@ public class CircuitView
 
   /**
    * making links with neighbours for new Segment
+   *
    * @param data
    * @param pos
    * @param newShape
@@ -1358,22 +1353,24 @@ public class CircuitView
     newShape.setPreviousShape(previous);
     newShape.setNextShape(next);
     next.setPreviousShape(newShape);
-    continousDataValues(previous, newShape, next);
+    continuousDataValues(previous, newShape, next);
   }
 
   /**
    * making links between neighbours
+   *
    * @param previous
    * @param next
    */
   private void makeLinkedList(Segment previous, Segment next) {
     previous.setNextShape(next);
     next.setPreviousShape(previous);
-    continousDataValues(previous, next);
+    continuousDataValues(previous, next);
   }
 
   /**
    * find next segment in data
+   *
    * @param data
    * @param pos
    * @return
@@ -1396,7 +1393,8 @@ public class CircuitView
    * @param current
    * @param next
    */
-  private void continousDataValues(Segment previous, Segment current, Segment next) {
+
+  private void continuousDataValues(Segment previous, Segment current, Segment next) {
     // height start/end fit
     current.setHeightStart(previous.getHeightEnd());
     current.setHeightEnd(next.getHeightStart());
@@ -1404,16 +1402,17 @@ public class CircuitView
     current.setSurface(previous.getSurface());
     current.setProfil(previous.getProfil());
 
-    continousSideValues(previous.getLeft(), current.getLeft());
-    continousSideValues(previous.getRight(), current.getRight());
+    continuousSideValues(previous.getLeft(), current.getLeft());
+    continuousSideValues(previous.getRight(), current.getRight());
   }
 
   /**
    * function copying side values from previous segment to current
+   *
    * @param previous
    * @param current
    */
-  private void continousSideValues(SegmentSide previous, SegmentSide current){
+  private void continuousSideValues(SegmentSide previous, SegmentSide current) {
     current.setBarrierHeight(previous.getBarrierHeight());
     current.setBarrierWidth(previous.getBarrierWidth());
     current.setBarrierSurface(previous.getBarrierSurface());
@@ -1435,7 +1434,7 @@ public class CircuitView
    * @param previous
    * @param next
    */
-  private void continousDataValues(Segment previous, Segment next) {
+  private void continuousDataValues(Segment previous, Segment next) {
     next.setHeightStart(previous.getHeightEnd());
     previous.setHeightEnd(next.getHeightStart());
   }
@@ -1496,4 +1495,5 @@ public class CircuitView
     // TODO Auto-generated method stub
 
   }
+
 }

@@ -39,10 +39,10 @@ import java.util.Vector;
  * Preferences - Java - Code Style - Code Templates
  */
 public class DeltaPanel extends JDialog implements Runnable {
+
   public static Vector args = new Vector();
   private EditorFrame parent;
-  //private Properties properties = Properties.getInstance();
-  Thread ac3d;
+  private Thread ac3d;
 
   private JPanel jPanel = null;
   private JLabel nameLabel = null;
@@ -80,7 +80,6 @@ public class DeltaPanel extends JDialog implements Runnable {
     parent = frame;
     initialize();
   }
-
 
   /**
    * This method initializes this
@@ -584,4 +583,5 @@ public class DeltaPanel extends JDialog implements Runnable {
       }
     }
   }
-} //  @jve:decl-index=0:visual-constraint="10,10"
+
+}

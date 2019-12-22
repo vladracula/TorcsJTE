@@ -39,7 +39,6 @@ import java.util.Arrays;
 public class SegmentSideProperties extends JPanel implements SliderListener {
 
   private SegmentEditorDlg editor;
-  //private int side;
   private SegmentSide side;
   private SegmentEditorDlg parent;
 
@@ -89,15 +88,7 @@ public class SegmentSideProperties extends JPanel implements SliderListener {
       {};
 
   private JPanel panel = null;
-  private JLabel borderLabel = null;
-  private JLabel borderSurfaceLabel = null;
-  private JLabel borderStyleLabel = null;
-  private JLabel sideLabel = null;
-  private JLabel sideSurfaceLabel = null;
-  private JLabel barrierLabel = null;
-  private JLabel barrierStyleLabel = null;
-  private JLabel barrierSurfaceLabel = null;
-  public JLabel titleLabel = null;
+  private JLabel titleLabel = null;
   private SegmentSlider barrierHeightSlider = null;
   private SegmentComboBox borderSurfaceComboBox = null;
   private SegmentComboBox borderStyleComboBox = null;
@@ -148,15 +139,15 @@ public class SegmentSideProperties extends JPanel implements SliderListener {
    */
   public JPanel getPanel() {
     if (panel == null) {
-      borderLabel = new JLabel();
-      borderStyleLabel = new JLabel();
-      borderSurfaceLabel = new JLabel();
+      JLabel borderLabel = new JLabel();
+      JLabel borderStyleLabel = new JLabel();
+      JLabel borderSurfaceLabel = new JLabel();
       panel = new JPanel();
-      sideSurfaceLabel = new JLabel();
-      sideLabel = new JLabel();
-      barrierSurfaceLabel = new JLabel();
-      barrierStyleLabel = new JLabel();
-      barrierLabel = new JLabel();
+      JLabel sideSurfaceLabel = new JLabel();
+      JLabel sideLabel = new JLabel();
+      JLabel barrierSurfaceLabel = new JLabel();
+      JLabel barrierStyleLabel = new JLabel();
+      JLabel barrierLabel = new JLabel();
       panel.setLayout(null);
       panel.setBorder(javax.swing.BorderFactory.createEtchedBorder(javax.swing.border.EtchedBorder.LOWERED));
       borderLabel.setBounds(300, 2, 50, 20);
@@ -447,123 +438,6 @@ public class SegmentSideProperties extends JPanel implements SliderListener {
     this.editor = editor;
   }
 
-  public void update() {
-    //		String tmp;
-    //		borderSurfaceComboBox.setAttType("attstr");
-    //		borderSurfaceComboBox.setAttName("surface");
-    //		borderSurfaceComboBox.setEditor(editor);
-    //		borderSurfaceComboBox.setShape(shape);
-    //
-    //		borderStyleComboBox.setAttType("attstr");
-    //		borderStyleComboBox.setAttName("style");
-    //		borderStyleComboBox.setEditor(editor);
-    //		borderStyleComboBox.setShape(shape);
-    //
-    //		sideSurfaceComboBox.setAttType("attstr");
-    //		sideSurfaceComboBox.setAttName("surface");
-    //		sideSurfaceComboBox.setEditor(editor);
-    //		sideSurfaceComboBox.setShape(shape);
-    //
-    //		barrierSurfaceComboBox.setAttType("attstr");
-    //		barrierSurfaceComboBox.setAttName("surface");
-    //		barrierSurfaceComboBox.setEditor(editor);
-    //		barrierSurfaceComboBox.setShape(shape);
-    //
-    //		barrierStyleComboBox.setAttType("attstr");
-    //		barrierStyleComboBox.setAttName("style");
-    //		barrierStyleComboBox.setEditor(editor);
-    //		barrierStyleComboBox.setShape(shape);
-    //
-    //		switch (side)
-    //		{
-    //			case 1 :
-    //				borderSurfaceComboBox.setSectionName("Left Border");
-    //				borderSurfaceComboBox.setDataIdx(Segment.leftBorderSurface);
-    //				tmp = shape.strAllDatas[Segment.leftBorderSurface];
-    //				if (tmp != null)
-    //				{
-    //					borderSurfaceComboBox.setSelectedItem(tmp);
-    //				}
-    //
-    //				borderStyleComboBox.setSectionName("Left Border");
-    //				borderStyleComboBox.setDataIdx(Segment.leftBorderStyle);
-    //				tmp = shape.strAllDatas[Segment.leftBorderStyle];
-    //				if (tmp != null)
-    //				{
-    //					borderStyleComboBox.setSelectedItem(tmp);
-    //				}
-    //
-    //				sideSurfaceComboBox.setSectionName("Left Side");
-    //				sideSurfaceComboBox.setDataIdx(Segment.leftSideSurface);
-    //				tmp = shape.strAllDatas[Segment.leftSideSurface];
-    //				if (tmp != null)
-    //				{
-    //					sideSurfaceComboBox.setSelectedItem(tmp);
-    //				}
-    //
-    //				barrierSurfaceComboBox.setSectionName("Left Barrier");
-    //				barrierSurfaceComboBox.setDataIdx(Segment.leftBarrierSurface);
-    //				tmp = shape.strAllDatas[Segment.leftBarrierSurface];
-    //				System.out.println(tmp);
-    //				if (tmp != null)
-    //				{
-    //					barrierSurfaceComboBox.setSelectedItem(tmp);
-    //				}
-    //
-    //				barrierStyleComboBox.setSectionName("Left Barrier");
-    //				barrierStyleComboBox.setDataIdx(Segment.leftBarrierStyle);
-    //				tmp = shape.strAllDatas[Segment.leftBarrierStyle];
-    //				System.out.println(tmp);
-    //				if (tmp != null)
-    //				{
-    //					barrierStyleComboBox.setSelectedItem(tmp);
-    //				}
-    //				break;
-    //			case 2 :
-    //				borderSurfaceComboBox.setSectionName("Right Border");
-    //				borderSurfaceComboBox.setDataIdx(Segment.rightBorderSurface);
-    //				tmp = shape.strAllDatas[Segment.rightBorderSurface];
-    //				if (tmp != null)
-    //				{
-    //					borderSurfaceComboBox.setSelectedItem(tmp);
-    //				}
-    //
-    //				borderStyleComboBox.setSectionName("Right Border");
-    //				borderStyleComboBox.setDataIdx(Segment.rightBorderStyle);
-    //				tmp = shape.strAllDatas[Segment.rightBorderStyle];
-    //				if (tmp != null)
-    //				{
-    //					borderStyleComboBox.setSelectedItem(tmp);
-    //				}
-    //
-    //				sideSurfaceComboBox.setSectionName("Right Side");
-    //				sideSurfaceComboBox.setDataIdx(Segment.rightSideSurface);
-    //				tmp = shape.strAllDatas[Segment.rightSideSurface];
-    //				if (tmp != null)
-    //				{
-    //					sideSurfaceComboBox.setSelectedItem(tmp);
-    //				}
-    //
-    //				barrierSurfaceComboBox.setSectionName("Right Barrier");
-    //				barrierSurfaceComboBox.setDataIdx(Segment.rightBarrierSurface);
-    //				tmp = shape.strAllDatas[Segment.rightBarrierSurface];
-    //				if (tmp != null)
-    //				{
-    //					barrierSurfaceComboBox.setSelectedItem(tmp);
-    //				}
-    //
-    //				barrierStyleComboBox.setSectionName("Right Barrier");
-    //				barrierStyleComboBox.setDataIdx(Segment.rightBarrierStyle);
-    //				tmp = shape.strAllDatas[Segment.rightBarrierStyle];
-    //				if (tmp != null)
-    //				{
-    //					barrierStyleComboBox.setSelectedItem(tmp);
-    //				}
-    //				break;
-    //
-    //		}
-  }
-
   /**
    * @return Returns the titleLabel.
    */
@@ -624,4 +498,4 @@ public class SegmentSideProperties extends JPanel implements SliderListener {
     parent.update();
   }
 
-} //  @jve:decl-index=0:visual-constraint="42,-30"
+}

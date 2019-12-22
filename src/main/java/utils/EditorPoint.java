@@ -27,6 +27,7 @@ package utils;
  * Window - Preferences - Java - Code Style - Code Templates
  */
 public class EditorPoint {
+
   double x;
   double y;
 
@@ -83,4 +84,5 @@ public class EditorPoint {
     this.x = point.getX();
     this.y = point.getY();
   }
+
 }

@@ -52,7 +52,6 @@ import java.util.Vector;
  */
 public class EditorFrame extends JFrame {
 
-  //private Properties			properties							= Properties.getInstance();
   private UndoAction undoAction = null;
   private RedoAction redoAction = null;
   private DeleteAction deleteAction = null;

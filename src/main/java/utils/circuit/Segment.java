@@ -26,7 +26,6 @@ import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
-import java.util.Vector;
 
 /**
  * @author Patrice Espie , Charalampos Alexopoulos
@@ -38,18 +37,12 @@ import java.util.Vector;
 
 public class Segment implements Cloneable {
 
-  //protected Properties	properties			= Properties.getInstance();
-  private Vector segmentListeners = new Vector();
-
   // neighbours
   private Segment previousShape;
   private Segment nextShape;
-
   protected String name = "";
-
   protected SegmentSide left = new SegmentSide();
   protected SegmentSide right = new SegmentSide();
-  //	 type
   protected String type;
   protected int count;
   public double startTrackAlpha;
@@ -430,19 +423,6 @@ public class Segment implements Cloneable {
 
   }
 
-  /*
-    public synchronized void removeSideListener(ActionListener l) {
-
-    }
-
-    public synchronized void addSideListener(SegmentSideListener l) {
-      Vector v = segmentListeners == null ? new Vector(2) : (Vector) segmentListeners.clone();
-      if (!v.contains(l)) {
-        v.addElement(l);
-        segmentListeners = v;
-      }
-    }
-  */
   public Object clone() {
     Segment s = null;
     try {

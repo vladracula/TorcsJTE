@@ -25,7 +25,6 @@ import utils.circuit.Segment;
 
 import java.util.Vector;
 
-
 /**
  * @author Charalampos Alexopoulos
  * @author Adam Kubon
@@ -35,7 +34,6 @@ import java.util.Vector;
  */
 public class UndoAddSegment implements UndoInterface {
 
-  //private Properties			properties						= Properties.getInstance();
   private Segment undo;
   private Segment redo;
   private int pos;

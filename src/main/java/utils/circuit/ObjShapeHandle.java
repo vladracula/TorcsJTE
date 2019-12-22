@@ -4,7 +4,6 @@ import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 
-
 /**
  * <p>
  * Titre : Torcs Tune
@@ -24,6 +23,7 @@ import java.awt.geom.Point2D;
  */
 
 public class ObjShapeHandle extends Segment {
+
   static public final int handleSize = 6;
 
   public ObjShapeHandle() {
@@ -68,4 +68,5 @@ public class ObjShapeHandle extends Segment {
       g.drawPolygon(xToDraw, yToDraw, 4);
     }
   }
+
 }

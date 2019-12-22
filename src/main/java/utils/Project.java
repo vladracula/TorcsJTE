@@ -27,6 +27,7 @@ package utils;
  * Window - Preferences - Java - Code Style - Code Templates
  */
 public class Project {
+
   private int frameX = 0;
   private int frameY = 0;
   private int segmentEditorX = 0;
@@ -91,4 +92,5 @@ public class Project {
   public void setSegmentEditorY(int segmentEditorY) {
     this.segmentEditorY = segmentEditorY;
   }
+
 }

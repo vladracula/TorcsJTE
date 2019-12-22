@@ -43,16 +43,15 @@ import java.util.Arrays;
  */
 public class SegmentEditorDlg extends JDialog implements SliderListener {
 
-  //private Properties			properties						= Properties.getInstance();
   public Segment shape;
   private CircuitView view;
   private EditorFrame frame;
   public boolean dirty = false;
 
-  private JPanel jContentPane = null;  //  @jve:decl-index=0:visual-constraint="377,10"
+  private JPanel jContentPane = null;
 
   private JTabbedPane jTabbedPane = null;
-  private JPanel centerPanel = null;  //  @jve:decl-index=0:visual-constraint="394,34"
+  private JPanel centerPanel = null;
   private SegmentSlider radiusStartSlider = null;
   private SegmentSlider radiusEndSlider = null;
   private SegmentSlider arcSlider = null;
@@ -575,4 +574,4 @@ public class SegmentEditorDlg extends JDialog implements SliderListener {
     frame.getProject().setSegmentEditorY(this.getY());
   }
 
-} //  @jve:decl-index=0:visual-constraint="10,10"
+}

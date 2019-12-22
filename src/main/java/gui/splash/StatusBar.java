@@ -31,6 +31,7 @@ import java.awt.*;
  * Window - Preferences - Java - Code Style - Code Templates
  */
 public class StatusBar extends JPanel {
+
   private JLabel msg = new JLabel("Label");
   private JProgressBar progress = new JProgressBar();
   protected String statusText;
