@@ -342,6 +342,7 @@ public class SegmentSlider extends JPanel {
    * ** Inner class SliderLink******
    */
   class SliderLink {
+
     double multCoeff;
 
     SliderLink() {
@@ -372,9 +373,6 @@ public class SegmentSlider extends JPanel {
     }
 
     public void sliderChanged() {
-
-
-
       try {
         if (!getTextField().getText().equals("")) {
           double tmp1 = getSlider().getValue();
@@ -383,7 +381,6 @@ public class SegmentSlider extends JPanel {
             setValueInternal(getSlider().getValue());
           }
         }
-
       }
       catch (Exception e) {
         e.printStackTrace();
@@ -409,5 +406,7 @@ public class SegmentSlider extends JPanel {
 
   public void setFormat(String format) {
     this.format = format;
+    decimalFormat = new DecimalFormat(format, otherSymbols);
   }
+
 }

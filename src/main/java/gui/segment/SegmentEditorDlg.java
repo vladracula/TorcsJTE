@@ -31,7 +31,6 @@ import utils.circuit.Straight;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.text.DecimalFormat;
 import java.util.Arrays;
 
 /**
@@ -170,7 +169,6 @@ public class SegmentEditorDlg extends JDialog implements SliderListener {
       centerPanel.add(profilLabel, null);
       centerPanel.add(getNameTextField(), null);
       centerPanel.add(getSurfaceComboBox(), null);
-
       centerPanel.add(getRadiusStartSlider(), null);
       centerPanel.add(getRadiusEndSlider(), null);
       centerPanel.add(getArcSlider(), null);
@@ -198,6 +196,7 @@ public class SegmentEditorDlg extends JDialog implements SliderListener {
       radiusStartSlider.setMax(1000);
       radiusStartSlider.setExtent(10);
       radiusStartSlider.setTickSpacing(1);
+      radiusStartSlider.setFormat("#.####");
       radiusStartSlider.setRealToTextCoeff(1);
       radiusStartSlider.addSliderListener(this);
 //			if (!shape.getType().equals("str"))
@@ -223,6 +222,7 @@ public class SegmentEditorDlg extends JDialog implements SliderListener {
       radiusEndSlider.setMax(1000);
       radiusEndSlider.setExtent(10);
       radiusEndSlider.setTickSpacing(1);
+      radiusEndSlider.setFormat("#.####");
       radiusEndSlider.setRealToTextCoeff(1);
       radiusEndSlider.addSliderListener(this);
 //			if (!shape.getType().equals("str"))
