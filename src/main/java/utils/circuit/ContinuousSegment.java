@@ -47,7 +47,7 @@ public class ContinuousSegment {
    */
   public static Segment getNextSegment(Vector data, int pos) {
     Segment next = null;
-    if (pos > data.size()) {
+    if (pos >= data.size()) {
       next = (Segment) data.get(0);
     }
     else {
