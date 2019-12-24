@@ -23,6 +23,7 @@ package gui;
 import gui.properties.PropertiesDialog;
 import gui.splash.SplashScreen;
 import gui.view.CircuitView;
+import gui.view.enums.CircuitState;
 import plugin.Plugin;
 import plugin.torcs.TorcsPlugin;
 import utils.*;
@@ -47,8 +48,8 @@ import java.util.Vector;
  * @author Patrice Espie , Charalampos Alexopoulos
  * @auhor Adam Kubon
  * <p>
- * TODO To change the template for this generated type comment go to Window -
- * Preferences - Java - Code Style - Code Templates
+ * TODO To change the template for this generated type comment go to Window - Preferences - Java - Code Style - Code
+ * Templates
  */
 public class EditorFrame extends JFrame {
 
@@ -89,9 +90,9 @@ public class EditorFrame extends JFrame {
   private JButton buttonZoomPlus = null;
   private JButton buttonZoomMinus = null;
   private JButton buttonZoomOne = null;
-  private  JToggleButton toggleButtonCreateStraightSegment = null;
-  private  JToggleButton toggleButtonCreateLeftSegment = null;
-  private  JToggleButton toggleButtonCreateRightSegment = null;
+  private JToggleButton toggleButtonCreateStraightSegment = null;
+  private JToggleButton toggleButtonCreateLeftSegment = null;
+  private JToggleButton toggleButtonCreateRightSegment = null;
   public JToggleButton toggleButtonDelete = null;
   private JButton undoButton = null;
   private JButton redoButton = null;
@@ -1089,7 +1090,7 @@ public class EditorFrame extends JFrame {
     view.redrawCircuit();
   }
 
-  void checkButtons(JToggleButton button, int state) {
+  void checkButtons(JToggleButton button, CircuitState state) {
     if (button.isSelected()) {
       view.setState(state);
 
@@ -1105,28 +1106,28 @@ public class EditorFrame extends JFrame {
         toggleButtonDelete.setSelected(false);
     }
     else {
-      view.setState(CircuitView.STATE_NONE);
+      view.setState(CircuitState.NONE);
     }
   }
 
   void toggleButtonCreateStraightSegment_actionPerformed(ActionEvent e) {
-    checkButtons(toggleButtonCreateStraightSegment, CircuitView.STATE_CREATE_STRAIGHT);
+    checkButtons(toggleButtonCreateStraightSegment, CircuitState.CREATE_STRAIGHT);
   }
 
   void toggleButtonCreateLeftSegment_actionPerformed(ActionEvent e) {
-    checkButtons(toggleButtonCreateLeftSegment, CircuitView.STATE_CREATE_LEFT_SEGMENT);
+    checkButtons(toggleButtonCreateLeftSegment, CircuitState.CREATE_LEFT_SEGMENT);
   }
 
   void toggleButtonCreateRightSegment_actionPerformed(ActionEvent e) {
-    checkButtons(toggleButtonCreateRightSegment, CircuitView.STATE_CREATE_RIGHT_SEGMENT);
+    checkButtons(toggleButtonCreateRightSegment, CircuitState.CREATE_RIGHT_SEGMENT);
   }
 
   void toggleButtonMoveSegments_actionPerformed(ActionEvent e) {
-    checkButtons(getMoveButton(), CircuitView.STATE_MOVE_SEGMENTS);
+    checkButtons(getMoveButton(), CircuitState.MOVE_SEGMENTS);
   }
 
   void toggleButtonDelete_actionPerformed(ActionEvent e) {
-    checkButtons(toggleButtonDelete, CircuitView.STATE_DELETE);
+    checkButtons(toggleButtonDelete, CircuitState.DELETE);
   }
 
   void toggleButtonShowArrow_actionPerformed(ActionEvent e) {
@@ -1170,7 +1171,7 @@ public class EditorFrame extends JFrame {
   }
 
   void menuItemShoStartPoint_actionPerformed(ActionEvent e) {
-    checkButtons(null, CircuitView.STATE_SHOW_BGRD_START_POSITION);
+    checkButtons(null, CircuitState.SHOW_BGRD_START_POSITION);
   }
 
   void toggleButtonShowBackground_actionPerformed(ActionEvent e) {
@@ -1244,6 +1245,7 @@ public class EditorFrame extends JFrame {
    *
    */
   public class UndoAction extends AbstractAction {
+
     public UndoAction(String text, ImageIcon icon, String desc, Integer mnemonic) {
       super(text, icon);
       putValue(SHORT_DESCRIPTION, desc);
@@ -1253,9 +1255,11 @@ public class EditorFrame extends JFrame {
     public void actionPerformed(ActionEvent e) {
       buttonUndo_actionPerformed(e);
     }
+
   }
 
   public class RedoAction extends AbstractAction {
+
     public RedoAction(String text, ImageIcon icon, String desc, Integer mnemonic) {
       super(text, icon);
       putValue(SHORT_DESCRIPTION, desc);
@@ -1265,9 +1269,11 @@ public class EditorFrame extends JFrame {
     public void actionPerformed(ActionEvent e) {
       buttonRedo_actionPerformed(e);
     }
+
   }
 
   public class DeleteAction extends AbstractAction {
+
     public DeleteAction(String text, ImageIcon icon, String desc, Integer mnemonic) {
       super(text, icon);
       putValue(SHORT_DESCRIPTION, desc);
@@ -1277,9 +1283,11 @@ public class EditorFrame extends JFrame {
     public void actionPerformed(ActionEvent e) {
       toggleButtonDelete_actionPerformed(e);
     }
+
   }
 
   public class ZoomPlusAction extends AbstractAction {
+
     public ZoomPlusAction(String text, ImageIcon icon, String desc, Integer mnemonic) {
       super(text, icon);
       putValue(SHORT_DESCRIPTION, desc);
@@ -1289,9 +1297,11 @@ public class EditorFrame extends JFrame {
     public void actionPerformed(ActionEvent e) {
       buttonZoomPlus_actionPerformed(e);
     }
+
   }
 
   public class ZoomOneAction extends AbstractAction {
+
     public ZoomOneAction(String text, ImageIcon icon, String desc, Integer mnemonic) {
       super(text, icon);
       putValue(SHORT_DESCRIPTION, desc);
@@ -1301,9 +1311,11 @@ public class EditorFrame extends JFrame {
     public void actionPerformed(ActionEvent e) {
       buttonZoomOne_actionPerformed(e);
     }
+
   }
 
   public class ZoomMinusAction extends AbstractAction {
+
     public ZoomMinusAction(String text, ImageIcon icon, String desc, Integer mnemonic) {
       super(text, icon);
       putValue(SHORT_DESCRIPTION, desc);
@@ -1313,9 +1325,11 @@ public class EditorFrame extends JFrame {
     public void actionPerformed(ActionEvent e) {
       buttonZoomMinus_actionPerformed(e);
     }
+
   }
 
   public class StraightAction extends AbstractAction {
+
     public StraightAction(String text, ImageIcon icon, String desc, Integer mnemonic) {
       super(text, icon);
       putValue(SHORT_DESCRIPTION, desc);
@@ -1325,9 +1339,11 @@ public class EditorFrame extends JFrame {
     public void actionPerformed(ActionEvent e) {
       toggleButtonCreateStraightSegment_actionPerformed(e);
     }
+
   }
 
   public class RightAction extends AbstractAction {
+
     public RightAction(String text, ImageIcon icon, String desc, Integer mnemonic) {
       super(text, icon);
       putValue(SHORT_DESCRIPTION, desc);
@@ -1337,9 +1353,11 @@ public class EditorFrame extends JFrame {
     public void actionPerformed(ActionEvent e) {
       toggleButtonCreateRightSegment_actionPerformed(e);
     }
+
   }
 
   public class LeftAction extends AbstractAction {
+
     public LeftAction(String text, ImageIcon icon, String desc, Integer mnemonic) {
       super(text, icon);
       putValue(SHORT_DESCRIPTION, desc);
@@ -1349,9 +1367,11 @@ public class EditorFrame extends JFrame {
     public void actionPerformed(ActionEvent e) {
       toggleButtonCreateLeftSegment_actionPerformed(e);
     }
+
   }
 
   public class NewAction extends AbstractAction {
+
     public NewAction(String text, ImageIcon icon, String desc, Integer mnemonic) {
       super(text, icon);
       putValue(SHORT_DESCRIPTION, desc);
@@ -1361,9 +1381,11 @@ public class EditorFrame extends JFrame {
     public void actionPerformed(ActionEvent e) {
       newProjectDialog();
     }
+
   }
 
   public class OpenAction extends AbstractAction {
+
     public OpenAction(String text, ImageIcon icon, String desc, Integer mnemonic) {
       super(text, icon);
       putValue(SHORT_DESCRIPTION, desc);
@@ -1373,9 +1395,11 @@ public class EditorFrame extends JFrame {
     public void actionPerformed(ActionEvent e) {
       openProject();
     }
+
   }
 
   public class SaveAction extends AbstractAction {
+
     public SaveAction(String text, ImageIcon icon, String desc, Integer mnemonic) {
       super(text, icon);
       putValue(SHORT_DESCRIPTION, desc);
@@ -1385,9 +1409,11 @@ public class EditorFrame extends JFrame {
     public void actionPerformed(ActionEvent e) {
       saveProject();
     }
+
   }
 
   public class MoveAction extends AbstractAction {
+
     public MoveAction(String text, ImageIcon icon, String desc, Integer mnemonic) {
       super(text, icon);
       putValue(SHORT_DESCRIPTION, desc);
@@ -1397,9 +1423,11 @@ public class EditorFrame extends JFrame {
     public void actionPerformed(ActionEvent e) {
       toggleButtonMoveSegments_actionPerformed(e);
     }
+
   }
 
   public class ShowArrowsAction extends AbstractAction {
+
     public ShowArrowsAction(String text, ImageIcon icon, String desc, Integer mnemonic) {
       super(text, icon);
       putValue(SHORT_DESCRIPTION, desc);
@@ -1409,9 +1437,11 @@ public class EditorFrame extends JFrame {
     public void actionPerformed(ActionEvent e) {
       toggleButtonShowArrow_actionPerformed(e);
     }
+
   }
 
   public class ShowBackgroundAction extends AbstractAction {
+
     public ShowBackgroundAction(String text, ImageIcon icon, String desc, Integer mnemonic) {
       super(text, icon);
       putValue(SHORT_DESCRIPTION, desc);
@@ -1421,9 +1451,11 @@ public class EditorFrame extends JFrame {
     public void actionPerformed(ActionEvent e) {
       toggleButtonShowBackground_actionPerformed(e);
     }
+
   }
 
   public class HelpAction extends AbstractAction {
+
     public HelpAction(String text, ImageIcon icon, String desc, Integer mnemonic) {
       super(text, icon);
       putValue(SHORT_DESCRIPTION, desc);
@@ -1436,9 +1468,11 @@ public class EditorFrame extends JFrame {
           + "Copyright Charalampos Alexopoulos\n";
       JOptionPane.showMessageDialog(null, msg, "About", type);
     }
+
   }
 
   public class ExportAllAction extends AbstractAction {
+
     public ExportAllAction(String text, ImageIcon icon, String desc, Integer mnemonic) {
       super(text, icon);
       putValue(SHORT_DESCRIPTION, desc);
@@ -1448,9 +1482,11 @@ public class EditorFrame extends JFrame {
     public void actionPerformed(ActionEvent e) {
       System.out.println("TODO : I have to write some code for this.");
     }
+
   }
 
   public class ExportAC3Action extends AbstractAction {
+
     public ExportAC3Action(String text, ImageIcon icon, String desc, Integer mnemonic) {
       super(text, icon);
       putValue(SHORT_DESCRIPTION, desc);
@@ -1460,9 +1496,11 @@ public class EditorFrame extends JFrame {
     public void actionPerformed(ActionEvent e) {
       exportAc3d();
     }
+
   }
 
   public class PropertiesAction extends AbstractAction {
+
     public PropertiesAction(String text, ImageIcon icon, String desc, Integer mnemonic) {
       super(text, icon);
       putValue(SHORT_DESCRIPTION, desc);
@@ -1472,9 +1510,11 @@ public class EditorFrame extends JFrame {
     public void actionPerformed(ActionEvent e) {
       propertiesDialog();
     }
+
   }
 
   public class CalcDeltaAction extends AbstractAction {
+
     public CalcDeltaAction(String text, ImageIcon icon, String desc, Integer mnemonic) {
       super(text, icon);
       putValue(SHORT_DESCRIPTION, desc);
@@ -1485,6 +1525,7 @@ public class EditorFrame extends JFrame {
       calculateDeltas();
 
     }
+
   }
 
   /**
@@ -1599,4 +1640,5 @@ public class EditorFrame extends JFrame {
     }
     return calculateDeltaButton;
   }
+
 }

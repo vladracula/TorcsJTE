@@ -38,9 +38,9 @@ import java.util.Arrays;
  */
 public class SegmentSideProperties extends JPanel implements SliderListener {
 
-  private SegmentEditorDlg editor;
+  private SegmentEditorDialog editor;
   private SegmentSide side;
-  private SegmentEditorDlg parent;
+  private SegmentEditorDialog parent;
 
   private String[] styleItems =
       {"plan", "wall", "fence", "curb"};
@@ -104,7 +104,7 @@ public class SegmentSideProperties extends JPanel implements SliderListener {
   /**
    *
    */
-  public SegmentSideProperties(SegmentEditorDlg parent, SegmentSide side) {
+  public SegmentSideProperties(SegmentEditorDialog parent, SegmentSide side) {
     this.parent = parent;
     setSide(side);
     Arrays.sort(roadSurfaceItems);
@@ -434,7 +434,7 @@ public class SegmentSideProperties extends JPanel implements SliderListener {
   /**
    * @param editor The editor to set.
    */
-  public void setEditor(SegmentEditorDlg editor) {
+  public void setEditor(SegmentEditorDialog editor) {
     this.editor = editor;
   }
 

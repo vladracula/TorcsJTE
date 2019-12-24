@@ -1,8 +1,8 @@
 /*
- *   SegmentEditorDlg.java
+ *   SegmentEditorDialog.java
  *   Created on 28  2005
  *
- *    The SegmentEditorDlg.java is part of TrackEditor-0.3.1.
+ *    The SegmentEditorDialog.java is part of TrackEditor-0.3.1.
  *
  *    TrackEditor-0.3.1 is free software; you can redistribute it and/or modify
  *    it under the terms of the GNU General Public License as published by
@@ -37,10 +37,10 @@ import java.util.Arrays;
  * @author babis
  * @author Adam Kubon
  * <p>
- * TODO To change the template for this generated type comment go to Window -
- * Preferences - Java - Code Style - Code Templates
+ * TODO To change the template for this generated type comment go to Window - Preferences - Java - Code Style - Code
+ * Templates
  */
-public class SegmentEditorDlg extends JDialog implements SliderListener {
+public class SegmentEditorDialog extends JDialog implements SliderListener {
 
   public Segment shape;
   private CircuitView view;
@@ -81,12 +81,12 @@ public class SegmentEditorDlg extends JDialog implements SliderListener {
   /**
    *
    */
-  public SegmentEditorDlg() {
+  public SegmentEditorDialog() {
     super((Frame) null, "", true);
     Arrays.sort(roadSurfaceItems);
   }
 
-  public SegmentEditorDlg(CircuitView view, EditorFrame frame, String title, boolean modal, Segment shape) {
+  public SegmentEditorDialog(CircuitView view, EditorFrame frame, String title, boolean modal, Segment shape) {
     super(frame, title, modal);
     Arrays.sort(roadSurfaceItems);
     enableEvents(AWTEvent.WINDOW_EVENT_MASK);
@@ -360,7 +360,6 @@ public class SegmentEditorDlg extends JDialog implements SliderListener {
       surfaceComboBox.setModel(new DefaultComboBoxModel<>(roadSurfaceItems));
       surfaceComboBox.setBounds(190, 10, 130, 20);
       surfaceComboBox.addActionListener(new ActionListener() {
-
         public void actionPerformed(ActionEvent e) {
           shape.setSurface((String) surfaceComboBox.getSelectedItem());
           try {
@@ -372,7 +371,6 @@ public class SegmentEditorDlg extends JDialog implements SliderListener {
           frame.documentIsModified = true;
         }
       });
-
     }
     return surfaceComboBox;
   }
@@ -453,7 +451,6 @@ public class SegmentEditorDlg extends JDialog implements SliderListener {
   public Segment getSegment() {
     return shape;
   }
-
 
   public void update() {
     try {

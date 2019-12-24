@@ -1,19 +1,24 @@
 package gui.view;
 
 import gui.EditorFrame;
-import gui.segment.SegmentEditorDlg;
+import gui.segment.SegmentEditorDialog;
+import gui.segment.listener.SegmentEditorDialogWindowListener;
+import gui.view.enums.CircuitState;
+import gui.view.listener.CircuitViewMouseListener;
+import gui.view.listener.CircuitViewMouseMotionListener;
 import utils.Editor;
 import utils.EditorPoint;
 import utils.TrackData;
-import utils.circuit.*;
-import utils.undo.Undo;
-import utils.undo.UndoAddSegment;
-import utils.undo.UndoDeleteSegment;
-import utils.undo.UndoSegmentChange;
+import utils.circuit.ObjShapeHandle;
+import utils.circuit.ObjShapeTerrain;
+import utils.circuit.Segment;
+import utils.circuit.XmlObjPits;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
@@ -40,8 +45,7 @@ import java.util.Vector;
  * @version 0.1a
  */
 
-public class CircuitView extends JComponent
-    implements KeyListener, MouseListener, MouseMotionListener, WindowListener {
+public class CircuitView extends JComponent {
 
   /**
    * zooming factor
@@ -51,20 +55,20 @@ public class CircuitView extends JComponent
    * affine transformation
    */
   private AffineTransform affineTransform = new AffineTransform();
+  /**
+   * inverse affine transformation
+   */
   private AffineTransform inverseAffineTransform = new AffineTransform();
-
   /** xml document containing current circuit */
   //	EPXMLDocument circuit;
   /**
    * bounding rectangle of all elements of the circuits, in meters
    */
   private Rectangle2D.Double boundingRectangle = new Rectangle2D.Double(0, 0, 0, 0);
-
   /**
    * situation on circuit terrain of the screen center
    */
   private Point2D.Double screenCenter = new Point2D.Double(0, 0);      // meters
-
   /**
    * pits shape
    */
@@ -73,7 +77,6 @@ public class CircuitView extends JComponent
    * terrain shape
    */
   private ObjShapeTerrain terrain;
-
   /**
    * event to fire when selection has changed
    */
@@ -114,40 +117,24 @@ public class CircuitView extends JComponent
    * current moved shape, for undo management
    */
   Segment currentMovedShape = null;
-
   /**
    * flag for skipping recurrent events
    */
   boolean isAncestorResizing = false;
-
   /**
    * UI dialog
    */
-  private SegmentEditorDlg segmentParamDialog;
-
+  private SegmentEditorDialog segmentEditorDialog;
   /** upward link to parent frame */
   //	EditorFrameTest parentFrame;
   /**
    * current operating state
    */
-  private int currentState;
-
-  /**
-   * operating states
-   */
-  static public final int STATE_NONE = 0;
-  static public final int STATE_CREATE_STRAIGHT = 1;
-  static public final int STATE_CREATE_LEFT_SEGMENT = 2;
-  static public final int STATE_CREATE_RIGHT_SEGMENT = 3;
-  static public final int STATE_DELETE = 4;
-  static public final int STATE_SHOW_BGRD_START_POSITION = 5;
-  static public final int STATE_MOVE_SEGMENTS = 6;
-
+  private CircuitState currentState = CircuitState.NONE;
   /**
    * arrow showing state
    */
   public boolean showArrows = false;
-
   /**
    * undo list
    */
@@ -156,17 +143,14 @@ public class CircuitView extends JComponent
    * redo list
    */
   protected ArrayList redoSteps = new ArrayList();
-
   /**
    * show terrain border
    */
   private boolean terrainBorderMustBeShown = true;
-
   /**
    * selection listener management
    */
   private transient Vector<CircuitViewSelectionListener> selectionListeners;
-
   //private double				imgCo							= 1.0; //3.4;
   //private Point2D.Double		imgOffset						= new Point2D.Double(0, 0);
   private EditorPoint imgOffsetPrev = new EditorPoint();
@@ -183,9 +167,7 @@ public class CircuitView extends JComponent
    * background image showing state
    */
   private boolean showBackground = true;
-
   private int currentCount = 0;
-
   /**
    * upward link to parent frame
    */
@@ -198,20 +180,15 @@ public class CircuitView extends JComponent
    */
   public CircuitView(EditorFrame parentFrame) {
     try {
-      addKeyListener(this);
-      addMouseListener(this);
-      addMouseMotionListener(this);
-      //addMouseWheelListener( this );
+      addMouseListener(new CircuitViewMouseListener(this));
+      addMouseMotionListener(new CircuitViewMouseMotionListener(this));
       this.parentFrame = parentFrame;
       terrain = new ObjShapeTerrain();
       Editor.getProperties().addPropertiesListener(new ActionListener() {
-
         public void actionPerformed(ActionEvent e) {
           setCircuit();
         }
-
       });
-
       jbInit();
     }
     catch (Exception e) {
@@ -247,643 +224,11 @@ public class CircuitView extends JComponent
   }
 
   /**
-   * input events management
-   */
-  public void keyTyped(KeyEvent e) {
-  }
-
-  /**
-   * input events management
-   */
-  public void keyPressed(KeyEvent e) {
-  }
-
-  /**
-   * input events management
-   */
-  public void keyReleased(KeyEvent e) {
-  }
-
-  /**
-   * input events management
-   */
-  public void mouseClicked(MouseEvent e) {
-
-    if (e.getButton() == 1) {
-      screenToReal(e, clickPoint);
-      screenToReal(e, mousePoint);
-
-      try {
-        switch (currentState) {
-          case STATE_NONE: {
-          }
-          break;
-
-          case STATE_CREATE_LEFT_SEGMENT: {
-            if (handledShape == null) return;
-
-            // create a standard curve segment
-            Vector<Segment> data = TrackData.getTrackData();
-            int pos = data.indexOf(handledShape);
-            Curve newShape = new Curve("lft", handledShape);
-            newShape.setArc(Math.PI / 2);
-            newShape.setRadiusStart(50);
-            newShape.setRadiusEnd(50);
-            newShape.setProfilStepLength(4);
-            int count = Editor.getProperties().getCurveNameCount() + 1;
-            Editor.getProperties().setCurveNameCount(count);
-            newShape.setName("curve " + count);
-            makeLinkedList(data, pos, newShape);
-            data.insertElementAt(newShape, pos + 1);
-            Undo.add(new UndoAddSegment(newShape));
-            selectedShape = newShape;
-            openSegmentDialog(newShape);
-            segmentParamDialog.addWindowListener(this);
-            parentFrame.documentIsModified = true;
-            this.redrawCircuit();
-          }
-          break;
-
-          case STATE_CREATE_RIGHT_SEGMENT: {
-            if (handledShape == null)
-              return;
-
-            // create a standard curve segment
-            Vector<Segment> data = TrackData.getTrackData();
-            int pos = data.indexOf(handledShape);
-            Curve newShape = new Curve("rgt", handledShape);
-            newShape.setArc(Math.PI / 2);
-            newShape.setRadiusStart(50);
-            newShape.setRadiusEnd(50);
-            newShape.setProfilStepLength(4);
-            int count = Editor.getProperties().getCurveNameCount() + 1;
-            Editor.getProperties().setCurveNameCount(count);
-            newShape.setName("curve " + count);
-            makeLinkedList(data, pos, newShape);
-            data.insertElementAt(newShape, pos + 1);
-            Undo.add(new UndoAddSegment(newShape));
-            selectedShape = newShape;
-            openSegmentDialog(newShape);
-            segmentParamDialog.addWindowListener(this);
-            parentFrame.documentIsModified = true;
-            this.redrawCircuit();
-          }
-          break;
-
-          case STATE_CREATE_STRAIGHT: {
-            if (handledShape == null)
-              return;
-
-            // create a standard straight segment
-            Vector<Segment> data = TrackData.getTrackData();
-            int pos = data.indexOf(handledShape);
-            Straight newShape = new Straight();
-            newShape.setLength(50);
-            int count = Editor.getProperties().getStraightNameCount() + 1;
-            Editor.getProperties().setStraightNameCount(count);
-            newShape.setName("straight " + count);
-            makeLinkedList(data, pos, newShape);
-            data.insertElementAt(newShape, pos + 1);
-            Undo.add(new UndoAddSegment(newShape));
-            selectedShape = newShape;
-            openSegmentDialog(newShape);
-            segmentParamDialog.addWindowListener(this);
-            parentFrame.documentIsModified = true;
-          }
-          break;
-
-          case STATE_DELETE: {
-            try {
-              boolean mustFireEvent = (selectedShape != null);
-
-              selectedShape = null;
-
-              if (mustFireEvent)
-                fireSelectionChanged(selectionChangedEvent);
-
-              if (segmentParamDialog != null) {
-                if (!segmentParamDialog.dirty) {
-                  //popUndo();
-                }
-
-                segmentParamDialog.dispose();
-                segmentParamDialog = null;
-              }
-
-              // must check for a segment under the mouse
-              Vector<Segment> data = TrackData.getTrackData();
-              int pos = data.indexOf(handledShape);
-              Undo.add(new UndoDeleteSegment(handledShape));
-
-              Segment previous = (Segment) data.get(pos - 1);
-              Segment next = getNextSegment(data, pos);
-              data.remove(pos);
-              makeLinkedList(previous, next);
-
-              handledShape = null;
-              //selectedShape = newShape;
-
-              parentFrame.documentIsModified = true;
-
-              this.redrawCircuit();
-
-              setState(STATE_NONE);
-              parentFrame.toggleButtonDelete.setSelected(false);
-
-              parentFrame.documentIsModified = true;
-            }
-            catch (Exception ex) {
-              ex.printStackTrace();
-            }
-          }
-          break;
-        }
-      }
-      catch (Exception ex) {
-        ex.printStackTrace();
-      }
-    }
-  }
-
-  /**
-   * input events management
-   */
-  public void mousePressed(MouseEvent e) {
-    if (e.getButton() == 3) {
-      Point2D.Double tmp = new Point2D.Double(imgOffsetStart.getX(), imgOffsetStart.getY());
-      screenToReal(e, tmp);
-      imgOffsetStart.setLocation(tmp.getX(), tmp.getY());
-      imgOffsetPrev.setLocation(Editor.getProperties().getImgOffset());
-
-    }
-    if (e.getButton() == 1) {
-      try {
-        screenToReal(e, clickPoint);
-
-        // must check for a segment under the mouse
-        Segment obj = findObjAtMousePos();
-
-        Segment lastSelectedShape = selectedShape;
-
-        boolean selectedShapeChanged = (selectedShape != obj);
-        selectedShape = obj;
-
-        handleDragging = -1;
-
-        if (selectedShape != null) {
-          dragging = true;
-
-          int curHandle = 0;
-          for (Iterator i = handles.iterator(); i.hasNext(); curHandle++) {
-            ObjShapeHandle h = (ObjShapeHandle) i.next();
-
-            // is the mouse in the handledShape handle ?
-            if (e.getX() > h.trPoints[0].getX() - ObjShapeHandle.handleSize
-                && e.getX() < h.trPoints[0].getX() + ObjShapeHandle.handleSize
-                && e.getY() > h.trPoints[0].getY() - ObjShapeHandle.handleSize
-                && e.getY() < h.trPoints[0].getY() + ObjShapeHandle.handleSize) {
-              handleDragging = curHandle;
-              selectedShape = handledShape;
-              break;
-            }
-          }
-        }
-
-        if (lastSelectedShape != selectedShape)
-          fireSelectionChanged(selectionChangedEvent);
-
-        switch (currentState) {
-          case STATE_NONE: {
-            if (selectedShape != null) {
-              Undo.add(new UndoSegmentChange(selectedShape));
-              openSegmentDialog(selectedShape);
-            }
-
-            if (selectedShapeChanged) {
-              invalidate();
-              repaint();
-            }
-          }
-          break;
-
-          case STATE_SHOW_BGRD_START_POSITION: {
-            //						if (backgroundRectangle.contains(clickPoint))
-            //						{
-            //							backgroundRectangle.setRect(backgroundRectangle.getX()
-            // - clickPoint.getX(),
-            //									backgroundRectangle.getY() - clickPoint.getY(),
-            // backgroundRectangle.getWidth(),
-            //									backgroundRectangle.getHeight());
-            //
-            //							torcstuneSection.setAttributeOfPart("attnum", "name",
-            // "bgrd img x", "val", Integer
-            //									.toString((int) backgroundRectangle.getX()));
-            //							torcstuneSection.setAttributeOfPart("attnum", "name",
-            // "bgrd img y", "val", Integer
-            //									.toString((int) backgroundRectangle.getY()));
-            //							torcstuneSection.setAttributeOfPart("attnum", "name",
-            // "bgrd img width", "val", Integer
-            //									.toString((int) backgroundRectangle.getWidth()));
-            //							torcstuneSection.setAttributeOfPart("attnum", "name",
-            // "bgrd img height", "val", Integer
-            //									.toString((int) backgroundRectangle.getHeight()));
-            //
-            //							parentFrame.documentIsModified = true;
-            //							invalidate();
-            //							repaint();
-            //
-            //							setState(STATE_NONE);
-            //						}
-          }
-          break;
-        }
-      }
-      catch (Exception ex) {
-        ex.printStackTrace();
-      }
-    }
-  }
-
-  /**
-   * input events management
-   */
-  public void mouseReleased(MouseEvent e) {
-    if (e.getButton() == 1) {
-      switch (currentState) {
-        case STATE_NONE: {
-          if (dragging) {
-            try {
-              this.redrawCircuit();
-            }
-            catch (Exception ex) {
-              ex.printStackTrace();
-            }
-          }
-        }
-        break;
-      }
-
-      dragging = false;
-    }
-  }
-
-  /**
-   * input events management
-   */
-  public void mouseEntered(MouseEvent e) {
-  }
-
-  /**
-   * input events management
-   */
-  public void mouseExited(MouseEvent e) {
-  }
-
-  /**
-   * input events management
-   */
-  public void mouseDragged(MouseEvent e) {
-    //		System.out.println(e.getModifiers());
-    if (e.getModifiersEx() == 4) {
-      EditorPoint offset = Editor.getProperties().getImgOffset();
-      Point2D.Double tmp = new Point2D.Double(0, 0);
-      screenToReal(e, tmp);
-      int x = (int) (imgOffsetPrev.getX() + (tmp.getX() - imgOffsetStart.getX()));
-      int y = (int) (imgOffsetPrev.getY() + (tmp.getY() - imgOffsetStart.getY()));
-//			int x = (int) ((tmp.getX() - imgOffsetPrev.getX()));
-//			int y = (int) ((tmp.getY() - imgOffsetPrev.getY()));
-//			System.out.println("Previus "+imgOffsetPrev.getX()+","+imgOffsetPrev.getY());
-//			System.out.println("Start "+imgOffsetStart.getX()+","+imgOffsetStart.getY());
-//			System.out.println("tmp "+tmp.getX()+","+tmp.getY());
-//			System.out.println("Image offset "+x+","+y);
-
-      offset.setLocation(x, y);
-      Editor.getProperties().setImgOffset(offset);
-      revalidate();
-      invalidate();
-      repaint();
-
-    }
-    else {
-      screenToReal(e, mousePoint);
-
-      switch (currentState) {
-        case STATE_MOVE_SEGMENTS: {
-          if (handleDragging == -1)
-            return;
-
-          if (handledShape.getType().equals("str")) {
-            //						dragStraightEnd();
-          }
-          else {
-            //						dragCurveEnd();
-          }
-        }
-        break;
-      }
-    }
-  }
-
-  /**
-   * input events management
-   */
-  public void mouseMoved(MouseEvent e) {
-    screenToReal(e, mousePoint);
-
-    try {
-      switch (currentState) {
-        case STATE_NONE: {
-        }
-        break;
-
-        case STATE_CREATE_LEFT_SEGMENT:
-        case STATE_CREATE_RIGHT_SEGMENT:
-        case STATE_CREATE_STRAIGHT:
-        case STATE_MOVE_SEGMENTS:
-        case STATE_DELETE: {
-          if (dragging)
-            return;
-
-          // must check for a segment under the mouse
-          Segment obj = findObjAtMousePos();
-
-          if (obj == null) {
-            if (handles.size() > 0) {
-              handles.clear();
-              handledShape = null;
-
-              invalidate();
-              repaint();
-            }
-          }
-          else {
-            handles.clear();
-            handledShape = obj;
-
-            double maxDist = Double.MAX_VALUE;
-            Iterator i = TrackData.getTrackData().iterator();
-            while (i.hasNext()) {
-              Segment o = (Segment) i.next();
-
-              if (maxDist > o.endTrackCenter.distance(mousePoint)) {
-                maxDist = o.endTrackCenter.distance(mousePoint);
-                obj = o;
-              }
-            }
-
-            handledShape = obj;
-            handle.calcShape(handledShape.endTrackCenter);
-
-            handles.add(handle);
-            invalidate();
-            repaint();
-          }
-        }
-        break;
-
-//				case STATE_DELETE :
-//				{
-//				}
-//					break;
-      }
-    }
-    catch (Exception ex) {
-      ex.printStackTrace();
-    }
-  }
-
-  //	/** input events management */
-  //	/*
-  //	 * public void mouseWheelMoved( MouseWheelEvent e ) { int n =
-  //	 * e.getWheelRotation();
-  //	 *
-  //	 * for ( int i = 0; i < Math.abs( n ); i++ ) { if ( n < 0 )
-  // incZoomFactor();
-  //	 * else decZoomFactor(); } }
-  //	 */
-  //
-  //	/**
-  //	 * Drags end of handledShape (straight segment)
-  //	 *
-  //	 * @param currentPoint
-  //	 * Point to move end of handledShape to (in meters)
-  //	 */
-  //	void dragStraightEnd()
-  //	{
-  //		try
-  //		{
-  //			// must find the curve segment concerned by this movement
-  //
-  //			XmlObjShape prevSegment = handledShape;
-  //
-  //			for (;;)
-  //			{
-  //				if (prevSegment == paintTrackSegments.get(0))
-  //					return;
-  //
-  //				prevSegment = prevSegment.previousShape;
-  //
-  //				if (prevSegment == handledShape)
-  //					return;
-  //
-  //				if (prevSegment.getClass().getName().indexOf("Curve") != -1)
-  //					break;
-  //			}
-  //
-  //			Curve curveSegment = (Curve) prevSegment;
-  //
-  //			if (curveSegment.allDatas[Curve.radiusStart] !=
-  // curveSegment.allDatas[Curve.endRadius])
-  //				return; // this curve segment doesn't have a constant radiusStart
-  //
-  //			XmlObjShape straightSegment = handledShape;
-  //
-  //			// define points O, B, C;
-  //			Point2D.Double O, B, C;
-  //
-  //			O = curveSegment.center;
-  //			B = mousePoint;
-  //			C = curveSegment.startTrackCenter;
-  //
-  //			if (O.distance(B) == 0)
-  //				return;
-  //
-  //			// calc A point (2 solutions)
-  //			double alpha = Math.acos(Curve.radiusStart / O.distance(B));
-  //			while (alpha < -Math.PI)
-  //				alpha += EPMath.PI_MUL_2;
-  //			while (alpha > Math.PI)
-  //				alpha -= EPMath.PI_MUL_2;
-  //
-  //			double beta = Math.atan2(B.getY() - O.getY(), B.getX() - O.getX());
-  //			while (beta < -Math.PI)
-  //				beta += EPMath.PI_MUL_2;
-  //			while (beta > Math.PI)
-  //				beta -= EPMath.PI_MUL_2;
-  //
-  //			Point2D.Double A1 = new Point2D.Double();
-  //			Point2D.Double A2 = new Point2D.Double();
-  //
-  //			double alphaToA1 = beta + alpha;
-  //			double alphaToA2 = beta - alpha;
-  //
-  //			A1.setLocation(O.getX() + Math.cos(alphaToA1) * Curve.radiusStart,
-  // O.getY() +
-  // Math.sin(alphaToA1)
-  //					* Curve.radiusStart);
-  //			A2.setLocation(O.getX() + Math.cos(alphaToA2) * Curve.radiusStart,
-  // O.getY() +
-  // Math.sin(alphaToA2)
-  //					* Curve.radiusStart);
-  //
-  //			// select 'good' solution
-  //
-  //			double d1 = A1.distance(curveSegment.endTrackCenter);
-  //			double d2 = A2.distance(curveSegment.endTrackCenter);
-  //
-  //			double arc;
-  //
-  //			if (d1 < d2)
-  //				arc = Math.atan2(C.getY() - O.getY(), C.getX() - O.getX())
-  //						- Math.atan2(A1.getY() - O.getY(), A1.getX() - O.getX());
-  //			else
-  //				arc = Math.atan2(C.getY() - O.getY(), C.getX() - O.getX())
-  //						- Math.atan2(A2.getY() - O.getY(), A2.getX() - O.getX());
-  //			while (arc < 0)
-  //				arc += EPMath.PI_MUL_2;
-  //			while (arc >= EPMath.PI_MUL_2)
-  //				arc -= EPMath.PI_MUL_2;
-  //
-  //			if (currentMovedShape != curveSegment)
-  //			{
-  //				// install undo step
-  //				UndoStep undoStep = new UndoStepModifyTrackSegment(curveSegment);
-  //				undoSteps.add(undoStep);
-  //				redoSteps.clear();
-  //				undoStep.redo();
-  //
-  //				currentMovedShape = curveSegment;
-  //			}
-  //
-  //			curveSegment.segment.setAttributeOfPart("attnum", "name", "arc", "unit",
-  // "rad");
-  //			curveSegment.segment.setAttributeOfPartDouble("attnum", "name", "arc",
-  // "val", Math.abs(arc));
-  //
-  //			calcGeometricObjects();
-  //
-  //			parentFrame.documentIsModified = true;
-  //		} catch (Exception e)
-  //		{
-  //			e.printStackTrace();
-  //		}
-  //	}
-  //
-  //	/**
-  //	 * Drags end of handledShape (curve segment)
-  //	 *
-  //	 * @param currentPoint
-  //	 * Point to move end of handledShape to (in meters)
-  //	 */
-  //	void dragCurveEnd()
-  //	{
-  //		try
-  //		{
-  //			Point2D.Double a = handledShape.startTrackCenter;
-  //			Point2D.Double b = mousePoint;
-  //
-  //			double dAB = b.distance(a);
-  //
-  //			if (dAB == 0)
-  //				return;
-  //
-  //			double alpha = handledShape.startTrackAlpha;
-  //			while (alpha < -Math.PI)
-  //				alpha += EPMath.PI_MUL_2;
-  //			while (alpha > Math.PI)
-  //				alpha -= EPMath.PI_MUL_2;
-  //
-  //			double beta = Math.atan2(b.getY() - a.getY(), b.getX() - a.getX());
-  //			while (beta < -Math.PI)
-  //				beta += EPMath.PI_MUL_2;
-  //			while (beta > Math.PI)
-  //				beta -= EPMath.PI_MUL_2;
-  //
-  //			double gamma = (beta - alpha);
-  //			while (gamma < -Math.PI)
-  //				gamma += EPMath.PI_MUL_2;
-  //			while (gamma > Math.PI)
-  //				gamma -= EPMath.PI_MUL_2;
-  //
-  //			if (gamma == 0)
-  //				return;
-  //
-  //			double arc = Math.abs(2 * gamma);
-  //
-  //			double r = dAB / (2 * Math.sin(gamma));
-  //
-  //			boolean rgt = handledShape.segment.getAttributeOfPart("attstr", "name",
-  // "type", "val").equals("rgt");
-  //
-  //			if (Math.abs(r) < trackWidth
-  //					/ 2
-  //					+ handledShape.allDatas[rgt ? XmlObjShape.rightBorderWidth :
-  // XmlObjShape.leftBorderWidth]
-  //					+ handledShape.allDatas[rgt ? Math.max(XmlObjShape.rightSideStartWidth,
-  //							XmlObjShape.rightSideEndWidth) : Math.max(XmlObjShape.leftSideStartWidth,
-  //							XmlObjShape.leftSideEndWidth)])
-  //				return; // radiusStart would be too little
-  //
-  //			if (!((r < 0 && rgt) || (r > 0 && !rgt)))
-  //				return; // the curvature would be inversed
-  //
-  //			if (arc >= 360)
-  //				return; // the arc would be to big
-  //
-  //			if (arc * Math.abs(r) > 2000)
-  //				return; // the segment would be too long
-  //
-  //			if (currentMovedShape != handledShape)
-  //			{
-  //				// install undo step
-  //				UndoStep undoStep = new UndoStepModifyTrackSegment(handledShape);
-  //				undoSteps.add(undoStep);
-  //				redoSteps.clear();
-  //				undoStep.redo();
-  //
-  //				currentMovedShape = handledShape;
-  //			}
-  //
-  //			handledShape.segment.setAttributeOfPart("attnum", "name", "radiusStart",
-  // "unit", "m");
-  //			handledShape.segment.setAttributeOfPartDouble("attnum", "name",
-  // "radiusStart",
-  // "val", Math.abs(r));
-  //			handledShape.segment.setAttributeOfPartDouble("attnum", "name", "end
-  // radiusStart", "val", Math.abs(r)); // constant
-  //			// rayon
-  //
-  //			handledShape.segment.setAttributeOfPart("attnum", "name", "arc", "unit",
-  // "rad");
-  //			handledShape.segment.setAttributeOfPartDouble("attnum", "name", "arc",
-  // "val", arc);
-  //
-  //			calcGeometricObjects();
-  //
-  //			parentFrame.documentIsModified = true;
-  //		} catch (Exception e)
-  //		{
-  //			e.printStackTrace();
-  //		}
-  //	}
-  //
-
-  /**
    * Look for an object under mouse position
    *
    * @return Object under mouse pos, or null if none
    */
-  protected Segment findObjAtMousePos() {
+  public Segment findObjAtMousePos() {
     Segment out = null;
     // must look for an object under the mouse
     int count = 0;
@@ -1104,7 +449,6 @@ public class CircuitView extends JComponent
 //		return (false);
 //	}
 
-
   private void jbInit() throws Exception {
     this.setMinimumSize(new Dimension(32767, 32767));
     this.setPreferredSize(new Dimension(32767, 32767));
@@ -1143,7 +487,7 @@ public class CircuitView extends JComponent
   //		isAncestorResizing = false;
   //	}
   //
-  public void setState(int state) {
+  public void setState(CircuitState state) {
     currentState = state;
 
     boolean mustFire = (selectedShape != null);
@@ -1152,13 +496,13 @@ public class CircuitView extends JComponent
     if (mustFire)
       fireSelectionChanged(selectionChangedEvent);
 
-    if (segmentParamDialog != null) {
-      if (!segmentParamDialog.dirty) {
+    if (segmentEditorDialog != null) {
+      if (!segmentEditorDialog.dirty) {
         //popUndo();
       }
 
-      segmentParamDialog.dispose();
-      segmentParamDialog = null;
+      segmentEditorDialog.dispose();
+      segmentEditorDialog = null;
     }
   }
   //
@@ -1279,7 +623,7 @@ public class CircuitView extends JComponent
     }
   }
 
-  protected void fireSelectionChanged(CircuitViewSelectionEvent e) {
+  public void fireSelectionChanged(CircuitViewSelectionEvent e) {
     if (selectionListeners != null) {
       Vector listeners = selectionListeners;
       int count = listeners.size();
@@ -1308,7 +652,6 @@ public class CircuitView extends JComponent
         // TODO Auto-generated catch block
         e.printStackTrace();
       }
-
     }
 
     // calculate the bounding rectangle
@@ -1326,174 +669,128 @@ public class CircuitView extends JComponent
     setZoomFactor(zoomFactor);
   }
 
-  private void openSegmentDialog(Segment shape) {
-    if (segmentParamDialog != null) {
-      segmentParamDialog.setShape(shape);
-      segmentParamDialog.setVisible(true);
+  public void openSegmentDialog(Segment shape) {
+    if (segmentEditorDialog != null) {
+      segmentEditorDialog.setShape(shape);
+      segmentEditorDialog.setVisible(true);
     }
 
-    if (segmentParamDialog == null) {
-      segmentParamDialog = new SegmentEditorDlg(this, parentFrame, "", false, shape);
-      segmentParamDialog.addWindowListener(this);
+    if (segmentEditorDialog == null) {
+      segmentEditorDialog = new SegmentEditorDialog(this, parentFrame, "", false, shape);
+      segmentEditorDialog.addWindowListener(new SegmentEditorDialogWindowListener(this));
     }
   }
 
-  /**
-   * making links with neighbours for new Segment
-   *
-   * @param data
-   * @param pos
-   * @param newShape
-   */
-  private void makeLinkedList(Vector data, int pos, Segment newShape) {
-    Segment previous = (Segment) data.get(pos);
-    Segment next = getNextSegment(data, pos);
-    previous.setNextShape(newShape);
-    next.setPreviousShape(newShape);
-    newShape.setPreviousShape(previous);
-    newShape.setNextShape(next);
-    next.setPreviousShape(newShape);
-    continuousDataValues(previous, newShape, next);
+  public CircuitState getCurrentState() {
+    return currentState;
   }
 
-  /**
-   * making links between neighbours
-   *
-   * @param previous
-   * @param next
-   */
-  private void makeLinkedList(Segment previous, Segment next) {
-    previous.setNextShape(next);
-    next.setPreviousShape(previous);
-    continuousDataValues(previous, next);
+  public void setCurrentState(CircuitState currentState) {
+    this.currentState = currentState;
   }
 
-  /**
-   * find next segment in data
-   *
-   * @param data
-   * @param pos
-   * @return
-   */
-  private Segment getNextSegment(Vector data, int pos) {
-    Segment next = null;
-    if (pos > data.size()) {
-      next = (Segment) data.get(0);
-    }
-    else {
-      next = (Segment) data.get(pos + 1);
-    }
-    return next;
+  public Segment getHandledShape() {
+    return handledShape;
   }
 
-  /**
-   * synchronize values between three neighbours
-   *
-   * @param previous
-   * @param current
-   * @param next
-   */
-
-  private void continuousDataValues(Segment previous, Segment current, Segment next) {
-    // height start/end fit
-    current.setHeightStart(previous.getHeightEnd());
-    current.setHeightEnd(next.getHeightStart());
-
-    current.setSurface(previous.getSurface());
-    current.setProfil(previous.getProfil());
-
-    continuousSideValues(previous.getLeft(), current.getLeft());
-    continuousSideValues(previous.getRight(), current.getRight());
+  public Segment getSelectedShape() {
+    return selectedShape;
   }
 
-  /**
-   * function copying side values from previous segment to current
-   *
-   * @param previous
-   * @param current
-   */
-  private void continuousSideValues(SegmentSide previous, SegmentSide current) {
-    current.setBarrierHeight(previous.getBarrierHeight());
-    current.setBarrierWidth(previous.getBarrierWidth());
-    current.setBarrierSurface(previous.getBarrierSurface());
-    current.setBarrierStyle(previous.getBarrierStyle());
-
-    current.setSideStartWidth(previous.getSideStartWidth());
-    current.setSideEndWidth(previous.getSideEndWidth());
-    current.setSideSurface(previous.getSideSurface());
-
-    current.setBorderHeight(previous.getBorderHeight());
-    current.setBorderWidth(previous.getBorderWidth());
-    current.setBorderSurface(previous.getBorderSurface());
-    current.setBorderStyle(previous.getBorderStyle());
+  public void setSelectedShape(Segment selectedShape) {
+    this.selectedShape = selectedShape;
   }
 
-  /**
-   * synchronize values between two neighbours
-   *
-   * @param previous
-   * @param next
-   */
-  private void continuousDataValues(Segment previous, Segment next) {
-    next.setHeightStart(previous.getHeightEnd());
-    previous.setHeightEnd(next.getHeightStart());
+  public void setHandledShape(Segment handledShape) {
+    this.handledShape = handledShape;
   }
 
-  /* (non-Javadoc)
-   * @see java.awt.event.WindowListener#windowActivated(java.awt.event.WindowEvent)
-   */
-  public void windowActivated(WindowEvent e) {
-    // TODO Auto-generated method stub
-
+  public EditorFrame getParentFrame() {
+    return parentFrame;
   }
 
-  /* (non-Javadoc)
-   * @see java.awt.event.WindowListener#windowClosed(java.awt.event.WindowEvent)
-   */
-  public void windowClosed(WindowEvent e) {
-    //System.out.println("JDialog is closing");
-    this.selectedShape = null;
-    this.redrawCircuit();
+  public void setParentFrame(EditorFrame parentFrame) {
+    this.parentFrame = parentFrame;
   }
 
-  /* (non-Javadoc)
-   * @see java.awt.event.WindowListener#windowClosing(java.awt.event.WindowEvent)
-   */
-  public void windowClosing(WindowEvent e) {
-    // TODO Auto-generated method stub
-
+  public boolean isDragging() {
+    return dragging;
   }
 
-  /* (non-Javadoc)
-   * @see java.awt.event.WindowListener#windowDeactivated(java.awt.event.WindowEvent)
-   */
-  public void windowDeactivated(WindowEvent e) {
-    // TODO Auto-generated method stub
-
+  public void setDragging(boolean dragging) {
+    this.dragging = dragging;
   }
 
-  /* (non-Javadoc)
-   * @see java.awt.event.WindowListener#windowDeiconified(java.awt.event.WindowEvent)
-   */
-  public void windowDeiconified(WindowEvent e) {
-    // TODO Auto-generated method stub
-
+  public int getHandleDragging() {
+    return handleDragging;
   }
 
-  /* (non-Javadoc)
-   * @see java.awt.event.WindowListener#windowIconified(java.awt.event.WindowEvent)
-   */
-  public void windowIconified(WindowEvent e) {
-    // TODO Auto-generated method stub
-
+  public void setHandleDragging(int handleDragging) {
+    this.handleDragging = handleDragging;
   }
 
-  /* (non-Javadoc)
-   * @see java.awt.event.WindowListener#windowOpened(java.awt.event.WindowEvent)
-   */
-  public void windowOpened(WindowEvent e) {
-    // TODO Auto-generated method stub
+  public ArrayList<ObjShapeHandle> getHandles() {
+    return handles;
+  }
 
+  public void setHandles(ArrayList<ObjShapeHandle> handles) {
+    this.handles = handles;
+  }
+
+  public ObjShapeHandle getHandle() {
+    return handle;
+  }
+
+  public void setHandle(ObjShapeHandle handle) {
+    this.handle = handle;
+  }
+
+  public Point2D.Double getMousePoint() {
+    return mousePoint;
+  }
+
+  public void setMousePoint(Point2D.Double mousePoint) {
+    this.mousePoint = mousePoint;
+  }
+
+  public Point2D.Double getClickPoint() {
+    return clickPoint;
+  }
+
+  public void setClickPoint(Point2D.Double clickPoint) {
+    this.clickPoint = clickPoint;
+  }
+
+  public CircuitViewSelectionEvent getSelectionChangedEvent() {
+    return selectionChangedEvent;
+  }
+
+  public void setSelectionChangedEvent(CircuitViewSelectionEvent selectionChangedEvent) {
+    this.selectionChangedEvent = selectionChangedEvent;
+  }
+
+  public EditorPoint getImgOffsetPrev() {
+    return imgOffsetPrev;
+  }
+
+  public void setImgOffsetPrev(EditorPoint imgOffsetPrev) {
+    this.imgOffsetPrev = imgOffsetPrev;
+  }
+
+  public EditorPoint getImgOffsetStart() {
+    return imgOffsetStart;
+  }
+
+  public void setImgOffsetStart(EditorPoint imgOffsetStart) {
+    this.imgOffsetStart = imgOffsetStart;
+  }
+
+  public SegmentEditorDialog getSegmentEditorDialog() {
+    return segmentEditorDialog;
+  }
+
+  public void setSegmentEditorDialog(SegmentEditorDialog segmentEditorDialog) {
+    this.segmentEditorDialog = segmentEditorDialog;
   }
 
 }

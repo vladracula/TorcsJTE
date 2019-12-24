@@ -52,7 +52,9 @@ public class UndoSegmentChange implements UndoInterface {
   public void undo() {
     Vector<Segment> data = TrackData.getTrackData();
     pos = data.indexOf(original);
-    data.set(pos, clone);
+    if(pos >= 0){
+      data.set(pos, clone);
+    }
   }
 
   /* (non-Javadoc)
@@ -61,7 +63,9 @@ public class UndoSegmentChange implements UndoInterface {
   public void redo() {
     Vector<Segment> data = TrackData.getTrackData();
     pos = data.indexOf(clone);
-    data.set(pos, original);
+    if(pos >= 0) {
+      data.set(pos, original);
+    }
   }
 
 }

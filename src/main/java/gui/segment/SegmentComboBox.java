@@ -33,7 +33,7 @@ import javax.swing.*;
  */
 public class SegmentComboBox extends JComboBox<String> {
 
-  private SegmentEditorDlg editor;
+  private SegmentEditorDialog editor;
   private String sectionName;
   private String attType;
   private String attName;
@@ -100,7 +100,7 @@ public class SegmentComboBox extends JComboBox<String> {
   /**
    * @param editor The editor to set.
    */
-  public void setEditor(SegmentEditorDlg editor) {
+  public void setEditor(SegmentEditorDialog editor) {
     this.editor = editor;
   }
 

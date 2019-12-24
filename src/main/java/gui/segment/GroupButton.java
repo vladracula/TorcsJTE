@@ -41,7 +41,7 @@ public class GroupButton extends JPanel {
   private JLabel leftLabel = null;
   private boolean enabled = true;
   private String selected;
-  private SegmentEditorDlg parent;
+  private SegmentEditorDialog parent;
 
   /**
    *
@@ -130,7 +130,7 @@ public class GroupButton extends JPanel {
   /**
    * @param parent The parent to set.
    */
-  public void setParent(SegmentEditorDlg parent) {
+  public void setParent(SegmentEditorDialog parent) {
     this.parent = parent;
   }
 

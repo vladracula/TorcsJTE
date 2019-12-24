@@ -5,4 +5,13 @@ package gui.view.enums;
  */
 
 public enum CircuitState {
+
+  NONE,
+  CREATE_STRAIGHT,
+  CREATE_LEFT_SEGMENT,
+  CREATE_RIGHT_SEGMENT,
+  DELETE,
+  SHOW_BGRD_START_POSITION,
+  MOVE_SEGMENTS
+
 }
