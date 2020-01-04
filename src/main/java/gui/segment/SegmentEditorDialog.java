@@ -95,7 +95,6 @@ public class SegmentEditorDialog extends JDialog implements SliderListener {
       this.view = view;
       this.frame = frame;
       setShape(shape);
-
       initialize();
       this.setVisible(true);
     }

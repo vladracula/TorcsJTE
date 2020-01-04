@@ -64,14 +64,10 @@ public class GeneralProperties extends JPanel {
     this.setLayout(null);
     projectNameLabel.setBounds(15, 15, 100, 30);
     projectNameLabel.setText("Track Name");
-
-    //add
     trackTypeLabel.setBounds(15, 60, 100, 30);
     trackTypeLabel.setText("Track Type");
-
     pathLabel.setBounds(15, 105, 60, 30);
     pathLabel.setText("Path");
-
     authorLabel.setBounds(15, 150, 60, 30);
     authorLabel.setText("Author");
     descriptionLabel.setBounds(15, 195, 80, 30);

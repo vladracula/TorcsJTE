@@ -60,7 +60,7 @@ public class CircuitViewMouseListener implements MouseListener {
             Undo.add(new UndoAddSegment(newShape));
             circuitView.setSelectedShape(newShape);
             circuitView.openSegmentDialog(newShape);
-//            circuitView.getSegmentEditorDialog().addWindowListener(circuitView);
+//            view.getSegmentEditorDialog().addWindowListener(view);
             circuitView.getParentFrame().documentIsModified = true;
             circuitView.redrawCircuit();
           }
@@ -86,7 +86,7 @@ public class CircuitViewMouseListener implements MouseListener {
             Undo.add(new UndoAddSegment(newShape));
             circuitView.setSelectedShape(newShape);
             circuitView.openSegmentDialog(newShape);
-  //          circuitView.getSegmentEditorDialog().addWindowListener(circuitView);
+  //          view.getSegmentEditorDialog().addWindowListener(view);
             circuitView.getParentFrame().documentIsModified = true;
             circuitView.redrawCircuit();
           }
@@ -109,7 +109,7 @@ public class CircuitViewMouseListener implements MouseListener {
             Undo.add(new UndoAddSegment(newShape));
             circuitView.setSelectedShape(newShape);
             circuitView.openSegmentDialog(newShape);
-    //        circuitView.getSegmentEditorDialog().addWindowListener(circuitView);
+    //        view.getSegmentEditorDialog().addWindowListener(view);
             circuitView.getParentFrame().documentIsModified = true;
           }
           break;

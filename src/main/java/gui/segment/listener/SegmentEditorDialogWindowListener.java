@@ -29,7 +29,6 @@ public class SegmentEditorDialogWindowListener implements WindowListener {
 
   @Override
   public void windowClosed(WindowEvent windowEvent) {
-    //System.out.println("JDialog is closing");
     circuitView.setSelectedShape(null);
     circuitView.redrawCircuit();
   }

@@ -20,8 +20,6 @@
  */
 package gui.splash;
 
-import utils.Editor;
-
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.EtchedBorder;
@@ -31,16 +29,16 @@ import java.awt.*;
  * @author babis
  * @author Adam Kubon
  * <p>
- * TODO To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Style - Code Templates
+ * TODO To change the template for this generated type comment go to Window - Preferences - Java - Code Style - Code
+ * Templates
  */
 public class SplashPanel extends JPanel {
 
   private ImageIcon image = null;
   private JButton splash = new JButton();
   private JLabel headerLabel = new JLabel();
-  private String header = Editor.getProperties().title;
-  private String version = Editor.getProperties().version;
+  private String header = getClass().getPackage().getImplementationTitle();
+  private String version = getClass().getPackage().getImplementationVersion();
   private StatusBar status = new StatusBar();
 
   /**

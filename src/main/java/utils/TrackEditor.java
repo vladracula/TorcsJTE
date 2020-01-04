@@ -38,6 +38,7 @@ public class TrackEditor {
     System.out.println("OS              : " + System.getProperty("os.name"));
     System.out.println("OS architecture : " + System.getProperty("os.arch"));
     System.out.println("OS version      : " + System.getProperty("os.version"));
+    
     gui = new EditorFrame();
   }
 

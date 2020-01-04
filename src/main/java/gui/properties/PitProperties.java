@@ -111,7 +111,6 @@ public class PitProperties extends JPanel {
     this.add(sideLabel, null);
     this.add(getJComboBox(), null);
     this.add(entryLabel, null);
-
     this.add(generatePitsLabel, null);
     this.add(getGeneratePitsCheckBox(), null);
   }

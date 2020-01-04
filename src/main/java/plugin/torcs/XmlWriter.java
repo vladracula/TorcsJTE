@@ -37,8 +37,8 @@ import java.util.Vector;
  * @author Charalampos Alexopoulos
  * @author Adam Kubon
  * <p>
- * TODO To change the template for this generated type comment go to Window -
- * Preferences - Java - Code Style - Code Templates
+ * TODO To change the template for this generated type comment go to Window - Preferences - Java - Code Style - Code
+ * Templates
  */
 public class XmlWriter {
 
@@ -378,9 +378,10 @@ public class XmlWriter {
   private synchronized static String getCredit() {
     String tmp = "\n";
     tmp += "file                : " + Editor.getProperties().getTrackName() + ".xml\n";
-    tmp += "auto generated      : by TorcsJTE\n";
-    tmp += "version             : v 0.6.4 14/10/2019\n";
+    tmp += "auto generated      : by " + Editor.getProperties().title + "\n";
+    tmp += "version             : v " + Editor.getProperties().version + "\n";
     tmp += "copyright           : (C) 2005 by Charalampos Alexopoulos\n";
+    tmp += "copyright           : (C) 2019 by Adam Kubon\n";
     tmp += "email               : \n";
 
     return tmp;

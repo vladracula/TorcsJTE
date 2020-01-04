@@ -76,7 +76,7 @@ public class CircuitViewMouseMotionListener implements MouseMotionListener {
   public void mouseMoved(MouseEvent mouseEvent) {
     circuitView.screenToReal(mouseEvent, circuitView.getMousePoint());
     ArrayList<ObjShapeHandle> handles = circuitView.getHandles();
-    //Segment handledShape = circuitView.getHandledShape();
+    //Segment handledShape = view.getHandledShape();
     CircuitState currentState = circuitView.getCurrentState();
     try {
       switch (currentState) {

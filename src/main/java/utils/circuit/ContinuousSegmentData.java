@@ -37,7 +37,7 @@ public class ContinuousSegmentData {
     current.setBarrierStyle(previous.getBarrierStyle());
 
     current.setSideStartWidth(previous.getSideStartWidth());
-    current.setSideEndWidth(previous.getSideEndWidth());
+    current.setSideEndWidth(previous.getSideStartWidth());
     current.setSideSurface(previous.getSideSurface());
 
     current.setBorderHeight(previous.getBorderHeight());
