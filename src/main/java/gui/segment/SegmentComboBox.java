@@ -45,14 +45,6 @@ public class SegmentComboBox extends JComboBox<String> {
    *
    */
   public SegmentComboBox() {
-    initialize();
-  }
-
-  /**
-   *
-   */
-  private void initialize() {
-
   }
 
   /**

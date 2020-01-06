@@ -2,8 +2,8 @@ package action;
 
 import gui.EditorFrame;
 
-import javax.swing.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 
 /**
  * @author Adam Kubon
@@ -11,13 +11,33 @@ import java.awt.event.ActionEvent;
 
 public class ExportAC3Action extends AbstractEditorAction {
 
-  public ExportAC3Action(String name, Icon icon, String desc, Integer mnemonic, EditorFrame editorFrame) {
-    super(name, icon, desc, mnemonic, editorFrame);
+  public ExportAC3Action(EditorFrame editorFrame) {
+    super(editorFrame);
   }
 
   @Override
-  public void actionPerformed(ActionEvent actionEvent) {
+  public void actionToPerformed(ActionEvent actionEvent) {
     editorFrame.exportAc3d();
+  }
+
+  @Override
+  public String getName() {
+    return "AC3";
+  }
+
+  @Override
+  public String getImageName() {
+    return null;
+  }
+
+  @Override
+  public int getMnemonic() {
+    return KeyEvent.VK_S;
+  }
+
+  @Override
+  public String getDescription() {
+    return "Create AC3 file.";
   }
 
 }

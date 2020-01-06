@@ -140,10 +140,10 @@ public class GeneralProperties extends JPanel {
       pathTextField.setText(Editor.getProperties().getPath().substring(0, Editor.getProperties().getPath().lastIndexOf(sep)));
       pathTextField.addActionListener(new java.awt.event.ActionListener() {
         public void actionPerformed(java.awt.event.ActionEvent e) {
-          System.out.println("actionPerformed()"); // TODO
+          System.out.println("actionToPerformed()"); // TODO
           // Auto-generated
           // Event stub
-          // actionPerformed()
+          // actionToPerformed()
         }
       });
     }
@@ -223,7 +223,6 @@ public class GeneralProperties extends JPanel {
 
     Editor.getProperties().setTrackName(tmpName);
     Editor.getProperties().setPath(tmpPath + sep + tmpName);
-    int index = tmpPath.lastIndexOf(sep) + 1;
     Editor.getProperties().setCategory(tmpTrackType);
 
     File path = new File(tmpPath + sep + tmpName);

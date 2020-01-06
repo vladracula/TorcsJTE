@@ -47,7 +47,9 @@ public class ContinuousSegment {
    */
   public static Segment getNextSegment(Vector data, int pos) {
     Segment next = null;
-    if (pos >= data.size()) {
+    int maxIndex = data.size() - 1;
+    System.out.println("maxIndex: " + maxIndex + " pos:" + pos);
+    if (pos >= maxIndex) {
       next = (Segment) data.get(0);
     }
     else {
@@ -55,5 +57,18 @@ public class ContinuousSegment {
     }
     return next;
   }
+
+  public static Segment getPreviousSegment(Vector data, int pos) {
+    Segment previous = null;
+    int maxIndex = data.size() - 1;
+    if(pos == 0) {
+      previous = (Segment) data.get(maxIndex);
+    }
+    else {
+      previous = (Segment) data.get(pos - 1);
+    }
+    return previous;
+  }
+
 
 }

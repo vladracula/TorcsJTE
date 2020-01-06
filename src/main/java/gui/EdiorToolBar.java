@@ -2,7 +2,7 @@ package gui;
 
 import action.ActionProvider;
 import gui.view.CircuitView;
-import gui.view.enums.CircuitState;
+import gui.view.enumerator.CircuitState;
 
 import javax.swing.*;
 
@@ -109,7 +109,7 @@ public class EdiorToolBar extends JToolBar {
    *
    * @return javax.swing.JToggleButton
    */
-  private JToggleButton getToggleButtonDelete() {
+  public JToggleButton getToggleButtonDelete() {
     if (toggleButtonDelete == null) {
       toggleButtonDelete = new JToggleButton();
       toggleButtonDelete.setAction(actionProvider.getDeleteAction());
@@ -364,5 +364,6 @@ public class EdiorToolBar extends JToolBar {
       view.setState(CircuitState.NONE);
     }
   }
+
 
 }

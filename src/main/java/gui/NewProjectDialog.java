@@ -172,10 +172,10 @@ public class NewProjectDialog extends JDialog {
       pathTextField.setBounds(65, 105, 240, 30);
       pathTextField.addActionListener(new java.awt.event.ActionListener() {
         public void actionPerformed(java.awt.event.ActionEvent e) {
-          System.out.println("actionPerformed()"); // TODO
+          System.out.println("actionToPerformed()"); // TODO
           // Auto-generated
           // Event stub
-          // actionPerformed()
+          // actionToPerformed()
         }
       });
     }

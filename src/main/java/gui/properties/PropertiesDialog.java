@@ -35,7 +35,6 @@ import java.awt.*;
 public class PropertiesDialog extends JDialog {
 
   private static boolean APPROVE = false;
-  private EditorFrame parent;
   private JTabbedPane tabbedPane = null;
   private GeneralProperties generalProperties = null;
   private JPanel pane = null;

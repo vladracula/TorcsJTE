@@ -2,8 +2,8 @@ package action;
 
 import gui.EditorFrame;
 
-import javax.swing.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 
 /**
  * @author Adam Kubon
@@ -11,14 +11,35 @@ import java.awt.event.ActionEvent;
 
 public class ZoomPlusAction extends AbstractEditorAction {
 
-  public ZoomPlusAction(String name, Icon icon, String desc, Integer mnemonic, EditorFrame editorFrame) {
-    super(name, icon, desc, mnemonic, editorFrame);
+  public ZoomPlusAction(EditorFrame editorFrame) {
+    super(editorFrame);
   }
 
   @Override
-  public void actionPerformed(ActionEvent actionEvent) {
+  public void actionToPerformed(ActionEvent actionEvent) {
+    if (view == null) return;
     view.incZoomFactor();
     view.redrawCircuit();
+  }
+
+  @Override
+  public String getName() {
+    return "Zoom in";
+  }
+
+  @Override
+  public String getImageName() {
+    return "ZoomIn24";
+  }
+
+  @Override
+  public int getMnemonic() {
+    return KeyEvent.VK_M;
+  }
+
+  @Override
+  public String getDescription() {
+    return "Zoom in.";
   }
 
 }

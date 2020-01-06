@@ -2,7 +2,6 @@ package action;
 
 import gui.EditorFrame;
 
-import javax.swing.*;
 import java.awt.event.ActionEvent;
 
 /**
@@ -11,13 +10,33 @@ import java.awt.event.ActionEvent;
 
 public class CalcDeltaAction extends AbstractEditorAction {
 
-  public CalcDeltaAction(String name, Icon icon, String desc, Integer mnemonic, EditorFrame editorFrame) {
-    super(name, icon, desc, mnemonic, editorFrame);
+  public CalcDeltaAction(EditorFrame editorFrame) {
+    super(editorFrame);
   }
 
   @Override
-  public void actionPerformed(ActionEvent actionEvent) {
+  public void actionToPerformed(ActionEvent actionEvent) {
     editorFrame.calculateDeltas();
+  }
+
+  @Override
+  public String getName() {
+    return "Delta's";
+  }
+
+  @Override
+  public String getImageName() {
+    return "Calc24";
+  }
+
+  @Override
+  public int getMnemonic() {
+    return 0;
+  }
+
+  @Override
+  public String getDescription() {
+    return "Calculate Delta's for x,y,z and angle.";
   }
 
 }

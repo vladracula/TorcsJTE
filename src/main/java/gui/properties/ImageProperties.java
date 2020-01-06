@@ -111,8 +111,6 @@ public class ImageProperties extends JPanel {
    *
    */
   protected void selectPath() {
-    String tmp = "";
-    String filename = Editor.getProperties().getImage();
     JFileChooser fc = new JFileChooser();
     fc.setSelectedFiles(null);
     fc.setSelectedFile(null);
@@ -146,20 +144,6 @@ public class ImageProperties extends JPanel {
       imageScaleTextField.setText(Double.toString(Editor.getProperties().getImageScale()));
     }
     return imageScaleTextField;
-  }
-
-  /**
-   * @param imageScaleTextField The imageScaleTextField to set.
-   */
-  public void setImageScaleTextField(JTextField imageScaleTextField) {
-    this.imageScaleTextField = imageScaleTextField;
-  }
-
-  /**
-   * @param pathTextField The pathTextField to set.
-   */
-  public void setPathTextField(JTextField pathTextField) {
-    this.pathTextField = pathTextField;
   }
 
   public void exit() {

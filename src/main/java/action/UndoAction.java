@@ -3,8 +3,8 @@ package action;
 import gui.EditorFrame;
 import utils.undo.Undo;
 
-import javax.swing.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 
 /**
  * @author Adam Kubon
@@ -12,14 +12,35 @@ import java.awt.event.ActionEvent;
 
 public class UndoAction extends AbstractEditorAction {
 
-  public UndoAction(String name, Icon icon, String desc, Integer mnemonic, EditorFrame editorFrame) {
-    super(name, icon, desc, mnemonic, editorFrame);
+  public UndoAction(EditorFrame editorFrame) {
+    super(editorFrame);
   }
 
   @Override
-  public void actionPerformed(ActionEvent e) {
+  public void actionToPerformed(ActionEvent e) {
+    if (view == null) return;
     Undo.undo();
     view.redrawCircuit();
+  }
+
+  @Override
+  public String getName() {
+    return "Undo";
+  }
+
+  @Override
+  public String getImageName() {
+    return "Undo24";
+  }
+
+  @Override
+  public int getMnemonic() {
+    return KeyEvent.VK_Z;
+  }
+
+  @Override
+  public String getDescription() {
+    return "Undo.";
   }
 
 }

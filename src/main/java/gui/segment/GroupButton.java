@@ -34,8 +34,6 @@ public class GroupButton extends JPanel {
 
   private JRadioButton leftButton = null;
   private JRadioButton rightButton = null;
-  Action leftAction = null;
-  Action rightAction = null;
   ButtonGroup group = null;
   private JLabel rightLabel = null;
   private JLabel leftLabel = null;
@@ -150,7 +148,6 @@ public class GroupButton extends JPanel {
     rightLabel.setEnabled(enabled);
     getLeftButton().setEnabled(enabled);
     leftLabel.setEnabled(enabled);
-
   }
 
 }

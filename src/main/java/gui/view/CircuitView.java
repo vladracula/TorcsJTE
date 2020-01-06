@@ -3,7 +3,7 @@ package gui.view;
 import gui.EditorFrame;
 import gui.segment.SegmentEditorDialog;
 import gui.segment.listener.SegmentEditorDialogWindowListener;
-import gui.view.enums.CircuitState;
+import gui.view.enumerator.CircuitState;
 import gui.view.listener.CircuitViewMouseListener;
 import gui.view.listener.CircuitViewMouseMotionListener;
 import utils.Editor;
@@ -80,7 +80,7 @@ public class CircuitView extends JComponent {
   /**
    * event to fire when selection has changed
    */
-  private CircuitViewSelectionEvent selectionChangedEvent = new CircuitViewSelectionEvent(this);
+  private CircuitViewSelectionEvent selectionChangedEvent;
   /**
    * current selected shape
    */
@@ -125,8 +125,6 @@ public class CircuitView extends JComponent {
    * UI dialog
    */
   private SegmentEditorDialog segmentEditorDialog;
-  /** upward link to parent frame */
-  //	EditorFrameTest parentFrame;
   /**
    * current operating state
    */
@@ -171,19 +169,20 @@ public class CircuitView extends JComponent {
   /**
    * upward link to parent frame
    */
-  private EditorFrame parentFrame;
+  private EditorFrame editorFrame;
 
   /**
    * constructor
    *
-   * @param parentFrame Upward link
+   * @param editorFrame Upward link
    */
-  public CircuitView(EditorFrame parentFrame) {
+  public CircuitView(EditorFrame editorFrame) {
     try {
       addMouseListener(new CircuitViewMouseListener(this));
       addMouseMotionListener(new CircuitViewMouseMotionListener(this));
-      this.parentFrame = parentFrame;
+      this.editorFrame = editorFrame;
       terrain = new ObjShapeTerrain();
+      selectionChangedEvent = new CircuitViewSelectionEvent(this);
       Editor.getProperties().addPropertiesListener(new ActionListener() {
         public void actionPerformed(ActionEvent e) {
           setCircuit();
@@ -542,7 +541,7 @@ public class CircuitView extends JComponent {
 //			}
 //
 //			if (undoSteps.size() == 0)
-//				parentFrame.documentIsModified = false;
+//				editorFrame.documentIsModified = false;
 //		}
 //	}
 //
@@ -563,7 +562,7 @@ public class CircuitView extends JComponent {
 //				e.printStackTrace();
 //			}
 //
-//			parentFrame.documentIsModified = true;
+//			editorFrame.documentIsModified = true;
 //		}
 //	}
 
@@ -575,7 +574,7 @@ public class CircuitView extends JComponent {
       int height = (int) (backgroundImg.getIconHeight());
       backgroundRectangle.setFrame(0, 0, width * scale, height * scale);
       //System.out.println("Zoom = " + zoomFactor);
-      parentFrame.documentIsModified = true;
+      editorFrame.documentIsModified = true;
 
       invalidate();
       repaint();
@@ -676,17 +675,13 @@ public class CircuitView extends JComponent {
     }
 
     if (segmentEditorDialog == null) {
-      segmentEditorDialog = new SegmentEditorDialog(this, parentFrame, "", false, shape);
+      segmentEditorDialog = new SegmentEditorDialog(this, editorFrame, "", false, shape);
       segmentEditorDialog.addWindowListener(new SegmentEditorDialogWindowListener(this));
     }
   }
 
   public CircuitState getCurrentState() {
     return currentState;
-  }
-
-  public void setCurrentState(CircuitState currentState) {
-    this.currentState = currentState;
   }
 
   public Segment getHandledShape() {
@@ -705,12 +700,12 @@ public class CircuitView extends JComponent {
     this.handledShape = handledShape;
   }
 
-  public EditorFrame getParentFrame() {
-    return parentFrame;
+  public EditorFrame getEditorFrame() {
+    return editorFrame;
   }
 
-  public void setParentFrame(EditorFrame parentFrame) {
-    this.parentFrame = parentFrame;
+  public void setEditorFrame(EditorFrame editorFrame) {
+    this.editorFrame = editorFrame;
   }
 
   public boolean isDragging() {
@@ -733,40 +728,20 @@ public class CircuitView extends JComponent {
     return handles;
   }
 
-  public void setHandles(ArrayList<ObjShapeHandle> handles) {
-    this.handles = handles;
-  }
-
   public ObjShapeHandle getHandle() {
     return handle;
-  }
-
-  public void setHandle(ObjShapeHandle handle) {
-    this.handle = handle;
   }
 
   public Point2D.Double getMousePoint() {
     return mousePoint;
   }
 
-  public void setMousePoint(Point2D.Double mousePoint) {
-    this.mousePoint = mousePoint;
-  }
-
   public Point2D.Double getClickPoint() {
     return clickPoint;
   }
 
-  public void setClickPoint(Point2D.Double clickPoint) {
-    this.clickPoint = clickPoint;
-  }
-
   public CircuitViewSelectionEvent getSelectionChangedEvent() {
     return selectionChangedEvent;
-  }
-
-  public void setSelectionChangedEvent(CircuitViewSelectionEvent selectionChangedEvent) {
-    this.selectionChangedEvent = selectionChangedEvent;
   }
 
   public EditorPoint getImgOffsetPrev() {

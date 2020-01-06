@@ -1,7 +1,7 @@
 package gui.view.listener;
 
 import gui.view.CircuitView;
-import gui.view.enums.CircuitState;
+import gui.view.enumerator.CircuitState;
 import utils.Editor;
 import utils.EditorPoint;
 import utils.TrackData;
@@ -61,7 +61,7 @@ public class CircuitViewMouseListener implements MouseListener {
             circuitView.setSelectedShape(newShape);
             circuitView.openSegmentDialog(newShape);
 //            view.getSegmentEditorDialog().addWindowListener(view);
-            circuitView.getParentFrame().documentIsModified = true;
+            circuitView.getEditorFrame().documentIsModified = true;
             circuitView.redrawCircuit();
           }
           break;
@@ -86,8 +86,8 @@ public class CircuitViewMouseListener implements MouseListener {
             Undo.add(new UndoAddSegment(newShape));
             circuitView.setSelectedShape(newShape);
             circuitView.openSegmentDialog(newShape);
-  //          view.getSegmentEditorDialog().addWindowListener(view);
-            circuitView.getParentFrame().documentIsModified = true;
+            //          view.getSegmentEditorDialog().addWindowListener(view);
+            circuitView.getEditorFrame().documentIsModified = true;
             circuitView.redrawCircuit();
           }
           break;
@@ -109,8 +109,8 @@ public class CircuitViewMouseListener implements MouseListener {
             Undo.add(new UndoAddSegment(newShape));
             circuitView.setSelectedShape(newShape);
             circuitView.openSegmentDialog(newShape);
-    //        view.getSegmentEditorDialog().addWindowListener(view);
-            circuitView.getParentFrame().documentIsModified = true;
+            //        view.getSegmentEditorDialog().addWindowListener(view);
+            circuitView.getEditorFrame().documentIsModified = true;
           }
           break;
 
@@ -136,7 +136,7 @@ public class CircuitViewMouseListener implements MouseListener {
               int pos = data.indexOf(circuitView.getHandledShape());
               Undo.add(new UndoDeleteSegment(circuitView.getHandledShape()));
 
-              Segment previous = (Segment) data.get(pos - 1);
+              Segment previous = ContinuousSegment.getPreviousSegment(data, pos);
               Segment next = ContinuousSegment.getNextSegment(data, pos);
               data.remove(pos);
               ContinuousSegment.makeLinkedList(previous, next);
@@ -144,14 +144,15 @@ public class CircuitViewMouseListener implements MouseListener {
               circuitView.setHandledShape(null);
               //selectedShape = newShape;
 
-              circuitView.getParentFrame().documentIsModified = true;
+              circuitView.getEditorFrame().documentIsModified = true;
 
               circuitView.redrawCircuit();
 
               circuitView.setState(CircuitState.NONE);
-              circuitView.getParentFrame().toggleButtonDelete.setSelected(false);
 
-              circuitView.getParentFrame().documentIsModified = true;
+              circuitView.getEditorFrame().getEdiorToolBar().getToggleButtonDelete().setSelected(false);
+
+              circuitView.getEditorFrame().documentIsModified = true;
             }
             catch (Exception ex) {
               ex.printStackTrace();

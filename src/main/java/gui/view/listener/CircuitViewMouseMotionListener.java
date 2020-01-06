@@ -1,7 +1,7 @@
 package gui.view.listener;
 
 import gui.view.CircuitView;
-import gui.view.enums.CircuitState;
+import gui.view.enumerator.CircuitState;
 import utils.Editor;
 import utils.EditorPoint;
 import utils.TrackData;

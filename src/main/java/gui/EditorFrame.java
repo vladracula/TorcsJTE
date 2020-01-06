@@ -24,13 +24,11 @@ import action.ActionProvider;
 import gui.properties.PropertiesDialog;
 import gui.splash.SplashScreen;
 import gui.view.CircuitView;
-import gui.view.enums.CircuitState;
+import gui.view.enumerator.CircuitState;
 import plugin.Plugin;
 import plugin.torcs.TorcsPlugin;
 import utils.*;
-import utils.circuit.Curve;
-import utils.circuit.Segment;
-import utils.circuit.Straight;
+import utils.circuit.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -63,7 +61,7 @@ public class EditorFrame extends JFrame {
   // UI
   private JMenuBar mainMenuBar;
   private JScrollPane mainScrollPane = new JScrollPane();
-  public JToggleButton toggleButtonDelete = null;
+//  public JToggleButton toggleButtonDelete = null;
   private EdiorToolBar ediorToolBar;
   //private DeltaPanel			deltaPanel							= null;
 
@@ -75,8 +73,6 @@ public class EditorFrame extends JFrame {
   private Project prj;
 
   private String sep = System.getProperty("file.separator");
-
-  private JButton calculateDeltaButton = null;
 
   public EditorFrame() {
     boolean doSplash = true;
@@ -178,8 +174,8 @@ public class EditorFrame extends JFrame {
    *
    */
   public void saveProject() {
-//		if (documentIsModified)
-    if (true) {
+		if (!documentIsModified) return;
+    if (!Editor.getProperties().getTrackName().equals("")) {
       String filename = Editor.getProperties().getPath() + sep + Editor.getProperties().getTrackName() + ".prj.xml";
       try {
         XMLEncoder encoder = new XMLEncoder(new FileOutputStream(filename));
@@ -227,7 +223,7 @@ public class EditorFrame extends JFrame {
    */
   private void createNewCircuit() {
     Segment shape;
-    Vector<Segment> track = new Vector<Segment>();
+    Vector<Segment> track = new Vector<>();
 
     shape = new Straight();
     shape.setLength(100);
@@ -252,6 +248,9 @@ public class EditorFrame extends JFrame {
     ((Curve) shape).setArc(Math.PI);
     shape.setProfilStepLength(4);
     track.add(shape);
+    Segment previous = ContinuousSegment.getPreviousSegment(track, 0);
+    Segment next = ContinuousSegment.getNextSegment(track, 3);
+    ContinuousSegment.makeLinkedList(previous, next);
     TrackData.setTrackData(track);
   }
 
@@ -500,6 +499,10 @@ public class EditorFrame extends JFrame {
 
   public Plugin getTorcsPlugin() {
     return torcsPlugin;
+  }
+
+  public EdiorToolBar getEdiorToolBar() {
+    return ediorToolBar;
   }
 
 }

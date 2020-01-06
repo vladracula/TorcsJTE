@@ -2,8 +2,8 @@ package action;
 
 import gui.EditorFrame;
 
-import javax.swing.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 
 /**
  * @author Adam Kubon
@@ -11,13 +11,33 @@ import java.awt.event.ActionEvent;
 
 public class NewAction extends AbstractEditorAction {
 
-  public NewAction(String name, Icon icon, String desc, Integer mnemonic, EditorFrame editorFrame) {
-    super(name, icon, desc, mnemonic, editorFrame);
+  public NewAction(EditorFrame editorFrame) {
+    super(editorFrame);
   }
 
   @Override
-  public void actionPerformed(ActionEvent actionEvent) {
+  public void actionToPerformed(ActionEvent actionEvent) {
     editorFrame.newProjectDialog();
+  }
+
+  @Override
+  public String getName() {
+    return "New";
+  }
+
+  @Override
+  public String getImageName() {
+    return "New24";
+  }
+
+  @Override
+  public int getMnemonic() {
+    return KeyEvent.VK_S;
+  }
+
+  @Override
+  public String getDescription() {
+    return "New circuit.";
   }
 
 }

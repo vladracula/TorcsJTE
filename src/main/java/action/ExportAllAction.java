@@ -2,8 +2,8 @@ package action;
 
 import gui.EditorFrame;
 
-import javax.swing.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 
 /**
  * @author Adam Kubon
@@ -11,13 +11,33 @@ import java.awt.event.ActionEvent;
 
 public class ExportAllAction extends AbstractEditorAction {
 
-  public ExportAllAction(String name, Icon icon, String desc, Integer mnemonic, EditorFrame editorFrame) {
-    super(name, icon, desc, mnemonic, editorFrame);
+  public ExportAllAction(EditorFrame editorFrame) {
+    super(editorFrame);
   }
 
   @Override
-  public void actionPerformed(ActionEvent actionEvent) {
+  public void actionToPerformed(ActionEvent actionEvent) {
     System.out.println("TODO : I have to write some code for this.");
+  }
+
+  @Override
+  public String getName() {
+    return "All";
+  }
+
+  @Override
+  public String getImageName() {
+    return null;
+  }
+
+  @Override
+  public int getMnemonic() {
+    return KeyEvent.VK_S;
+  }
+
+  @Override
+  public String getDescription() {
+    return "Export both XML file and AC3 file.";
   }
 
 }

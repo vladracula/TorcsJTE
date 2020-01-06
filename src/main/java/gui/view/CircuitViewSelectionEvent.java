@@ -18,7 +18,6 @@ public class CircuitViewSelectionEvent extends EventObject {
 
   public CircuitViewSelectionEvent(CircuitView source) {
     super(source);
-
     circuitView = source;
   }
 

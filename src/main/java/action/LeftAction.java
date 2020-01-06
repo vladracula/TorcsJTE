@@ -2,8 +2,8 @@ package action;
 
 import gui.EditorFrame;
 
-import javax.swing.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 
 /**
  * @author Adam Kubon
@@ -11,13 +11,33 @@ import java.awt.event.ActionEvent;
 
 public class LeftAction extends AbstractEditorAction {
 
-  public LeftAction(String name, Icon icon, String desc, Integer mnemonic, EditorFrame editorFrame) {
-    super(name, icon, desc, mnemonic, editorFrame);
+  public LeftAction(EditorFrame editorFrame) {
+    super(editorFrame);
   }
 
   @Override
-  public void actionPerformed(ActionEvent actionEvent) {
+  public void actionToPerformed(ActionEvent actionEvent) {
     editorFrame.toggleButtonCreateLeftSegment_actionPerformed(actionEvent);
+  }
+
+  @Override
+  public String getName() {
+    return "Add left";
+  }
+
+  @Override
+  public String getImageName() {
+    return "TurnLeft24";
+  }
+
+  @Override
+  public int getMnemonic() {
+    return KeyEvent.VK_S;
+  }
+
+  @Override
+  public String getDescription() {
+    return "Add a left turn segment.";
   }
 
 }

@@ -1,4 +1,4 @@
-package gui.view.enums;
+package gui.view.enumerator;
 
 /**
  * @author Adam Kubon

@@ -41,9 +41,6 @@ public class SplashPanel extends JPanel {
   private String version = getClass().getPackage().getImplementationVersion();
   private StatusBar status = new StatusBar();
 
-  /**
-   *
-   */
   public SplashPanel(String iconName) {
     this.setBorder(new EtchedBorder(BevelBorder.LOWERED));
     this.setLayout(new BorderLayout());
