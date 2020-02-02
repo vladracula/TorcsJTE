@@ -77,7 +77,7 @@ public class EditorMenu extends JMenuBar {
     menuItemShoStartPoint.setText("Show start point");
     menuItemShoStartPoint.addActionListener(new java.awt.event.ActionListener() {
       public void actionPerformed(ActionEvent e) {
-        editorFrame.menuItemShoStartPoint_actionPerformed(e);
+        editorFrame.menuItemShowStartPoint_actionPerformed(e);
       }
     });
 

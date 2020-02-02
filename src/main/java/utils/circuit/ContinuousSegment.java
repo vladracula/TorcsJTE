@@ -46,9 +46,9 @@ public class ContinuousSegment {
    * @return
    */
   public static Segment getNextSegment(Vector data, int pos) {
+    if (pos < 0) throw new RuntimeException("bad index: " + pos);
     Segment next = null;
     int maxIndex = data.size() - 1;
-    System.out.println("maxIndex: " + maxIndex + " pos:" + pos);
     if (pos >= maxIndex) {
       next = (Segment) data.get(0);
     }
@@ -59,9 +59,10 @@ public class ContinuousSegment {
   }
 
   public static Segment getPreviousSegment(Vector data, int pos) {
+    if (pos < 0) throw new RuntimeException("bad index: " + pos);
     Segment previous = null;
     int maxIndex = data.size() - 1;
-    if(pos == 0) {
+    if (pos == 0) {
       previous = (Segment) data.get(maxIndex);
     }
     else {
@@ -69,6 +70,5 @@ public class ContinuousSegment {
     }
     return previous;
   }
-
 
 }

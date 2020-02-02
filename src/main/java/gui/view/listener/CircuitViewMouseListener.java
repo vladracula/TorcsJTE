@@ -18,6 +18,7 @@ import java.util.Iterator;
 import java.util.Vector;
 
 /**
+ * @author Patrice Espie
  * @author Adam Kubon
  */
 

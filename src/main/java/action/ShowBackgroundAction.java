@@ -2,6 +2,7 @@ package action;
 
 import gui.EditorFrame;
 
+import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
@@ -11,13 +12,18 @@ import java.awt.event.KeyEvent;
 
 public class ShowBackgroundAction extends AbstractEditorAction {
 
+  private boolean enabled;
+
   public ShowBackgroundAction(EditorFrame editorFrame) {
     super(editorFrame);
   }
 
   @Override
   public void actionToPerformed(ActionEvent actionEvent) {
-    editorFrame.toggleButtonShowBackground_actionPerformed(actionEvent);
+    enabled = !enabled;
+    JToggleButton toggleButton = editorFrame.getEdiorToolBar().getShowBackgroundButton();
+    toggleButton.setSelected(enabled);
+    editorFrame.enableBackground(enabled);
   }
 
   @Override

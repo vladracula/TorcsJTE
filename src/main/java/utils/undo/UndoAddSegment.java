@@ -21,6 +21,7 @@
 package utils.undo;
 
 import utils.TrackData;
+import utils.circuit.ContinuousSegment;
 import utils.circuit.Segment;
 
 import java.util.Vector;
@@ -52,6 +53,9 @@ public class UndoAddSegment implements UndoInterface {
   public void undo() {
     Vector<Segment> data = TrackData.getTrackData();
     pos = data.indexOf(undo);
+    if(pos < 0) return;
+    ContinuousSegment.makeLinkedList(data, pos, undo);
+    data.insertElementAt(undo, pos);
     data.remove(undo);
     redo = undo;
     undo = null;
@@ -62,7 +66,11 @@ public class UndoAddSegment implements UndoInterface {
    */
   public void redo() {
     Vector<Segment> data = TrackData.getTrackData();
+    if (pos < 0) return;
+    Segment previous = ContinuousSegment.getPreviousSegment(data, pos);
+    Segment next = ContinuousSegment.getNextSegment(data, pos);
     data.insertElementAt(redo, pos);
+    ContinuousSegment.makeLinkedList(previous, next);
     undo = redo;
     redo = null;
   }

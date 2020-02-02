@@ -40,6 +40,4 @@ public class DeleteAction extends AbstractEditorAction {
     return "Delete.";
   }
 
-
-
 }

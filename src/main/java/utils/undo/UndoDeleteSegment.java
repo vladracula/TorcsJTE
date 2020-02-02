@@ -21,6 +21,7 @@
 package utils.undo;
 
 import utils.TrackData;
+import utils.circuit.ContinuousSegment;
 import utils.circuit.Segment;
 
 import java.util.Vector;
@@ -29,8 +30,8 @@ import java.util.Vector;
  * @author Charalampos Alexopoulos
  * @author Adam Kubon
  * <p>
- * TODO To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Style - Code Templates
+ * TODO To change the template for this generated type comment go to Window - Preferences - Java - Code Style - Code
+ * Templates
  */
 public class UndoDeleteSegment implements UndoInterface {
 
@@ -44,7 +45,7 @@ public class UndoDeleteSegment implements UndoInterface {
   public UndoDeleteSegment(Segment segment) {
     this.undo = segment;
     this.redo = null;
-    Vector data = TrackData.getTrackData();
+    Vector<Segment> data = TrackData.getTrackData();
     pos = data.indexOf(undo);
   }
 
@@ -53,7 +54,8 @@ public class UndoDeleteSegment implements UndoInterface {
    */
   public void undo() {
     Vector<Segment> data = TrackData.getTrackData();
-    System.out.println(pos);
+    if (pos < 0) return;
+    ContinuousSegment.makeLinkedList(data, pos, undo);
     data.insertElementAt(undo, pos);
     redo = undo;
     undo = null;
@@ -65,7 +67,11 @@ public class UndoDeleteSegment implements UndoInterface {
   public void redo() {
     Vector<Segment> data = TrackData.getTrackData();
     pos = data.indexOf(undo);
+    if (pos < 0) return;
+    Segment previous = ContinuousSegment.getPreviousSegment(data, pos);
+    Segment next = ContinuousSegment.getNextSegment(data, pos);
     data.remove(undo);
+    ContinuousSegment.makeLinkedList(previous, next);
     undo = redo;
     redo = null;
   }

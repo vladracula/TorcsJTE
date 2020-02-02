@@ -28,7 +28,10 @@ import gui.view.enumerator.CircuitState;
 import plugin.Plugin;
 import plugin.torcs.TorcsPlugin;
 import utils.*;
-import utils.circuit.*;
+import utils.circuit.ContinuousSegment;
+import utils.circuit.Curve;
+import utils.circuit.Segment;
+import utils.circuit.Straight;
 
 import javax.swing.*;
 import java.awt.*;
@@ -61,7 +64,7 @@ public class EditorFrame extends JFrame {
   // UI
   private JMenuBar mainMenuBar;
   private JScrollPane mainScrollPane = new JScrollPane();
-//  public JToggleButton toggleButtonDelete = null;
+  //  public JToggleButton toggleButtonDelete = null;
   private EdiorToolBar ediorToolBar;
   //private DeltaPanel			deltaPanel							= null;
 
@@ -114,6 +117,53 @@ public class EditorFrame extends JFrame {
       e.printStackTrace();
     }
     _splash.dispose();
+  }
+
+  private void initialize() throws Exception {
+    actionProvider = new ActionProvider(this);
+    mainMenuBar = new EditorMenu(this);
+    ediorToolBar = new EdiorToolBar(this);
+
+    String title = this.getClass().getPackage().getImplementationTitle();
+    String version = this.getClass().getPackage().getImplementationVersion();
+
+    this.setTitle(title + " - " + version);
+
+    ClassLoader cldr = this.getClass().getClassLoader();
+    Image image = new ImageIcon(cldr.getResource("data/icons/icon.png")).getImage();
+
+    this.setIconImage(image);
+    setSize(new Dimension(800, 600));
+    Point p = new Point();
+    p.x = getProject().getFrameX();
+    p.y = getProject().getFrameY();
+    this.setLocation(p);
+    this.setJMenuBar(mainMenuBar);
+    this.setContentPane(getJContentPane());
+    mainScrollPane.setMaximumSize(new Dimension(100, 100));
+    mainScrollPane.setMinimumSize(new Dimension(10, 10));
+    mainScrollPane.setPreferredSize(new Dimension(10, 10));
+    view.setMaximumSize(new Dimension(100, 100));
+    view.setMinimumSize(new Dimension(10, 10));
+    view.setPreferredSize(new Dimension(10, 10));
+    view.setSize(new Dimension(32767, 32767));
+    _splash.incProgress(20);
+    try {
+      Thread.sleep(100);
+    }
+    catch (InterruptedException ex) {
+      System.err.println("thread interrupted: " + ex.getMessage());
+    }
+
+    mainScrollPane.getViewport().add(view, null);
+    _splash.incProgress(20);
+    try {
+      Thread.sleep(1000);
+    }
+    catch (InterruptedException ex) {
+      System.err.println("Thread interrupted" + ex.getMessage());
+    }
+    this.setVisible(true);
   }
 
   /**
@@ -174,7 +224,7 @@ public class EditorFrame extends JFrame {
    *
    */
   public void saveProject() {
-		if (!documentIsModified) return;
+    if (!documentIsModified) return;
     if (!Editor.getProperties().getTrackName().equals("")) {
       String filename = Editor.getProperties().getPath() + sep + Editor.getProperties().getTrackName() + ".prj.xml";
       try {
@@ -264,52 +314,6 @@ public class EditorFrame extends JFrame {
     return prj;
   }
 
-  private void initialize() throws Exception {
-    actionProvider = new ActionProvider(this);
-    mainMenuBar = new EditorMenu(this);
-    ediorToolBar = new EdiorToolBar(this);
-
-    String title = this.getClass().getPackage().getImplementationTitle();
-    String version = this.getClass().getPackage().getImplementationVersion();
-
-    this.setTitle(title + " - " + version);
-
-    ClassLoader cldr = this.getClass().getClassLoader();
-    Image image = new ImageIcon(cldr.getResource("data/icons/icon.png")).getImage();
-
-    this.setIconImage(image);
-    setSize(new Dimension(800, 600));
-    Point p = new Point();
-    p.x = getProject().getFrameX();
-    p.y = getProject().getFrameY();
-    this.setLocation(p);
-    this.setJMenuBar(mainMenuBar);
-    this.setContentPane(getJContentPane());
-    mainScrollPane.setMaximumSize(new Dimension(100, 100));
-    mainScrollPane.setMinimumSize(new Dimension(10, 10));
-    mainScrollPane.setPreferredSize(new Dimension(10, 10));
-    view.setMaximumSize(new Dimension(100, 100));
-    view.setMinimumSize(new Dimension(10, 10));
-    view.setPreferredSize(new Dimension(10, 10));
-    view.setSize(new Dimension(32767, 32767));
-    _splash.incProgress(20);
-    try {
-      Thread.sleep(100);
-    }
-    catch (InterruptedException ex) {
-      System.err.println("thread interrupted: " + ex.getMessage());
-    }
-
-    mainScrollPane.getViewport().add(view, null);
-    _splash.incProgress(20);
-    try {
-      Thread.sleep(1000);
-    }
-    catch (InterruptedException ex) {
-      System.err.println("Thread interrupted" + ex.getMessage());
-    }
-    this.setVisible(true);
-  }
 
   /**
    * This method initializes jContentPane
@@ -409,19 +413,18 @@ public class EditorFrame extends JFrame {
         //set view background image
         view.setBackgroundImage(tmp);
       }
-
     }
     catch (Exception ex) {
       ex.printStackTrace();
     }
   }
 
-  void menuItemShoStartPoint_actionPerformed(ActionEvent e) {
-    ediorToolBar.checkButtons(CircuitState.SHOW_BGRD_START_POSITION);
+  void menuItemShowStartPoint_actionPerformed(ActionEvent e) {
+    //ediorToolBar.checkButtons(CircuitState.SHOW_BGRD_START_POSITION);
   }
 
-  public void toggleButtonShowBackground_actionPerformed(ActionEvent e) {
-    view.setShowBackground(ediorToolBar.getShowBackgroundButton().isSelected());
+  public void enableBackground(boolean enable){
+    view.setShowBackground(enable);
     view.invalidate();
     view.repaint();
   }

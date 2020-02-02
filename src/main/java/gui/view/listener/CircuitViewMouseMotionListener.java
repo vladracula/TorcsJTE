@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
+ * @author Patrice Espie
  * @author Adam Kubon
  */
 public class CircuitViewMouseMotionListener implements MouseMotionListener {
@@ -99,7 +100,6 @@ public class CircuitViewMouseMotionListener implements MouseMotionListener {
             if (handles.size() > 0) {
               handles.clear();
               circuitView.setHandledShape(null);
-
               circuitView.invalidate();
               circuitView.repaint();
             }
@@ -112,27 +112,30 @@ public class CircuitViewMouseMotionListener implements MouseMotionListener {
             Iterator i = TrackData.getTrackData().iterator();
             while (i.hasNext()) {
               Segment o = (Segment) i.next();
-
-              if (maxDist > o.endTrackCenter.distance(circuitView.getMousePoint())) {
-                maxDist = o.endTrackCenter.distance(circuitView.getMousePoint());
-                obj = o;
+              double endDistance = o.endTrackCenter.distance(circuitView.getMousePoint());
+              double startDistance = o.endTrackCenter.distance(circuitView.getMousePoint());
+              switch (currentState) {
+                case DELETE:
+                  if (maxDist > endDistance && maxDist < startDistance) {
+                    maxDist = o.endTrackCenter.distance(circuitView.getMousePoint());
+                    obj = o;
+                  }
+                  break;
+                default:
+                  if (maxDist > endDistance) {
+                    maxDist = o.endTrackCenter.distance(circuitView.getMousePoint());
+                    obj = o;
+                  }
               }
             }
-
             circuitView.setHandledShape(obj);
             circuitView.getHandle().calcShape(circuitView.getHandledShape().endTrackCenter);
-
             circuitView.getHandles().add(circuitView.getHandle());
             circuitView.invalidate();
             circuitView.repaint();
           }
         }
         break;
-
-//				case DELETE :
-//				{
-//				}
-//					break;
       }
     }
     catch (Exception ex) {

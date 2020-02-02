@@ -407,18 +407,20 @@ public class CircuitView extends JComponent {
       }
 
       if (selectedShape != null) {
-        g.setColor(Color.red);
+        g.setColor(Color.ORANGE);
         selectedShape.draw(g, affineTransform);
       }
 
       if (handledShape != null) {
-        g.setColor(Color.YELLOW);
-        handledShape.draw(g, affineTransform);
+        if (currentState.equals(CircuitState.DELETE)) {
+          g.setColor(Color.RED);
+          handledShape.draw(g, affineTransform);
+        }
       }
-
-      g.setColor(Color.blue);
-      i = handles.iterator();
-
+      if (handledShape != null && !currentState.equals(CircuitState.DELETE)) {
+        g.setColor(Color.CYAN);
+        i = handles.iterator();
+      }
       while (i.hasNext()) {
         ((Segment) i.next()).draw(g, affineTransform);
       }
@@ -504,20 +506,20 @@ public class CircuitView extends JComponent {
       segmentEditorDialog = null;
     }
   }
-  //
-  //	public void showArrows(boolean show)
-  //	{
-  //		showArrows = show;
-  //
-  //		try
-  //		{
-  //			calcGeometricObjects();
-  //		} catch (Exception e)
-  //		{
-  //			e.printStackTrace();
-  //		}
-  //	}
-  //
+/*
+  	public void showArrows(boolean show)
+  	{
+  		showArrows = show;
+
+  		try
+  		{
+  			calcGeometricObjects();
+  		} catch (Exception e)
+  		{
+  			e.printStackTrace();
+  		}
+  	}
+*/
 //	public void popUndo()
 //	{
 //		//undoSteps.remove(undoSteps.size() - 1);

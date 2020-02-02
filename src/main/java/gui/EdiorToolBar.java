@@ -217,7 +217,7 @@ public class EdiorToolBar extends JToolBar {
    *
    * @return javax.swing.JButton
    */
-  private JToggleButton getShowArrowsButton() {
+  public JToggleButton getShowArrowsButton() {
     if (showArrowsButton == null) {
       showArrowsButton = new JToggleButton();
       showArrowsButton.setAction(actionProvider.getShowArrowsAction());
@@ -364,6 +364,5 @@ public class EdiorToolBar extends JToolBar {
       view.setState(CircuitState.NONE);
     }
   }
-
 
 }
