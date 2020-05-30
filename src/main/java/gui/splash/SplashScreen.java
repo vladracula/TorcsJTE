@@ -52,18 +52,19 @@ public class SplashScreen extends JWindow {
     getContentPane().setLayout(new BorderLayout(0, 0));
 
     panel = new SplashPanel(iconName);
-    if (panel.getImage() != null) {
-      int imgWidth = panel.getImage().getIconWidth();
-      int imgHeight = panel.getImage().getIconHeight();
-      Dimension scrSize = Toolkit.getDefaultToolkit().getScreenSize();
-      setLocation(scrSize.width / 2 - imgWidth / 2, scrSize.height / 2 - imgHeight / 2);
-    }
 
     getContentPane().add(panel);
     Dimension contentPaneSize = getContentPane().getPreferredSize();
     setSize(contentPaneSize.width, contentPaneSize.height);
 
     pack();
+
+    if (panel.getImage() != null) {
+      int imgWidth = panel.getWidth();//getImage().getIconWidth();
+      int imgHeight = panel.getHeight();//getImage().getIconHeight();
+      Dimension scrSize = Toolkit.getDefaultToolkit().getScreenSize();
+      setLocation(scrSize.width / 2 - imgWidth / 2, scrSize.height / 2 - imgHeight / 2);
+    }
   }
 
   public void setStatus(String s) {

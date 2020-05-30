@@ -51,8 +51,8 @@ import java.util.Vector;
  * @author Patrice Espie , Charalampos Alexopoulos
  * @auhor Adam Kubon
  * <p>
- * TODO To change the template for this generated type comment go to Window - Preferences - Java - Code Style - Code
- * Templates
+ * TODO To change the template for this generated type comment go to Window - Preferences - Java -
+ * Code Style - Code Templates
  */
 public class EditorFrame extends JFrame {
 
@@ -313,7 +313,6 @@ public class EditorFrame extends JFrame {
     }
     return prj;
   }
-
 
   /**
    * This method initializes jContentPane

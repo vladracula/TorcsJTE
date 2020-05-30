@@ -66,6 +66,18 @@ public class CircuitView extends JComponent {
    */
   private Rectangle2D.Double boundingRectangle = new Rectangle2D.Double(0, 0, 0, 0);
   /**
+   * showing outZone
+   */
+  private boolean showOutZone = false;
+  /**
+   * width of zone outside circuit terrain, shown on screen
+   */
+  double outZoneWidth = 0;                  // meters
+  /**
+   * height of zone outside circuit terrain, shown on screen
+   */
+  double outZoneHeight = 0;                  // meters
+  /**
    * situation on circuit terrain of the screen center
    */
   private Point2D.Double screenCenter = new Point2D.Double(0, 0);      // meters
@@ -144,7 +156,7 @@ public class CircuitView extends JComponent {
   /**
    * show terrain border
    */
-  private boolean terrainBorderMustBeShown = true;
+  private boolean terrainBorderMustBeShown = false;
   /**
    * selection listener management
    */
@@ -279,11 +291,10 @@ public class CircuitView extends JComponent {
         r.getY() / zoomFactor + boundingRectangle.getY(),
         r.getWidth() / zoomFactor,
         r.getHeight() / zoomFactor);
-
-    //		if (boundingRectangle.getWidth() < visibleRect.getWidth()
-    //				&& boundingRectangle.getHeight() < visibleRect.getHeight())
-    //			return;
-
+    // check if all track bounds fits in window
+    if (boundingRectangle.getWidth() < visibleRect.getWidth()
+        && boundingRectangle.getHeight() < visibleRect.getHeight())
+      return;
     setZoomFactor(zoomFactor / 1.2);
   }
 
@@ -300,17 +311,35 @@ public class CircuitView extends JComponent {
       // new visible part of screen in pixels
       Rectangle r = getVisibleRect();
 
+      if (showOutZone) {
+        // out zone size in meters
+        outZoneWidth = (r.getWidth() / 2) * zoomFactor;
+        outZoneHeight = (r.getHeight() / 2) * zoomFactor;
+      }
+      else {
+        outZoneHeight = 0;
+        outZoneWidth = 0;
+      }
+
       // new visible part of screen in meters
       Rectangle2D.Double visibleRect = new Rectangle2D.Double(
-          r.getX() / zoomFactor + boundingRectangle.getX(),
-          r.getY() / zoomFactor + boundingRectangle.getY(),
-          r.getWidth() / zoomFactor,
-          r.getHeight() / zoomFactor);
+          r.getX() / zoomFactor + boundingRectangle.getX() - outZoneWidth,
+          r.getY() / zoomFactor + boundingRectangle.getY() - outZoneHeight,
+          (r.getWidth() / zoomFactor) + 1,
+          (r.getHeight() / zoomFactor) + 1);
 
       // set new screen size in pixels
-      setMaximumSize(new Dimension(
-          (int) (newZoomFactor * (boundingRectangle.getWidth() + 1)),
-          (int) (newZoomFactor * (boundingRectangle.getHeight() + 1))));
+      if (showOutZone) {
+        setMaximumSize(new Dimension(
+            (int) ((newZoomFactor * (boundingRectangle.getWidth() + visibleRect.getWidth())) + 1),
+            (int) ((newZoomFactor * (boundingRectangle.getHeight() + visibleRect.getHeight()))) + 1));
+      }
+      else {
+        setMaximumSize(new Dimension(
+            (int) ((newZoomFactor * (boundingRectangle.getWidth())) + 1),
+            (int) ((newZoomFactor * (boundingRectangle.getHeight()))) + 1));
+      }
+
       setMinimumSize(getMaximumSize());
       setPreferredSize(getMaximumSize());
       setSize(getMaximumSize());
@@ -318,8 +347,8 @@ public class CircuitView extends JComponent {
       // define affine transformation
       affineTransform.setToIdentity();
       affineTransform.translate(
-          (boundingRectangle.getWidth() / 2) * zoomFactor,
-          (boundingRectangle.getHeight() / 2) * zoomFactor);
+          (outZoneWidth + boundingRectangle.getWidth() / 2) * zoomFactor,
+          (outZoneHeight + boundingRectangle.getHeight() / 2) * zoomFactor);
       affineTransform.scale(zoomFactor, -zoomFactor);
       affineTransform.translate(
           -boundingRectangle.getX() - boundingRectangle.getWidth() / 2,
@@ -328,16 +357,12 @@ public class CircuitView extends JComponent {
 
       // scroll to keep same screen center as previously
       scrollRectToVisible(new Rectangle(
-          (int) (zoomFactor * (screenCenter.getX() - boundingRectangle.getX()) - r.getWidth() / 2) + 1,
-          (int) (zoomFactor * (screenCenter.getY() - boundingRectangle.getY()) - r.getHeight() / 2) + 1,
+          (int) (zoomFactor * (screenCenter.getX() - boundingRectangle.getX()
+              + outZoneWidth) - r.getWidth() / 2) + 1,
+          (int) (zoomFactor * (screenCenter.getY() - boundingRectangle.getY()
+              + outZoneHeight) - r.getHeight() / 2) + 1,
           (int) (r.getWidth()) - 2,
           (int) (r.getHeight()) - 2));
-      //			scrollRectToVisible( new Rectangle( (int)( zoomFactor * (
-      // screenCenter.getX() ) - r.getWidth() / 2 ) + 1,
-      //												(int)( zoomFactor * ( screenCenter.getY() ) - r.getHeight() / 2 )
-      // + 1,
-      //												(int)( r.getWidth() ) - 2,
-      //												(int)( r.getHeight() ) - 2 ) );
 
       // calculate and draw
       revalidate();
@@ -361,11 +386,10 @@ public class CircuitView extends JComponent {
       Rectangle r = getVisibleRect();
 
       Rectangle2D.Double visibleRect = new Rectangle2D.Double(
-          r.getX() / zoomFactor + boundingRectangle.getX(),
-          r.getY() / zoomFactor + boundingRectangle.getY(),
-          r.getWidth() / zoomFactor,
-          r.getHeight() / zoomFactor);
-
+          r.getX() / zoomFactor + boundingRectangle.getX() - (outZoneWidth * zoomFactor),
+          r.getY() / zoomFactor + boundingRectangle.getY() - (outZoneHeight * zoomFactor),
+          (r.getWidth() / zoomFactor) + 1,
+          (r.getHeight() / zoomFactor) + 1);
 
       // visible part of screen center in meters
       screenCenter = new Point2D.Double(
@@ -377,11 +401,29 @@ public class CircuitView extends JComponent {
         Point2D.Double p1 = new Point2D.Double(0, 0);
         Point2D.Double p2 = new Point2D.Double(
             backgroundRectangle.getWidth(), backgroundRectangle.getHeight());
+/*
+        //old solution
+        Segment firstObj = (Segment) TrackData.getTrackData().get(0);
+        Point2D.Double p1 = new Point2D.Double(0, 0);
+        p1.setLocation(firstObj.points[0]);
+        p1.setLocation(p1.getX() +
+            Editor.getProperties().getImgOffset().getX(),
+            p1.getY() + Editor.getProperties().getImgOffset().getY());
+        Point2D.Double p2 = new Point2D.Double(
+            backgroundRectangle.getWidth(),
+            backgroundRectangle.getHeight());
+        p2.setLocation(p2.getX(), p2.getY());
 
+        p1 = (Point2D.Double) affineTransform.transform(p1, null);
+*/
         //    p1 = (Point2D.Double) affineTransform.transform(p1, null);
 
-        g.drawImage(backgroundImg.getImage(), (int) (p1.getX()), (int) (p1.getY()),
-            (int) (p2.getX() * zoomFactor), (int) (p2.getY() * zoomFactor), null);
+        g.drawImage(backgroundImg.getImage(),
+            (int) (p1.getX()),
+            (int) (p1.getY()),
+            (int) (p2.getX() * zoomFactor),
+            (int) (p2.getY() * zoomFactor),
+            null);
       }
 
       // paint the circuit
@@ -636,6 +678,7 @@ public class CircuitView extends JComponent {
 
   public void redrawCircuit() {
     Vector track = TrackData.getTrackData();
+    if (track == null) return;
     int size = track.size();
 
     Editor.getProperties().setCurrentA(0);
@@ -644,7 +687,6 @@ public class CircuitView extends JComponent {
 
     for (int i = 0; i < size; i++) {
       Segment obj = (Segment) track.get(i);
-      ;
       obj.setCount(i + 1);
       try {
         obj.calcShape(null);

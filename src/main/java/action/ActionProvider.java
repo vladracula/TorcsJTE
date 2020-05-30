@@ -10,27 +10,27 @@ import javax.swing.*;
 
 public class ActionProvider {
 
-  private EditorFrame editorFrame;
-  private UndoAction undoAction;
-  private RedoAction redoAction;
-  private DeleteAction deleteAction;
-  private ZoomPlusAction zoomPlusAction;
-  private ZoomOneAction zoomOneAction;
-  private ZoomMinusAction zoomMinusAction;
-  private StraightAction straightAction;
-  private RightAction rightAction;
-  private LeftAction leftAction;
-  private NewAction newAction;
-  private OpenAction openAction;
-  private SaveAction saveAction;
-  private MoveAction moveAction;
-  private ShowArrowsAction showArrowsAction;
-  private ShowBackgroundAction showBackgroundAction;
-  private HelpAction helpAction;
-  private ExportAllAction allAction;
-  private ExportAC3Action ac3Action;
-  private PropertiesAction propertiesAction;
-  private CalcDeltaAction calcDeltaAction;
+  private final EditorFrame editorFrame;
+  private final UndoAction undoAction;
+  private final RedoAction redoAction;
+  private final DeleteAction deleteAction;
+  private final ZoomPlusAction zoomPlusAction;
+  private final ZoomOneAction zoomOneAction;
+  private final ZoomMinusAction zoomMinusAction;
+  private final StraightAction straightAction;
+  private final RightAction rightAction;
+  private final LeftAction leftAction;
+  private final NewAction newAction;
+  private final OpenAction openAction;
+  private final SaveAction saveAction;
+  private final MoveAction moveAction;
+  private final ShowArrowsAction showArrowsAction;
+  private final ShowBackgroundAction showBackgroundAction;
+  private final HelpAction helpAction;
+  private final ExportAllAction allAction;
+  private final ExportAC3Action ac3Action;
+  private final PropertiesAction propertiesAction;
+  private final CalcDeltaAction calcDeltaAction;
 
   public ActionProvider(EditorFrame editorFrame) {
     this.editorFrame = editorFrame;
