@@ -6,6 +6,7 @@ import gui.segment.listener.SegmentEditorDialogWindowListener;
 import gui.view.enumerator.CircuitState;
 import gui.view.listener.CircuitViewMouseListener;
 import gui.view.listener.CircuitViewMouseMotionListener;
+import gui.view.listener.CircuitViewMouseWheelListener;
 import utils.Editor;
 import utils.EditorPoint;
 import utils.TrackData;
@@ -192,6 +193,7 @@ public class CircuitView extends JComponent {
     try {
       addMouseListener(new CircuitViewMouseListener(this));
       addMouseMotionListener(new CircuitViewMouseMotionListener(this));
+      addMouseWheelListener(new CircuitViewMouseWheelListener(this));
       this.editorFrame = editorFrame;
       terrain = new ObjShapeTerrain();
       selectionChangedEvent = new CircuitViewSelectionEvent(this);
