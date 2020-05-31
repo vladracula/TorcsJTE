@@ -30,8 +30,8 @@ import java.io.File;
  * @author babis
  * @author Adam Kubon
  * <p>
- * TODO To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Style - Code Templates
+ * TODO To change the template for this generated type comment go to Window - Preferences - Java -
+ * Code Style - Code Templates
  */
 public class ImageProperties extends JPanel {
 
@@ -56,9 +56,9 @@ public class ImageProperties extends JPanel {
     JLabel imageScaleLabel = new JLabel();
     JLabel pathLabel = new JLabel();
     this.setLayout(null);
-    pathLabel.setBounds(10, 10, 60, 30);
+    pathLabel.setBounds(10, 10, 60, 21);
     pathLabel.setText("Path");
-    imageScaleLabel.setBounds(10, 50, 90, 30);
+    imageScaleLabel.setBounds(10, 35, 90, 21);
     imageScaleLabel.setText("Image scale");
     this.setSize(420, 230);
     this.setBorder(javax.swing.BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
@@ -77,7 +77,7 @@ public class ImageProperties extends JPanel {
   public JTextField getPathTextField() {
     if (pathTextField == null) {
       pathTextField = new JTextField();
-      pathTextField.setBounds(75, 10, 240, 30);
+      pathTextField.setBounds(75, 10, 240, 21);
       pathTextField.setText(Editor.getProperties().getImage());
       pathTextField.addActionListener(new java.awt.event.ActionListener() {
         public void actionPerformed(java.awt.event.ActionEvent e) {
@@ -96,7 +96,7 @@ public class ImageProperties extends JPanel {
   public JButton getBrowseButton() {
     if (browseButton == null) {
       browseButton = new JButton();
-      browseButton.setBounds(320, 10, 95, 30);
+      browseButton.setBounds(320, 10, 95, 20);
       browseButton.setText("Browse");
       browseButton.addActionListener(new java.awt.event.ActionListener() {
         public void actionPerformed(java.awt.event.ActionEvent e) {
@@ -105,6 +105,20 @@ public class ImageProperties extends JPanel {
       });
     }
     return browseButton;
+  }
+
+  /**
+   * This method initializes imageScaleTextField
+   *
+   * @return javax.swing.JTextField
+   */
+  public JTextField getImageScaleTextField() {
+    if (imageScaleTextField == null) {
+      imageScaleTextField = new JTextField();
+      imageScaleTextField.setBounds(105, 35, 90, 21);
+      imageScaleTextField.setText(Double.toString(Editor.getProperties().getImageScale()));
+    }
+    return imageScaleTextField;
   }
 
   /**
@@ -130,20 +144,6 @@ public class ImageProperties extends JPanel {
     if (result == JFileChooser.APPROVE_OPTION) {
       getPathTextField().setText(fc.getSelectedFile().toString());
     }
-  }
-
-  /**
-   * This method initializes imageScaleTextField
-   *
-   * @return javax.swing.JTextField
-   */
-  public JTextField getImageScaleTextField() {
-    if (imageScaleTextField == null) {
-      imageScaleTextField = new JTextField();
-      imageScaleTextField.setBounds(105, 50, 90, 30);
-      imageScaleTextField.setText(Double.toString(Editor.getProperties().getImageScale()));
-    }
-    return imageScaleTextField;
   }
 
   public void exit() {
