@@ -60,12 +60,13 @@ public class PropertiesDialog extends JDialog {
    */
   private void initialize() {
     this.setContentPane(getPane());
-    this.setSize(431, 260);
+    this.setSize(423, 252);
     this.setModal(true);
     this.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
     this.setResizable(false);
     this.setTitle("Properties");
-    this.getPane().setSize(438, 222);
+    this.getPane().setSize(423, 214);
+    setLocationRelativeTo(frame);
   }
 
   /**
@@ -120,9 +121,9 @@ public class PropertiesDialog extends JDialog {
     if (footerPanel == null) {
       footerPanel = new JPanel();
       footerPanel.setLayout(null);
-      footerPanel.setBorder(
-          javax.swing.BorderFactory.createEtchedBorder(javax.swing.border.EtchedBorder.LOWERED));
-      footerPanel.setPreferredSize(new java.awt.Dimension(14, 35));
+//      footerPanel.setBorder(
+//          javax.swing.BorderFactory.createEtchedBorder(javax.swing.border.EtchedBorder.LOWERED));
+      footerPanel.setPreferredSize(new java.awt.Dimension(423, 38));
       footerPanel.add(getOkButton(), null);
       footerPanel.add(getCancelButton(), null);
     }
@@ -137,7 +138,7 @@ public class PropertiesDialog extends JDialog {
   private JButton getOkButton() {
     if (okButton == null) {
       okButton = new JButton();
-      okButton.setBounds(327, 5, 90, 20);
+      okButton.setBounds(325, 8, 90, 20);
       okButton.setText("Ok");
       okButton.addActionListener(new java.awt.event.ActionListener() {
         public void actionPerformed(java.awt.event.ActionEvent e) {
@@ -156,7 +157,7 @@ public class PropertiesDialog extends JDialog {
   private JButton getCancelButton() {
     if (cancelButton == null) {
       cancelButton = new JButton();
-      cancelButton.setBounds(227, 5, 90, 20);
+      cancelButton.setBounds(225, 8, 90, 20);
       cancelButton.setText("Cancel");
       cancelButton.addActionListener(new java.awt.event.ActionListener() {
         public void actionPerformed(java.awt.event.ActionEvent e) {

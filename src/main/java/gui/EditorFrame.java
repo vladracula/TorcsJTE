@@ -124,6 +124,13 @@ public class EditorFrame extends JFrame {
     mainMenuBar = new EditorMenu(this);
     ediorToolBar = new EdiorToolBar(this);
 
+    Insets insets = UIManager.getInsets("TabbedPane.contentBorderInsets");
+    insets.top = -1;
+    insets.bottom = -1;
+    insets.left = -1;
+    insets.right = -1;
+    UIManager.put("TabbedPane.contentBorderInsets", insets);
+
     String title = this.getClass().getPackage().getImplementationTitle();
     String version = this.getClass().getPackage().getImplementationVersion();
 
