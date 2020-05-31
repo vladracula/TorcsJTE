@@ -20,8 +20,6 @@
  */
 package gui.properties;
 
-import gui.EditorFrame;
-
 import javax.swing.*;
 import java.awt.*;
 
@@ -29,11 +27,12 @@ import java.awt.*;
  * @author babis
  * @author Adam Kubon
  * <p>
- * TODO To change the template for this generated type comment go to Window -
- * Preferences - Java - Code Style - Code Templates
+ * TODO To change the template for this generated type comment go to Window - Preferences - Java -
+ * Code Style - Code Templates
  */
 public class PropertiesDialog extends JDialog {
 
+  private Frame frame;
   private static boolean APPROVE = false;
   private JTabbedPane tabbedPane = null;
   private GeneralProperties generalProperties = null;
@@ -48,8 +47,9 @@ public class PropertiesDialog extends JDialog {
   /**
    *
    */
-  public PropertiesDialog() {
+  public PropertiesDialog(Frame frame) {
     super();
+    this.frame = frame;
     initialize();
   }
 
@@ -91,7 +91,7 @@ public class PropertiesDialog extends JDialog {
    */
   private GeneralProperties getGeneralProperties() {
     if (generalProperties == null) {
-      generalProperties = new GeneralProperties();
+      generalProperties = new GeneralProperties(frame);
     }
     return generalProperties;
   }

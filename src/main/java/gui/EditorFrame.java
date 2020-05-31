@@ -439,7 +439,7 @@ public class EditorFrame extends JFrame {
    */
   public void propertiesDialog() {
     if (TrackData.getTrackData() != null) {
-      PropertiesDialog properties = new PropertiesDialog();
+      PropertiesDialog properties = new PropertiesDialog(this);
       properties.setVisible(true);
       refresh();
     }

@@ -23,6 +23,7 @@ package gui.properties;
 import utils.Editor;
 
 import javax.swing.*;
+import java.awt.*;
 import java.io.File;
 
 /**
@@ -34,20 +35,22 @@ import java.io.File;
  */
 public class GeneralProperties extends JPanel {
 
+  private Frame frame;
   private JTextField projectNameTextField = null;
-  private JComboBox trackTypeComboBox = null;
+  private JComboBox<String> trackCategoryComboBox = null;
   private JTextField pathTextField = null;
   private JButton browseButton = null;
   private JTextField authorTextField = null;
-  private JTextField descriptionTextField = null;
+  private JTextArea descriptionTextField = null;
 
   private String sep = System.getProperty("file.separator");
 
   /**
    *
    */
-  public GeneralProperties() {
+  public GeneralProperties(Frame frame) {
     super();
+    this.frame = frame;
     initialize();
   }
 
@@ -62,15 +65,15 @@ public class GeneralProperties extends JPanel {
     JLabel trackTypeLabel = new JLabel();
 
     this.setLayout(null);
-    projectNameLabel.setBounds(15, 15, 100, 30);
+    projectNameLabel.setBounds(15, 15, 100, 20);
     projectNameLabel.setText("Track Name");
-    trackTypeLabel.setBounds(15, 60, 100, 30);
-    trackTypeLabel.setText("Track Type");
-    pathLabel.setBounds(15, 105, 60, 30);
-    pathLabel.setText("Path");
-    authorLabel.setBounds(15, 150, 60, 30);
+    trackTypeLabel.setBounds(15, 40, 110, 20);
+    trackTypeLabel.setText("Track category");
+    authorLabel.setBounds(15, 65, 60, 20);
     authorLabel.setText("Author");
-    descriptionLabel.setBounds(15, 195, 80, 30);
+    pathLabel.setBounds(15, 90, 105, 20);
+    pathLabel.setText("Path");
+    descriptionLabel.setBounds(15, 115, 90, 20);
     descriptionLabel.setText("Description");
     this.setSize(420, 230);
     this.setBorder(javax.swing.BorderFactory.createEtchedBorder(javax.swing.border.EtchedBorder.LOWERED));
@@ -78,7 +81,7 @@ public class GeneralProperties extends JPanel {
     this.add(getBrowseButton(), null);
     this.add(getProjectNameTextField(), null);
     this.add(projectNameLabel, null);
-    this.add(getTrackTypeComboBox(), null);
+    this.add(getTrackCategoryComboBox(), null);
     this.add(trackTypeLabel, null);
 
     this.add(pathLabel, null);
@@ -93,11 +96,10 @@ public class GeneralProperties extends JPanel {
    *
    * @return javax.swing.JTextField
    */
-  public JTextField getProjectNameTextField() {
+  private JTextField getProjectNameTextField() {
     if (projectNameTextField == null) {
       projectNameTextField = new JTextField();
-      projectNameTextField.setBounds(135, 15, 170, 30);
-      projectNameTextField.setText(Editor.getProperties().getTrackName());
+      projectNameTextField.setBounds(130, 15, 275, 20);
       projectNameTextField.addActionListener(new java.awt.event.ActionListener() {
         public void actionPerformed(java.awt.event.ActionEvent e) {
 
@@ -109,23 +111,35 @@ public class GeneralProperties extends JPanel {
 
   /**
    * This method initializes trackTypeComboBox
-   * .
    *
    * @return javax.swing.JComboBox
    */
-  private JComboBox getTrackTypeComboBox() {
-    if (trackTypeComboBox == null) {
-      String trackTypes[] = {"road", "oval", "dirt"};
+  private JComboBox<String> getTrackCategoryComboBox() {
+    if (trackCategoryComboBox == null) {
+      String[] trackTypes = {"road", "oval", "dirt"};
 
-      trackTypeComboBox = new JComboBox<>(trackTypes);
-      trackTypeComboBox.setBounds(135, 60, 170, 30);
-      trackTypeComboBox.addActionListener(new java.awt.event.ActionListener() {
+      trackCategoryComboBox = new JComboBox<>(trackTypes);
+      trackCategoryComboBox.setBounds(130, 40, 275, 20);
+      trackCategoryComboBox.addActionListener(new java.awt.event.ActionListener() {
         public void actionPerformed(java.awt.event.ActionEvent e) {
 
         }
       });
     }
-    return trackTypeComboBox;
+    return trackCategoryComboBox;
+  }
+
+  /**
+   * This method initializes authorTextField
+   *
+   * @return javax.swing.JTextField
+   */
+  private JTextField getAuthorTextField() {
+    if (authorTextField == null) {
+      authorTextField = new JTextField();
+      authorTextField.setBounds(130, 65, 275, 20);
+    }
+    return authorTextField;
   }
 
   /**
@@ -133,11 +147,10 @@ public class GeneralProperties extends JPanel {
    *
    * @return javax.swing.JTextField
    */
-  public JTextField getPathTextField() {
+  private JTextField getPathTextField() {
     if (pathTextField == null) {
       pathTextField = new JTextField();
-      pathTextField.setBounds(65, 105, 240, 30);
-      pathTextField.setText(Editor.getProperties().getPath().substring(0, Editor.getProperties().getPath().lastIndexOf(sep)));
+      pathTextField.setBounds(65, 90, 240, 20);
       pathTextField.addActionListener(new java.awt.event.ActionListener() {
         public void actionPerformed(java.awt.event.ActionEvent e) {
           System.out.println("actionToPerformed()"); // TODO
@@ -155,10 +168,10 @@ public class GeneralProperties extends JPanel {
    *
    * @return javax.swing.JButton
    */
-  public JButton getBrowseButton() {
+  private JButton getBrowseButton() {
     if (browseButton == null) {
       browseButton = new JButton();
-      browseButton.setBounds(320, 105, 95, 30);
+      browseButton.setBounds(315, 90, 90, 20);
       browseButton.setText("Browse");
       browseButton.addActionListener(new java.awt.event.ActionListener() {
         public void actionPerformed(java.awt.event.ActionEvent e) {
@@ -170,29 +183,14 @@ public class GeneralProperties extends JPanel {
   }
 
   /**
-   * This method initializes authorTextField
-   *
-   * @return javax.swing.JTextField
-   */
-  public JTextField getAuthorTextField() {
-    if (authorTextField == null) {
-      authorTextField = new JTextField();
-      authorTextField.setBounds(65, 150, 240, 30);
-      authorTextField.setText(Editor.getProperties().getAuthor());
-    }
-    return authorTextField;
-  }
-
-  /**
    * This method initializes descriptionTextField
    *
    * @return javax.swing.JTextField
    */
-  public JTextField getDescriptionTextField() {
+  private JTextArea getDescriptionTextField() {
     if (descriptionTextField == null) {
-      descriptionTextField = new JTextField();
-      descriptionTextField.setBounds(90, 195, 330, 30);
-      descriptionTextField.setText(Editor.getProperties().getDescription());
+      descriptionTextField = new JTextArea();
+      descriptionTextField.setBounds(15, 140, 390, 90);
     }
     return descriptionTextField;
   }
@@ -219,7 +217,7 @@ public class GeneralProperties extends JPanel {
   public void exit() {
     String tmpPath = getPathTextField().getText();
     String tmpName = getProjectNameTextField().getText();
-    String tmpTrackType = (String) getTrackTypeComboBox().getSelectedItem();
+    String tmpTrackType = (String) getTrackCategoryComboBox().getSelectedItem();
 
     Editor.getProperties().setTrackName(tmpName);
     Editor.getProperties().setPath(tmpPath + sep + tmpName);
