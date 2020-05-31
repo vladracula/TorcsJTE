@@ -184,6 +184,8 @@ public class CircuitView extends JComponent {
    */
   private EditorFrame editorFrame;
 
+  private Point origin = new Point(0,0);
+
   /**
    * constructor
    *
@@ -306,6 +308,7 @@ public class CircuitView extends JComponent {
    * @param newZoomFactor
    */
   public void setZoomFactor(double newZoomFactor) {
+    double previousZoom = zoomFactor;
     try {
       // update internal zoom factor
       zoomFactor = newZoomFactor;
@@ -357,6 +360,7 @@ public class CircuitView extends JComponent {
           -boundingRectangle.getY() - boundingRectangle.getHeight() / 2);
       inverseAffineTransform = affineTransform.createInverse();
 
+      /*
       // scroll to keep same screen center as previously
       scrollRectToVisible(new Rectangle(
           (int) (zoomFactor * (screenCenter.getX() - boundingRectangle.getX()
@@ -365,6 +369,19 @@ public class CircuitView extends JComponent {
               + outZoneHeight) - r.getHeight() / 2) + 1,
           (int) (r.getWidth()) - 2,
           (int) (r.getHeight()) - 2));
+      */
+
+      Rectangle visibleRect2 = getVisibleRect();
+      Point2D point = origin;
+
+      double scrollX = point.getX() / previousZoom * zoomFactor
+          - (point.getX() - visibleRect2.getX());
+      double scrollY = point.getY() / previousZoom * zoomFactor
+          - (point.getY() - visibleRect2.getY());
+
+      //set visible rectangle to calculated rectangle
+      visibleRect2.setRect(scrollX, scrollY, visibleRect2.getWidth(), visibleRect2.getHeight());
+      scrollRectToVisible(visibleRect2);
 
       // calculate and draw
       revalidate();
@@ -812,6 +829,22 @@ public class CircuitView extends JComponent {
 
   public void setSegmentEditorDialog(SegmentEditorDialog segmentEditorDialog) {
     this.segmentEditorDialog = segmentEditorDialog;
+  }
+
+  public Point getOrigin() {
+    return origin;
+  }
+
+  public void setOrigin(Point origin) {
+    this.origin = origin;
+  }
+
+  public Point2D.Double getScreenCenter() {
+    return screenCenter;
+  }
+
+  public void setScreenCenter(Point2D.Double screenCenter) {
+    this.screenCenter = screenCenter;
   }
 
 }

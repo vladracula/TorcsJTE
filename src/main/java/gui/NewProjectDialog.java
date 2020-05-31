@@ -30,8 +30,8 @@ import java.io.File;
  * @author babis
  * @author Adam Kubon
  * <p>
- * TODO To change the template for this generated type comment go to Window -
- * Preferences - Java - Code Style - Code Templates
+ * TODO To change the template for this generated type comment go to Window - Preferences - Java -
+ * Code Style - Code Templates
  */
 public class NewProjectDialog extends JDialog {
 
@@ -44,11 +44,11 @@ public class NewProjectDialog extends JDialog {
   private JButton okButton = null;
   private JButton cancelButton = null;
 
-  private EditorFrame parent;
+  private final EditorFrame parent;
   private JTextField authorTextField = null;
   private JTextField descriptionTextField = null;
 
-  private String sep = System.getProperty("file.separator");
+  private final String sep = System.getProperty("file.separator");
 
   /**
    *
@@ -61,8 +61,6 @@ public class NewProjectDialog extends JDialog {
 
   /**
    * This method initializes this
-   *
-   * @return void
    */
   private void initialize() {
     this.setSize(440, 455);
@@ -72,6 +70,7 @@ public class NewProjectDialog extends JDialog {
     this.setResizable(false);
     this.setTitle("New Project");
     this.getContentPane().setSize(447, 321);
+    setLocationRelativeTo(parent);
   }
 
   /**
@@ -92,7 +91,6 @@ public class NewProjectDialog extends JDialog {
       projectNameLabel.setBounds(15, 15, 100, 30);
       projectNameLabel.setText("Track Name");
 
-      //add
       trackTypeLabel.setBounds(15, 60, 100, 30);
       trackTypeLabel.setText("Track Type");
 
@@ -100,7 +98,7 @@ public class NewProjectDialog extends JDialog {
       pathLabel.setText("Path");
       authorLabel.setBounds(15, 150, 60, 30);
       authorLabel.setText("Author");
-      descriptionLabel.setBounds(15, 195, 80, 30);
+      descriptionLabel.setBounds(15, 195, 90, 30);
       descriptionLabel.setText("Description");
       jPanel.add(getPathTextField(), null);
       jPanel.add(getBrowseButton(), null);
@@ -145,9 +143,9 @@ public class NewProjectDialog extends JDialog {
    *
    * @return javax.swing.JComboBox
    */
-  private JComboBox getTrackTypeComboBox() {
+  private JComboBox<String> getTrackTypeComboBox() {
     if (trackTypeComboBox == null) {
-      String trackTypes[] = {"road", "oval", "dirt"};
+      String[] trackTypes = {"road", "oval", "dirt"};
 
       trackTypeComboBox = new JComboBox<>(trackTypes);
       trackTypeComboBox.setBounds(135, 60, 170, 30);
@@ -222,7 +220,7 @@ public class NewProjectDialog extends JDialog {
   private JTextField getDescriptionTextField() {
     if (descriptionTextField == null) {
       descriptionTextField = new JTextField();
-      descriptionTextField.setBounds(90, 195, 330, 30);
+      descriptionTextField.setBounds(90, 220, 330, 30);
     }
     return descriptionTextField;
   }
@@ -254,7 +252,7 @@ public class NewProjectDialog extends JDialog {
   private JButton getOkButton() {
     if (okButton == null) {
       okButton = new JButton();
-      okButton.setBounds(105, 390, 78, 30);
+      okButton.setBounds(105, 390, 90, 30);
       okButton.setText("Ok");
       okButton.addActionListener(new java.awt.event.ActionListener() {
         public void actionPerformed(java.awt.event.ActionEvent e) {
@@ -273,7 +271,7 @@ public class NewProjectDialog extends JDialog {
   private JButton getCancelButton() {
     if (cancelButton == null) {
       cancelButton = new JButton();
-      cancelButton.setBounds(250, 390, 78, 30);
+      cancelButton.setBounds(250, 390, 90, 30);
       cancelButton.setText("Cancel");
       cancelButton.addActionListener(new java.awt.event.ActionListener() {
         public void actionPerformed(java.awt.event.ActionEvent e) {
@@ -296,7 +294,8 @@ public class NewProjectDialog extends JDialog {
     Editor.getProperties().setCategory(tmpTrackType);
     File path = new File(tmpPath + sep + tmpName);
     if (!path.exists()) {
-      path.mkdirs();
+      boolean created = path.mkdirs();
+      if (!created) System.err.println("directory " + path.toString() + " was not created");
     }
     Editor.getProperties().setAuthor(this.getAuthorTextField().getText());
     Editor.getProperties().setDescription(this.getDescriptionTextField().getText());

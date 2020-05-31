@@ -3,7 +3,6 @@ package gui.view.listener;
 import gui.view.CircuitView;
 import gui.view.enumerator.CircuitState;
 import utils.Editor;
-import utils.EditorPoint;
 import utils.TrackData;
 import utils.circuit.*;
 import utils.undo.Undo;
@@ -11,9 +10,9 @@ import utils.undo.UndoAddSegment;
 import utils.undo.UndoDeleteSegment;
 import utils.undo.UndoSegmentChange;
 
+import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.awt.geom.Point2D;
 import java.util.Iterator;
 import java.util.Vector;
 
@@ -24,7 +23,7 @@ import java.util.Vector;
 
 public class CircuitViewMouseListener implements MouseListener {
 
-  private CircuitView circuitView;
+  private final CircuitView circuitView;
 
   public CircuitViewMouseListener(CircuitView circuitView) {
     this.circuitView = circuitView;
@@ -33,7 +32,7 @@ public class CircuitViewMouseListener implements MouseListener {
   @Override
   public void mouseClicked(MouseEvent mouseEvent) {
 
-    if (mouseEvent.getButton() == 1) {
+    if (mouseEvent.getButton() == MouseEvent.BUTTON3) {
       circuitView.screenToReal(mouseEvent, circuitView.getClickPoint());
       circuitView.screenToReal(mouseEvent, circuitView.getMousePoint());
       try {
@@ -68,9 +67,7 @@ public class CircuitViewMouseListener implements MouseListener {
           break;
 
           case CREATE_RIGHT_SEGMENT: {
-            if (circuitView.getHandledShape() == null)
-              return;
-
+            if (circuitView.getHandledShape() == null) return;
             // create a standard curve segment
             Vector<Segment> data = TrackData.getTrackData();
             int pos = data.indexOf(circuitView.getHandledShape());
@@ -146,13 +143,9 @@ public class CircuitViewMouseListener implements MouseListener {
               //selectedShape = newShape;
 
               circuitView.getEditorFrame().documentIsModified = true;
-
               circuitView.redrawCircuit();
-
               circuitView.setState(CircuitState.NONE);
-
               circuitView.getEditorFrame().getEdiorToolBar().getToggleButtonDelete().setSelected(false);
-
               circuitView.getEditorFrame().documentIsModified = true;
             }
             catch (Exception ex) {
@@ -170,36 +163,46 @@ public class CircuitViewMouseListener implements MouseListener {
 
   @Override
   public void mousePressed(MouseEvent mouseEvent) {
+    circuitView.setOrigin(new Point(mouseEvent.getPoint()));
     CircuitState currentState = circuitView.getCurrentState();
-    EditorPoint imgOffsetStart = circuitView.getImgOffsetStart();
-    EditorPoint imgOffsetPrev = circuitView.getImgOffsetPrev();
 
-    if (mouseEvent.getButton() == 3) {
+    if (mouseEvent.getButton() == MouseEvent.BUTTON1) {
+      /*
+      EditorPoint imgOffsetStart = circuitView.getImgOffsetStart();
+      EditorPoint imgOffsetPrev = circuitView.getImgOffsetPrev();
       Point2D.Double tmp = new Point2D.Double(imgOffsetStart.getX(), imgOffsetStart.getY());
       circuitView.screenToReal(mouseEvent, tmp);
       imgOffsetStart.setLocation(tmp.getX(), tmp.getY());
       imgOffsetPrev.setLocation(Editor.getProperties().getImgOffset());
+      */
+      switch (currentState) {
+        case NONE:
+          circuitView.setState(CircuitState.MOVE_SCREEN);
+          circuitView.setCursor(new Cursor(Cursor.HAND_CURSOR));
+          break;
+        case DELETE:
+
+      }
     }
-    if (mouseEvent.getButton() == 1) {
+    if (mouseEvent.getButton() == MouseEvent.BUTTON3) {
       try {
         circuitView.screenToReal(mouseEvent, circuitView.getClickPoint());
 
         // must check for a segment under the mouse
         Segment obj = circuitView.findObjAtMousePos();
-
         Segment lastSelectedShape = circuitView.getSelectedShape();
 
         boolean selectedShapeChanged = (circuitView.getSelectedShape() != obj);
         circuitView.setSelectedShape(obj);
-
         circuitView.setHandleDragging(-1);
 
         if (circuitView.getSelectedShape() != null) {
           circuitView.setDragging(true);
 
           int curHandle = 0;
-          for (Iterator i = circuitView.getHandles().iterator(); i.hasNext(); curHandle++) {
-            ObjShapeHandle h = (ObjShapeHandle) i.next();
+          for (Iterator<ObjShapeHandle> i = circuitView.getHandles().iterator();
+               i.hasNext(); curHandle++) {
+            ObjShapeHandle h = i.next();
 
             // is the mouse in the handledShape handle ?
             if (mouseEvent.getX() > h.trPoints[0].getX() - ObjShapeHandle.handleSize
@@ -273,10 +276,15 @@ public class CircuitViewMouseListener implements MouseListener {
    */
   @Override
   public void mouseReleased(MouseEvent mouseEvent) {
+    circuitView.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 
     CircuitState currentState = circuitView.getCurrentState();
 
-    if (mouseEvent.getButton() == 1) {
+    if (mouseEvent.getButton() == MouseEvent.BUTTON1) {
+      circuitView.setState(CircuitState.NONE);
+    }
+
+    if (mouseEvent.getButton() == MouseEvent.BUTTON3) {
       switch (currentState) {
         case NONE: {
           if (circuitView.isDragging()) {

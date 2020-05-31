@@ -123,9 +123,8 @@ public class SegmentSideProperties extends JPanel implements SliderListener {
     titleLabel = new JLabel();
     this.setLayout(null);
     this.setBorder(javax.swing.BorderFactory.createEtchedBorder(javax.swing.border.EtchedBorder.LOWERED));
-    this.setLocation(0, 0);
-    this.setSize(440, 471);
-    titleLabel.setBounds(185, 5, 70, 20);
+    this.setBounds(0, 0, 440, 471);
+    titleLabel.setBounds(175, 5, 70, 20);
     titleLabel.setText("Right");
     titleLabel.setFont(new java.awt.Font("Dialog", java.awt.Font.BOLD, 18));
     this.add(getPanel(), null);
@@ -142,20 +141,40 @@ public class SegmentSideProperties extends JPanel implements SliderListener {
       JLabel borderLabel = new JLabel();
       JLabel borderStyleLabel = new JLabel();
       JLabel borderSurfaceLabel = new JLabel();
-      panel = new JPanel();
       JLabel sideSurfaceLabel = new JLabel();
       JLabel sideLabel = new JLabel();
       JLabel barrierSurfaceLabel = new JLabel();
       JLabel barrierStyleLabel = new JLabel();
       JLabel barrierLabel = new JLabel();
+
+      panel = new JPanel();
       panel.setLayout(null);
       panel.setBorder(javax.swing.BorderFactory.createEtchedBorder(javax.swing.border.EtchedBorder.LOWERED));
-      borderLabel.setBounds(300, 2, 50, 20);
+
+      borderLabel.setBounds(315, 2, 55, 20);
       borderLabel.setText("Border");
+
       borderSurfaceLabel.setBounds(305, 325, 55, 20);
       borderSurfaceLabel.setText("Surface");
-      borderStyleLabel.setBounds(305, 375, 55, 20);
+
+      borderStyleLabel.setBounds(315, 375, 55, 20);
       borderStyleLabel.setText("Style");
+
+      sideLabel.setText("Side");
+      sideLabel.setBounds(185, 2, 55, 20);
+
+      sideSurfaceLabel.setText("Surface");
+      sideSurfaceLabel.setBounds(165, 325, 55, 20);
+
+      barrierLabel.setText("Barrier");
+      barrierLabel.setBounds(35, 2, 55, 20);
+
+      barrierStyleLabel.setText("Style");
+      barrierStyleLabel.setBounds(40, 375, 55, 20);
+
+      barrierSurfaceLabel.setText("Surface");
+      barrierSurfaceLabel.setBounds(35, 325, 55, 20);
+
       panel.add(borderSurfaceLabel, null);
       panel.add(borderStyleLabel, null);
       panel.add(borderLabel, null);
@@ -166,17 +185,7 @@ public class SegmentSideProperties extends JPanel implements SliderListener {
       panel.add(barrierSurfaceLabel, null);
       panel.setLocation(2, 35);
       panel.setSize(395, 432);
-      sideLabel.setText("Side");
-      sideLabel.setSize(45, 20);
-      sideLabel.setLocation(195, 2);
-      sideSurfaceLabel.setText("Surface");
-      sideSurfaceLabel.setBounds(165, 325, 55, 20);
-      barrierLabel.setText("Barrier");
-      barrierLabel.setBounds(35, 2, 50, 20);
-      barrierStyleLabel.setText("Style");
-      barrierStyleLabel.setBounds(40, 375, 45, 20);
-      barrierSurfaceLabel.setText("Surface");
-      barrierSurfaceLabel.setBounds(44, 325, 45, 20);
+
       panel.add(getBarrierHeightSlider(), null);
       panel.add(getBorderSurfaceComboBox(), null);
       panel.add(getBorderStyleComboBox(), null);

@@ -2,15 +2,15 @@ package gui.view.listener;
 
 import gui.view.CircuitView;
 import gui.view.enumerator.CircuitState;
-import utils.Editor;
 import utils.EditorPoint;
 import utils.TrackData;
 import utils.circuit.ObjShapeHandle;
 import utils.circuit.Segment;
 
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
-import java.awt.event.MouseWheelEvent;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -34,8 +34,23 @@ public class CircuitViewMouseMotionListener implements MouseMotionListener {
     EditorPoint imgOffsetStart = circuitView.getImgOffsetStart();
 
     CircuitState currentState = circuitView.getCurrentState();
-    //		System.out.println(e.getModifiers());
-    if (mouseEvent.getModifiersEx() == 4) {
+    //		System.out.println(mouseEvent.getModifiers());
+//    if (mouseEvent.getModifiersEx() == 4) {
+    if (currentState == CircuitState.MOVE_SCREEN) {
+      Point2D origin = circuitView.getOrigin();
+      if (origin != null) {
+        JViewport viewPort = (JViewport) SwingUtilities.getAncestorOfClass(JViewport.class, circuitView);
+        if (viewPort != null) {
+          int deltaX = (int) (origin.getX() - mouseEvent.getX());
+          int deltaY = (int) (origin.getY() - mouseEvent.getY());
+
+          Rectangle view = viewPort.getViewRect();
+          view.x += deltaX;
+          view.y += deltaY;
+
+          circuitView.scrollRectToVisible(view);
+        }
+      /*
       EditorPoint offset = Editor.getProperties().getImgOffset();
       Point2D.Double tmp = new Point2D.Double(0, 0);
       circuitView.screenToReal(mouseEvent, tmp);
@@ -55,7 +70,7 @@ public class CircuitViewMouseMotionListener implements MouseMotionListener {
     }
     else {
       circuitView.screenToReal(mouseEvent, circuitView.getMousePoint());
-
+      System.out.println("Moving no 4");
       switch (currentState) {
         case MOVE_SEGMENTS: {
           if (circuitView.getHandleDragging() == -1)
@@ -69,9 +84,9 @@ public class CircuitViewMouseMotionListener implements MouseMotionListener {
           }
         }
         break;
+      */
       }
     }
-
   }
 
   @Override
@@ -142,7 +157,6 @@ public class CircuitViewMouseMotionListener implements MouseMotionListener {
     catch (Exception ex) {
       ex.printStackTrace();
     }
-
   }
 
   //	 * Drags end of handledShape (straight segment)

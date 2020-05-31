@@ -163,7 +163,7 @@ public class SegmentEditorDialog extends JDialog implements SliderListener {
       centerPanel.add(nameLabel, null);
       JLabel profilLabel = new JLabel();
       profilLabel.setBounds(10, 440, 55, 20);
-      profilLabel.setText("Profil");
+      profilLabel.setText("Profile");
       profilLabel.setFont(new java.awt.Font("Dialog", java.awt.Font.PLAIN, 12));
       centerPanel.add(profilLabel, null);
       centerPanel.add(getNameTextField(), null);
