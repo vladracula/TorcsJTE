@@ -32,7 +32,7 @@ public class CircuitViewMouseListener implements MouseListener {
   @Override
   public void mouseClicked(MouseEvent mouseEvent) {
 
-    if (mouseEvent.getButton() == MouseEvent.BUTTON3) {
+    if (mouseEvent.getButton() == MouseEvent.BUTTON1) {
       circuitView.screenToReal(mouseEvent, circuitView.getClickPoint());
       circuitView.screenToReal(mouseEvent, circuitView.getMousePoint());
       try {
@@ -166,7 +166,7 @@ public class CircuitViewMouseListener implements MouseListener {
     circuitView.setOrigin(new Point(mouseEvent.getPoint()));
     CircuitState currentState = circuitView.getCurrentState();
 
-    if (mouseEvent.getButton() == MouseEvent.BUTTON1) {
+    if (mouseEvent.getButton() == MouseEvent.BUTTON3) {
       /*
       EditorPoint imgOffsetStart = circuitView.getImgOffsetStart();
       EditorPoint imgOffsetPrev = circuitView.getImgOffsetPrev();
@@ -175,16 +175,10 @@ public class CircuitViewMouseListener implements MouseListener {
       imgOffsetStart.setLocation(tmp.getX(), tmp.getY());
       imgOffsetPrev.setLocation(Editor.getProperties().getImgOffset());
       */
-      switch (currentState) {
-        case NONE:
-          circuitView.setState(CircuitState.MOVE_SCREEN);
-          circuitView.setCursor(new Cursor(Cursor.HAND_CURSOR));
-          break;
-        case DELETE:
-
-      }
+      circuitView.setDragging(true);
+      circuitView.setCursor(new Cursor(Cursor.HAND_CURSOR));
     }
-    if (mouseEvent.getButton() == MouseEvent.BUTTON3) {
+    if (mouseEvent.getButton() == MouseEvent.BUTTON1) {
       try {
         circuitView.screenToReal(mouseEvent, circuitView.getClickPoint());
 
@@ -197,7 +191,7 @@ public class CircuitViewMouseListener implements MouseListener {
         circuitView.setHandleDragging(-1);
 
         if (circuitView.getSelectedShape() != null) {
-          circuitView.setDragging(true);
+          //circuitView.setDragging(true);
 
           int curHandle = 0;
           for (Iterator<ObjShapeHandle> i = circuitView.getHandles().iterator();
@@ -279,11 +273,13 @@ public class CircuitViewMouseListener implements MouseListener {
     circuitView.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 
     CircuitState currentState = circuitView.getCurrentState();
-
-    if (mouseEvent.getButton() == MouseEvent.BUTTON1) {
-      circuitView.setState(CircuitState.NONE);
+/*
+    if (mouseEvent.getButton() == MouseEvent.BUTTON3) {
+      if (circuitView.isDragging()) {
+        circuitView.setDragging(false);
+      }
     }
-
+*/
     if (mouseEvent.getButton() == MouseEvent.BUTTON3) {
       switch (currentState) {
         case NONE: {
@@ -297,9 +293,10 @@ public class CircuitViewMouseListener implements MouseListener {
           }
         }
         break;
+        case DELETE:
       }
-      circuitView.setDragging(false);
     }
+    circuitView.setDragging(false);
   }
 
   @Override

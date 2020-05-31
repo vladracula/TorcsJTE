@@ -36,7 +36,7 @@ public class CircuitViewMouseMotionListener implements MouseMotionListener {
     CircuitState currentState = circuitView.getCurrentState();
     //		System.out.println(mouseEvent.getModifiers());
 //    if (mouseEvent.getModifiersEx() == 4) {
-    if (currentState == CircuitState.MOVE_SCREEN) {
+    if (circuitView.isDragging()) {
       Point2D origin = circuitView.getOrigin();
       if (origin != null) {
         JViewport viewPort = (JViewport) SwingUtilities.getAncestorOfClass(JViewport.class, circuitView);

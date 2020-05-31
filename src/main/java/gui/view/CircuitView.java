@@ -184,7 +184,7 @@ public class CircuitView extends JComponent {
    */
   private EditorFrame editorFrame;
 
-  private Point origin = new Point(0,0);
+  private Point origin = new Point(0, 0);
 
   /**
    * constructor

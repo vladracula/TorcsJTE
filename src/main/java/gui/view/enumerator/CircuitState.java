@@ -13,6 +13,5 @@ public enum CircuitState {
   DELETE,
   SHOW_BGRD_START_POSITION,
   MOVE_SEGMENTS,
-  MOVE_SCREEN
 
 }
