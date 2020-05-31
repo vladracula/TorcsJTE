@@ -32,8 +32,7 @@ import java.awt.*;
  */
 public class PropertiesDialog extends JDialog {
 
-  private Frame frame;
-  private static boolean APPROVE = false;
+  private final Frame frame;
   private JTabbedPane tabbedPane = null;
   private GeneralProperties generalProperties = null;
   private JPanel pane = null;
@@ -45,7 +44,7 @@ public class PropertiesDialog extends JDialog {
   private ImageProperties imageProperties = null;
 
   /**
-   *
+   * constructor
    */
   public PropertiesDialog(Frame frame) {
     super();
@@ -54,9 +53,7 @@ public class PropertiesDialog extends JDialog {
   }
 
   /**
-   * This method initializes this
-   *
-   * @return void
+   * This method initializes PropertiesDialog
    */
   private void initialize() {
     this.setContentPane(getPane());
@@ -121,8 +118,6 @@ public class PropertiesDialog extends JDialog {
     if (footerPanel == null) {
       footerPanel = new JPanel();
       footerPanel.setLayout(null);
-//      footerPanel.setBorder(
-//          javax.swing.BorderFactory.createEtchedBorder(javax.swing.border.EtchedBorder.LOWERED));
       footerPanel.setPreferredSize(new java.awt.Dimension(423, 38));
       footerPanel.add(getOkButton(), null);
       footerPanel.add(getCancelButton(), null);
@@ -205,19 +200,18 @@ public class PropertiesDialog extends JDialog {
   }
 
   /**
-   *
+   * handled logic on ok action
    */
   protected void exit() {
     this.generalProperties.exit();
     this.trackProperties.exit();
     this.pitProperties.exit();
     this.imageProperties.exit();
-    APPROVE = true;
     cancel();
   }
 
   /**
-   *
+   * hide this form
    */
   protected void cancel() {
     this.dispose();

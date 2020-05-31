@@ -26,35 +26,24 @@ import utils.circuit.Segment;
 import utils.circuit.SegmentSide;
 
 import javax.swing.*;
-import java.util.Iterator;
 import java.util.Vector;
 
 /**
  * @author babis
  * @author Adam Kubon
  * <p>
- * TODO To change the template for this generated type comment go to Window -
- * Preferences - Java - Code Style - Code Templates
+ * pit properties form
  */
 public class PitProperties extends JPanel {
 
-  private JLabel sideLabel = null;
-  private JComboBox jComboBox = null;
-  private JLabel entryLabel = null;
+  private JComboBox<String> jComboBox = null;
   private JTextField entryTextField = null;
-  private JLabel startLabel = null;
   private JTextField startTextField = null;
-  private JLabel endLabel = null;
   private JTextField endTextField = null;
-  private JLabel exitLabel = null;
   private JTextField exitTextField = null;
-  private JLabel widthLabel = null;
   private JTextField widthTextField = null;
-  private JLabel lengthLabel = null;
   private JTextField lengthTextField = null;
-  private JLabel generatePitsLabel = null;
   private JCheckBox generatePitsCheckBox = null;
-  private boolean generatePits = false;
 
   /**
    *
@@ -66,18 +55,16 @@ public class PitProperties extends JPanel {
 
   /**
    * This method initializes this
-   *
-   * @return void
    */
   private void initialize() {
-    generatePitsLabel = new JLabel();
-    sideLabel = new JLabel();
-    entryLabel = new JLabel();
-    startLabel = new JLabel();
-    endLabel = new JLabel();
-    exitLabel = new JLabel();
-    widthLabel = new JLabel();
-    lengthLabel = new JLabel();
+    JLabel generatePitsLabel = new JLabel();
+    JLabel sideLabel = new JLabel();
+    JLabel entryLabel = new JLabel();
+    JLabel startLabel = new JLabel();
+    JLabel endLabel = new JLabel();
+    JLabel exitLabel = new JLabel();
+    JLabel widthLabel = new JLabel();
+    JLabel lengthLabel = new JLabel();
     this.setLayout(null);
     this.setBorder(javax.swing.BorderFactory.createEtchedBorder(javax.swing.border.EtchedBorder.LOWERED));
     this.setSize(362, 251);
@@ -120,10 +107,9 @@ public class PitProperties extends JPanel {
    *
    * @return javax.swing.JComboBox
    */
-  private JComboBox getJComboBox() {
+  private JComboBox<String> getJComboBox() {
     if (jComboBox == null) {
-      String[] items =
-          {"right", "left"};
+      String[] items = {"right", "left"};
       jComboBox = new JComboBox<>(items);
       jComboBox.setSelectedItem(Editor.getProperties().getPitSide());
       jComboBox.setBounds(100, 10, 110, 20);
@@ -246,30 +232,28 @@ public class PitProperties extends JPanel {
    *
    */
   private void createPits() {
-    Vector data = TrackData.getTrackData();
+    Vector<Segment> data = TrackData.getTrackData();
     Segment pitEntry = null;
     Segment pitStart = null;
     Segment pitEnd = null;
     Segment pitExit = null;
 
-    Iterator it = data.iterator();
-    while (it.hasNext()) {
-      Segment obj = (Segment) it.next();
-      String name = obj.getName();
+    for (Segment datum : data) {
+      String name = datum.getName();
       if (name.equals(Editor.getProperties().getPitEntry())) {
-        pitEntry = obj;
+        pitEntry = datum;
       }
       else if (name.equals(Editor.getProperties().getPitStart())) {
-        pitStart = obj;
+        pitStart = datum;
       }
       else if (name.equals(Editor.getProperties().getPitEnd())) {
-        pitEnd = obj;
+        pitEnd = datum;
       }
       else if (name.equals(Editor.getProperties().getPitExit())) {
-        pitExit = obj;
+        pitExit = datum;
       }
     }
-    SegmentSide side = null;
+    SegmentSide side;
     if (pitEntry == null) {
       System.out.println("No pit entry");
       return;
@@ -316,10 +300,10 @@ public class PitProperties extends JPanel {
 
     for (int i = start + 1; i < end; i++) {
       if (Editor.getProperties().getPitSide().equals("left")) {
-        side = ((Segment) data.get(i)).getLeft();
+        side = data.get(i).getLeft();
       }
       else {
-        side = ((Segment) data.get(i)).getRight();
+        side = data.get(i).getRight();
       }
       side.setBorderHeight(0);
       side.setBorderWidth(1);
@@ -344,16 +328,6 @@ public class PitProperties extends JPanel {
     if (generatePitsCheckBox == null) {
       generatePitsCheckBox = new JCheckBox();
       generatePitsCheckBox.setBounds(328, 10, 20, 20);
-      generatePitsCheckBox.addActionListener(new java.awt.event.ActionListener() {
-        public void actionPerformed(java.awt.event.ActionEvent e) {
-          if (generatePitsCheckBox.isSelected()) {
-            generatePits = true;
-          }
-          else {
-            generatePits = false;
-          }
-        }
-      });
     }
     return generatePitsCheckBox;
   }

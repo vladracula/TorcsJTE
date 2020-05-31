@@ -30,8 +30,7 @@ import java.io.File;
  * @author babis
  * @author Adam Kubon
  * <p>
- * TODO To change the template for this generated type comment go to Window - Preferences - Java -
- * Code Style - Code Templates
+ * shows main project properties
  */
 public class GeneralProperties extends JPanel {
 
@@ -185,7 +184,7 @@ public class GeneralProperties extends JPanel {
   private JTextArea getDescriptionTextField() {
     if (descriptionTextField == null) {
       descriptionTextField = new JTextArea();
-      descriptionTextField.setBorder(BorderFactory.createLineBorder(Color.gray, 1));;
+      descriptionTextField.setBorder(BorderFactory.createLineBorder(Color.gray, 1));
       descriptionTextField.setBounds(9, 135, 406, 33);
       String description = Editor.getProperties().getDescription();
       if (description != null) {

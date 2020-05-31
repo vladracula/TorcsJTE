@@ -30,19 +30,17 @@ import java.io.File;
  * @author babis
  * @author Adam Kubon
  * <p>
- * TODO To change the template for this generated type comment go to Window - Preferences - Java -
- * Code Style - Code Templates
+ * shows backgroud image properties
  */
 public class ImageProperties extends JPanel {
 
   private JTextField pathTextField = null;
   private JButton browseButton = null;
   private JTextField imageScaleTextField = null;
-
-  private String sep = System.getProperty("file.separator");
+  private final String sep = System.getProperty("file.separator");
 
   /**
-   *
+   * constructor
    */
   public ImageProperties() {
     super();
@@ -50,7 +48,7 @@ public class ImageProperties extends JPanel {
   }
 
   /**
-   *
+   * initialization
    */
   private void initialize() {
     JLabel imageScaleLabel = new JLabel();
@@ -122,7 +120,7 @@ public class ImageProperties extends JPanel {
   }
 
   /**
-   *
+   * sets path to background image file
    */
   protected void selectPath() {
     JFileChooser fc = new JFileChooser();
@@ -146,6 +144,9 @@ public class ImageProperties extends JPanel {
     }
   }
 
+  /**
+   * handling logic on exit by ok button
+   */
   public void exit() {
     double scale = Double.parseDouble(getImageScaleTextField().getText());
     String tmpPath = getPathTextField().getText();

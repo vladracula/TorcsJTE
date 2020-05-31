@@ -27,12 +27,10 @@ import javax.swing.*;
 /**
  * @author babis
  * <p>
- * TODO To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Style - Code Templates
+ * track detail properties
  */
 public class TrackProperties extends JPanel {
 
-  private JLabel widthLabel = null;
   private JTextField widthTextField = null;
 
   /**
@@ -45,11 +43,9 @@ public class TrackProperties extends JPanel {
 
   /**
    * This method initializes this
-   *
-   * @return void
    */
   private void initialize() {
-    widthLabel = new JLabel();
+    JLabel widthLabel = new JLabel();
     this.setLayout(null);
     this.setBorder(javax.swing.BorderFactory.createEtchedBorder(javax.swing.border.EtchedBorder.LOWERED));
     this.setSize(356, 259);
