@@ -66,8 +66,8 @@ public class SegmentEditorDialog extends JDialog implements SliderListener {
 
   private GroupButton groupButton = null;
 
-  private String[] profilItems = {"spline", "linear"};
-  private String[] roadSurfaceItems =
+  private final String[] profilItems = {"spline", "linear"};
+  private final String[] roadSurfaceItems =
       {"asphalt-lines", "asphalt-l-left", "asphalt-l-right",
           "asphalt-l-both", "asphalt-pits", "asphalt", "dirt", "dirt-b", "asphalt2", "road1", "road1-pits",
           "road1-asphalt", "asphalt-road1", "b-road1", "b-road1-l2", "b-road1-l2p", "concrete", "concrete2",
@@ -115,6 +115,7 @@ public class SegmentEditorDialog extends JDialog implements SliderListener {
     this.setLocation(p);
     this.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
     this.setContentPane(getJContentPane());
+    setLocationRelativeTo(frame);
   }
 
   /**
@@ -353,7 +354,7 @@ public class SegmentEditorDialog extends JDialog implements SliderListener {
    *
    * @return javax.swing.JComboBox
    */
-  private JComboBox getSurfaceComboBox() {
+  private JComboBox<String> getSurfaceComboBox() {
     if (surfaceComboBox == null) {
       surfaceComboBox = new JComboBox<>();
       surfaceComboBox.setModel(new DefaultComboBoxModel<>(roadSurfaceItems));
@@ -379,7 +380,7 @@ public class SegmentEditorDialog extends JDialog implements SliderListener {
    *
    * @return javax.swing.JComboBox
    */
-  private JComboBox getProfilComboBox() {
+  private JComboBox<String> getProfilComboBox() {
     if (profilComboBox == null) {
       profilComboBox = new JComboBox<>();
       profilComboBox.setModel(new DefaultComboBoxModel<>(profilItems));

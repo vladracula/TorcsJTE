@@ -48,6 +48,8 @@ import java.util.Vector;
 
 public class CircuitView extends JComponent {
 
+  private final static double ZOOM_STEP = 1.05;
+
   /**
    * zooming factor
    */
@@ -282,7 +284,7 @@ public class CircuitView extends JComponent {
    * Augments zoom factor by multiplying it by 1.2
    */
   public void incZoomFactor() {
-    setZoomFactor(zoomFactor * 1.2);
+    setZoomFactor(zoomFactor * ZOOM_STEP);
   }
 
   /**
@@ -299,7 +301,7 @@ public class CircuitView extends JComponent {
     if (boundingRectangle.getWidth() < visibleRect.getWidth()
         && boundingRectangle.getHeight() < visibleRect.getHeight())
       return;
-    setZoomFactor(zoomFactor / 1.2);
+    setZoomFactor(zoomFactor / ZOOM_STEP);
   }
 
   /**
@@ -360,17 +362,6 @@ public class CircuitView extends JComponent {
           -boundingRectangle.getY() - boundingRectangle.getHeight() / 2);
       inverseAffineTransform = affineTransform.createInverse();
 
-      /*
-      // scroll to keep same screen center as previously
-      scrollRectToVisible(new Rectangle(
-          (int) (zoomFactor * (screenCenter.getX() - boundingRectangle.getX()
-              + outZoneWidth) - r.getWidth() / 2) + 1,
-          (int) (zoomFactor * (screenCenter.getY() - boundingRectangle.getY()
-              + outZoneHeight) - r.getHeight() / 2) + 1,
-          (int) (r.getWidth()) - 2,
-          (int) (r.getHeight()) - 2));
-      */
-
       Rectangle visibleRect2 = getVisibleRect();
       Point2D point = origin;
 
@@ -379,9 +370,22 @@ public class CircuitView extends JComponent {
       double scrollY = point.getY() / previousZoom * zoomFactor
           - (point.getY() - visibleRect2.getY());
 
+      JScrollPane scrollPane = editorFrame.getMainScrollPane();
+      double w = scrollPane.getViewport().getViewRect().getWidth();
+      double h = scrollPane.getViewport().getViewRect().getHeight();
+//      double w = visibleRect2.getWidth();
+//      double h = visibleRect2.getHeight();
+
       //set visible rectangle to calculated rectangle
-      visibleRect2.setRect(scrollX, scrollY, visibleRect2.getWidth(), visibleRect2.getHeight());
+      visibleRect2.setRect(scrollX, scrollY, w, h);
+      System.out.println(
+          "vr sX:" + scrollX +
+              " sY:" + scrollY +
+              " w:" + w +
+              " h:" + h);
       scrollRectToVisible(visibleRect2);
+      System.out.println(visibleRect2);
+      System.out.println();
 
       // calculate and draw
       revalidate();

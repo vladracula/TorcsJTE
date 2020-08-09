@@ -514,4 +514,8 @@ public class EditorFrame extends JFrame {
     return ediorToolBar;
   }
 
+  public JScrollPane getMainScrollPane() {
+    return mainScrollPane;
+  }
+
 }

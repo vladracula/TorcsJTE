@@ -24,7 +24,7 @@ public class HelpAction extends AbstractEditorAction {
     String msg = title + " - " + version + "\n\n"
         + "Copyright Charalampos Alexopoulos\n"
         + "Copyright Adam Kubon";
-    JOptionPane.showMessageDialog(null, msg, "About", type);
+    JOptionPane.showMessageDialog(editorFrame, msg, "About", type);
   }
 
   @Override

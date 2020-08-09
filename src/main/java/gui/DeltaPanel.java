@@ -35,14 +35,10 @@ import java.util.Vector;
 /**
  * @author Charalampos Alexopoulos
  * <p>
- * TODO To change the template for this generated type comment go to Window -
- * Preferences - Java - Code Style - Code Templates
  */
 public class DeltaPanel extends JDialog implements Runnable {
 
-  public static Vector args = new Vector();
-  private EditorFrame parent;
-  private Thread ac3d;
+  private final EditorFrame parent;
 
   private JPanel jPanel = null;
   private JLabel nameLabel = null;
@@ -53,7 +49,6 @@ public class DeltaPanel extends JDialog implements Runnable {
   private JLabel xSizeLabel = null;
   private JLabel ySizeLabel = null;
   private JPanel jPanel1 = null;
-  private JLabel trackgenLabel = null;
   private JLabel waitLabel = null;
 
   private JButton calcButton = null;
@@ -73,7 +68,7 @@ public class DeltaPanel extends JDialog implements Runnable {
   private double angle = 0;
 
   /**
-   *
+   * constructor
    */
   public DeltaPanel(EditorFrame frame, String title, boolean modal) {
     super(frame, title, modal);
@@ -83,14 +78,12 @@ public class DeltaPanel extends JDialog implements Runnable {
 
   /**
    * This method initializes this
-   *
-   * @return void
    */
   private void initialize() {
     this.setContentPane(getJPanel());
     this.setTitle("Trackgen");
-    this.setSize(379, 415);
-
+    this.setSize(369, 370);
+    setLocationRelativeTo(parent);
   }
 
   public synchronized void run() {
@@ -101,11 +94,9 @@ public class DeltaPanel extends JDialog implements Runnable {
     String name = " -n " + Editor.getProperties().getTrackName();
     String args = " -z" + category + name;
 
-    //System.out.println(args);
-
     try {
       String ls_str;
-      String tmp = "";
+      //String tmp = "";
 
       Process ls_proc = Runtime.getRuntime().exec("trackgen" + args);
       // get its output (your input) stream
@@ -114,49 +105,54 @@ public class DeltaPanel extends JDialog implements Runnable {
 
       try {
         while ((ls_str = ls_in.readLine()) != null) {
-          if (ls_str.indexOf("=") != -1) {
-            tmp = ls_str.substring(0, ls_str.indexOf("="));
-            if (tmp.equals("name      ")) {
-              nameLabel.setText(ls_str);
-            }
-            else if (tmp.equals("author    ")) {
-              this.authorLabel.setText(ls_str);
-            }
-            else if (tmp.equals("filename  ")) {
-              this.fileNameLabel.setText(ls_str);
-            }
-            else if (tmp.equals("length    ")) {
-              String len = ls_str;
-              this.lengthLabel.setText(len);
-              len = len.substring(len.indexOf("=") + 2);
-              length = Double.valueOf(len).doubleValue();
-            }
-            else if (tmp.equals("width     ")) {
-              this.widthLabel.setText(ls_str);
-            }
-            else if (tmp.equals("XSize     ")) {
-              this.xSizeLabel.setText(ls_str);
-            }
-            else if (tmp.equals("YSize     ")) {
-              this.ySizeLabel.setText(ls_str);
-            }
-            else if (tmp.equals("Delta X   ")) {
-              String len = ls_str;
-              len = len.substring(len.indexOf("=") + 2);
-              dX = Double.valueOf(len).doubleValue();
-              this.deltaXLabel.setText(ls_str);
-            }
-            else if (tmp.equals("Delta Y   ")) {
-              String len = ls_str;
-              len = len.substring(len.indexOf("=") + 2);
-              dY = Double.valueOf(len).doubleValue();
-              this.deltaYLabel.setText(ls_str);
-            }
-            else if (tmp.equals("Delta Ang ")) {
-              String ang = ls_str;
-              ang = ang.substring(ang.indexOf("(") + 1, ang.indexOf(")"));
-              angle = Double.valueOf(ang).doubleValue();
-              this.deltaAngLabel.setText(ls_str);
+          if (ls_str.contains("=")) {
+            String tmp = ls_str.substring(0, ls_str.indexOf("="));
+            switch (tmp) {
+              case "name      ":
+                nameLabel.setText(ls_str);
+                break;
+              case "author    ":
+                this.authorLabel.setText(ls_str);
+                break;
+              case "filename  ":
+                this.fileNameLabel.setText(ls_str);
+                break;
+              case "length    ": {
+                String len = ls_str;
+                this.lengthLabel.setText(len);
+                len = len.substring(len.indexOf("=") + 2);
+                length = Double.parseDouble(len);
+                break;
+              }
+              case "width     ":
+                this.widthLabel.setText(ls_str);
+                break;
+              case "XSize     ":
+                this.xSizeLabel.setText(ls_str);
+                break;
+              case "YSize     ":
+                this.ySizeLabel.setText(ls_str);
+                break;
+              case "Delta X   ": {
+                String len = ls_str;
+                len = len.substring(len.indexOf("=") + 2);
+                dX = Double.parseDouble(len);
+                this.deltaXLabel.setText(ls_str);
+                break;
+              }
+              case "Delta Y   ": {
+                String len = ls_str;
+                len = len.substring(len.indexOf("=") + 2);
+                dY = Double.parseDouble(len);
+                this.deltaYLabel.setText(ls_str);
+                break;
+              }
+              case "Delta Ang ":
+                String ang = ls_str;
+                ang = ang.substring(ang.indexOf("(") + 1, ang.indexOf(")"));
+                angle = Double.parseDouble(ang);
+                this.deltaAngLabel.setText(ls_str);
+                break;
             }
           }
         }
@@ -166,30 +162,11 @@ public class DeltaPanel extends JDialog implements Runnable {
       }
     }
     catch (IOException e1) {
-      System.err.println(e1);
+      e1.printStackTrace();
     }
     this.waitLabel.setText("Calculation finished");
     finish = true;
     notifyAll();
-  }
-
-  /**
-   * @return
-   */
-  private static String getArgs() {
-    String tmp = "";
-
-    for (int i = 0; i < args.size(); i++) {
-      tmp += args.get(i);
-    }
-    return tmp;
-  }
-
-  /**
-   * @param vector
-   */
-  public static void setArgs(Vector vector) {
-    args = vector;
   }
 
   /**
@@ -199,11 +176,11 @@ public class DeltaPanel extends JDialog implements Runnable {
    */
   private JPanel getJPanel() {
     if (jPanel == null) {
-      trackgenLabel = new JLabel();
+      JLabel trackgenLabel = new JLabel();
       waitLabel = new JLabel();
       jPanel = new JPanel();
       jPanel.setLayout(null);
-      trackgenLabel.setBounds(103, 19, 113, 20);
+      trackgenLabel.setBounds(123, 19, 113, 20);
       trackgenLabel.setText("Track data");
       trackgenLabel.setFont(new java.awt.Font("Dialog",
           java.awt.Font.BOLD, 18));
@@ -290,7 +267,7 @@ public class DeltaPanel extends JDialog implements Runnable {
   private JButton getCalcButton() {
     if (calcButton == null) {
       calcButton = new JButton();
-      calcButton.setBounds(12, 320, 60, 25);
+      calcButton.setBounds(12, 325, 70, 20);
       calcButton.setText("Calc");
       calcButton.setToolTipText("Calculates the track data");
       calcButton.addActionListener(new java.awt.event.ActionListener() {
@@ -313,7 +290,7 @@ public class DeltaPanel extends JDialog implements Runnable {
   private JButton getAdjustButton() {
     if (adjustButton == null) {
       adjustButton = new JButton();
-      adjustButton.setBounds(82, 320, 65, 25);
+      adjustButton.setBounds(92, 325, 75, 20);
       adjustButton.setText("Auto");
       adjustButton.setToolTipText("Auto adjust the start/finish segments of the track");
       adjustButton.addActionListener(new java.awt.event.ActionListener() {
@@ -322,12 +299,12 @@ public class DeltaPanel extends JDialog implements Runnable {
           getAdjustButton().setEnabled(false);
           getLengthButton().setEnabled(false);
           int options = JOptionPane.OK_CANCEL_OPTION;
-          String msg = "This option will change your track permantly.\n"
-              + "The result will be writed on xml file and no undo has implemented yet.\n\n"
+          String msg = "This option will change your track permanently.\n"
+              + "The result will be written on xml file and no undo has implemented yet.\n\n"
               + "If you decide to continue keep in mind that the adjust method is\n"
-              + "experimental and not propertly tested. As far as i know doing the job but\n"
+              + "experimental and not properly tested. As far as i know doing the job but\n"
               + "need to use the adjust button two or three times";
-          int out = JOptionPane.showConfirmDialog(null, msg, "Warning", options);
+          int out = JOptionPane.showConfirmDialog(parent, msg, "Warning", options);
           if (out == JOptionPane.CANCEL_OPTION) {
             return;
           }
@@ -346,7 +323,7 @@ public class DeltaPanel extends JDialog implements Runnable {
   private JButton getLengthButton() {
     if (lengthButton == null) {
       lengthButton = new JButton();
-      lengthButton.setBounds(169, 320, 85, 25);
+      lengthButton.setBounds(176, 325, 85, 20);
       lengthButton.setText("Length");
       lengthButton.setToolTipText("Adjust the length of the track to match the value in the text field on the rigth");
       lengthButton.addActionListener(new java.awt.event.ActionListener() {
@@ -356,15 +333,14 @@ public class DeltaPanel extends JDialog implements Runnable {
           getLengthButton().setEnabled(false);
 
           int options = JOptionPane.OK_CANCEL_OPTION;
-          String msg = "This option will change your track permantly.\n"
+          String msg = "This option will change your track permanently.\n"
               + "The result will be writed on xml file and no undo has implemented yet.\n\n"
               + "If you decide to continue keep in mind that the adjust method is\n"
-              + "experimental and not propertly tested.";
-          int out = JOptionPane.showConfirmDialog(null, msg, "Warning", options);
+              + "experimental and not properly tested.";
+          int out = JOptionPane.showConfirmDialog(parent, msg, "Warning", options);
           if (out == JOptionPane.CANCEL_OPTION) {
             return;
           }
-
           adjustLength();
         }
       });
@@ -380,7 +356,7 @@ public class DeltaPanel extends JDialog implements Runnable {
   private JTextField getJTextField() {
     if (jTextField == null) {
       jTextField = new JTextField();
-      jTextField.setBounds(266, 320, 85, 25);
+      jTextField.setBounds(270, 325, 85, 21);
       jTextField.setToolTipText("The length value used from Length button");
     }
     return jTextField;
@@ -390,9 +366,8 @@ public class DeltaPanel extends JDialog implements Runnable {
    *
    */
   protected void startTrackgen() {
-
     parent.torcsPlugin.exportTrack();
-    ac3d = new Thread(this);
+    Thread ac3d = new Thread(this);
     ac3d.start();
   }
 
@@ -407,32 +382,29 @@ public class DeltaPanel extends JDialog implements Runnable {
   }
 
   private synchronized void adjustLength() {
-    double newLength = 0;
-    double co = 0;
+    double newLength;
+    double co;
 
     finish = false;
     startTrackgen();
     waitTrackgen();
     try {
       String tmp = getJTextField().getText();
-      newLength = Double.valueOf(tmp).doubleValue();
+      newLength = Double.parseDouble(tmp);
     }
     catch (Exception e) {
       System.out.println("Its not a number in length field");
       return;
     }
     co = newLength / length;
-    Vector track = TrackData.getTrackData();
-    int size = track.size();
-
-    for (int i = 0; i < size; i++) {
-      Segment obj = (Segment) track.get(i);
+    Vector<Segment> track = TrackData.getTrackData();
+    for (Segment o : track) {
       try {
-        if (obj.getType().equals("str")) {
-          obj.setLength(obj.getLength() * co);
+        if (o.getType().equals("str")) {
+          o.setLength(o.getLength() * co);
         }
         else {
-          Curve curve = (Curve) obj;
+          Curve curve = (Curve) o;
           curve.setRadiusStart(curve.getRadiusStart() * co);
           curve.setRadiusEnd(curve.getRadiusEnd() * co);
         }
@@ -458,11 +430,9 @@ public class DeltaPanel extends JDialog implements Runnable {
     waitTrackgen();
     double co = 360 / (360 + angle);
 
-    Vector track = TrackData.getTrackData();
-    int size = track.size();
+    Vector<Segment> track = TrackData.getTrackData();
 
-    for (int i = 0; i < size; i++) {
-      Segment obj = (Segment) track.get(i);
+    for (Segment obj : track) {
       try {
         if (!obj.getType().equals("str")) {
           Curve curve = (Curve) obj;
@@ -481,8 +451,7 @@ public class DeltaPanel extends JDialog implements Runnable {
 
     double totalY = 0;
 
-    for (int i = 0; i < size; i++) {
-      Segment obj = (Segment) track.get(i);
+    for (Segment obj : track) {
       try {
         if (obj.getType().equals("str")) {
           Straight str = (Straight) obj;
@@ -501,11 +470,10 @@ public class DeltaPanel extends JDialog implements Runnable {
 
     co = (totalY + dY) / totalY;
 
-    for (int i = 0; i < size; i++) {
-      Segment obj = (Segment) track.get(i);
+    for (Segment segment : track) {
       try {
-        if (obj.getType().equals("str")) {
-          Straight str = (Straight) obj;
+        if (segment.getType().equals("str")) {
+          Straight str = (Straight) segment;
           double x = str.getDx();
           double y = str.getDy();
           if (y > x) {
@@ -524,8 +492,7 @@ public class DeltaPanel extends JDialog implements Runnable {
 
     double totalX = 0;
 
-    for (int i = 0; i < size; i++) {
-      Segment obj = (Segment) track.get(i);
+    for (Segment obj : track) {
       try {
         if (obj.getType().equals("str")) {
           Straight str = (Straight) obj;
@@ -544,12 +511,10 @@ public class DeltaPanel extends JDialog implements Runnable {
 
     co = (totalX + dX) / totalX;
 
-    for (int i = 0; i < size; i++) {
-      Segment obj = (Segment) track.get(i);
+    for (Segment obj : track) {
       try {
         if (obj.getType().equals("str")) {
           Straight str = (Straight) obj;
-          double x = str.getDx();
           double y = str.getDy();
           if (y == 0) {
             str.setLength(str.getLength() * co);
