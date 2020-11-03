@@ -213,7 +213,7 @@ public class XmlWriter {
    * @return
    */
   private synchronized static Element getSegments() {
-    Vector segments = TrackData.getTrackData();
+    Vector<Segment> segments = TrackData.getTrackData();
     Segment prev = null;
     Attribute name = new Attribute("name", "Track Segments");
     Comment com = null;
@@ -221,7 +221,7 @@ public class XmlWriter {
     trackSegs.setAttribute(name);
 
     for (int i = 0; i < segments.size(); i++) {
-      Segment shape = (Segment) segments.get(i);
+      Segment shape = segments.get(i);
       shape.setPreviousShape(prev);
       com = new Comment("******************************");
       trackSegs.addContent(com);

@@ -38,7 +38,6 @@ public class EditorMenu extends JMenuBar {
   private JMenuItem deleteMenuItem = null;
   private JMenuItem showArrowsMenuItem = null;
   private JMenuItem showBackgroundMenuItem = null;
-  //private DeltaPanel			deltaPanel							= null;
 
   private JMenu editMenu = null;
   private JMenuItem undoMenuItem = null;

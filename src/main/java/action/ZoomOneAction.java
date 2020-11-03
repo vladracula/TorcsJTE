@@ -1,6 +1,7 @@
 package action;
 
 import gui.EditorFrame;
+import utils.TrackData;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
@@ -17,7 +18,7 @@ public class ZoomOneAction extends AbstractEditorAction {
 
   @Override
   public void actionToPerformed(ActionEvent actionEvent) {
-    if (view == null) return;
+    if (TrackData.getTrackData() == null) return;
     view.setZoomFactor(1.0);
     view.redrawCircuit();
   }

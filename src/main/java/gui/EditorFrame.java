@@ -64,9 +64,7 @@ public class EditorFrame extends JFrame {
   // UI
   private JMenuBar mainMenuBar;
   private JScrollPane mainScrollPane = new JScrollPane();
-  //  public JToggleButton toggleButtonDelete = null;
   private EdiorToolBar ediorToolBar;
-  //private DeltaPanel			deltaPanel							= null;
 
   /**
    * The splash screen shown at startup
@@ -232,6 +230,7 @@ public class EditorFrame extends JFrame {
    */
   public void saveProject() {
     if (!documentIsModified) return;
+    if (TrackData.getTrackData() == null) return;
     if (!Editor.getProperties().getTrackName().equals("")) {
       String filename = Editor.getProperties().getPath() + sep + Editor.getProperties().getTrackName() + ".prj.xml";
       try {
@@ -332,7 +331,6 @@ public class EditorFrame extends JFrame {
       jContentPane.setLayout(new BorderLayout());
       jContentPane.add(mainScrollPane, java.awt.BorderLayout.CENTER);
       jContentPane.add(ediorToolBar.getJToolBar(), java.awt.BorderLayout.NORTH);
-      //jContentPane.add(getDeltaPanel(), java.awt.BorderLayout.SOUTH);
     }
     return jContentPane;
   }

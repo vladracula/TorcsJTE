@@ -33,10 +33,6 @@ public class Project {
   private int segmentEditorX = 0;
   private int segmentEditorY = 0;
 
-  public Project() {
-
-  }
-
   /**
    * @return Returns the frameX.
    */

@@ -1,6 +1,7 @@
 package action;
 
 import gui.EditorFrame;
+import utils.TrackData;
 import utils.undo.Undo;
 
 import java.awt.event.ActionEvent;
@@ -18,6 +19,7 @@ public class UndoAction extends AbstractEditorAction {
 
   @Override
   public void actionToPerformed(ActionEvent e) {
+    if (TrackData.getTrackData() == null) return;
     if (view == null) return;
     Undo.undo();
     view.redrawCircuit();

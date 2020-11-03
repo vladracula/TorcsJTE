@@ -1,6 +1,7 @@
 package action;
 
 import gui.EditorFrame;
+import utils.TrackData;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -20,6 +21,7 @@ public class ShowBackgroundAction extends AbstractEditorAction {
 
   @Override
   public void actionToPerformed(ActionEvent actionEvent) {
+    if (TrackData.getTrackData() == null) return;
     enabled = !enabled;
     JToggleButton toggleButton = editorFrame.getEdiorToolBar().getShowBackgroundButton();
     toggleButton.setSelected(enabled);

@@ -1,6 +1,7 @@
 package action;
 
 import gui.EditorFrame;
+import utils.TrackData;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
@@ -17,6 +18,7 @@ public class ShowArrowsAction extends AbstractEditorAction {
 
   @Override
   public void actionToPerformed(ActionEvent actionEvent) {
+    if (TrackData.getTrackData() == null) return;
     editorFrame.toggleButtonShowArrow_actionPerformed(actionEvent);
   }
 

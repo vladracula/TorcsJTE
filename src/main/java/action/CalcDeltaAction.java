@@ -1,6 +1,7 @@
 package action;
 
 import gui.EditorFrame;
+import utils.TrackData;
 
 import java.awt.event.ActionEvent;
 
@@ -16,6 +17,7 @@ public class CalcDeltaAction extends AbstractEditorAction {
 
   @Override
   public void actionToPerformed(ActionEvent actionEvent) {
+    if (TrackData.getTrackData() != null) return;
     editorFrame.calculateDeltas();
   }
 

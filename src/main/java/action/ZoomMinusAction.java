@@ -1,6 +1,7 @@
 package action;
 
 import gui.EditorFrame;
+import utils.TrackData;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -19,7 +20,7 @@ public class ZoomMinusAction extends AbstractEditorAction {
 
   @Override
   public void actionToPerformed(ActionEvent actionEvent) {
-    if (view == null) return;
+    if (TrackData.getTrackData() == null) return;
     Point2D screenCenter = view.getScreenCenter();
     view.setOrigin(new Point((int) screenCenter.getX(), (int) screenCenter.getY()));
     view.decZoomFactor();

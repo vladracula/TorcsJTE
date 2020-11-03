@@ -1,6 +1,7 @@
 package action;
 
 import gui.EditorFrame;
+import utils.TrackData;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
@@ -17,7 +18,9 @@ public class ExportAC3Action extends AbstractEditorAction {
 
   @Override
   public void actionToPerformed(ActionEvent actionEvent) {
+    if (TrackData.getTrackData() == null) return;
     editorFrame.exportAc3d();
+
   }
 
   @Override

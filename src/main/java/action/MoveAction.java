@@ -1,8 +1,8 @@
 package action;
 
 import gui.EditorFrame;
+import utils.TrackData;
 
-import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
@@ -18,6 +18,7 @@ public class MoveAction extends AbstractEditorAction {
 
   @Override
   public void actionToPerformed(ActionEvent actionEvent) {
+    if (TrackData.getTrackData() == null) return;
     editorFrame.toggleButtonMoveSegments_actionPerformed(actionEvent);
   }
 

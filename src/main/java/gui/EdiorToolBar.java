@@ -33,7 +33,6 @@ public class EdiorToolBar extends JToolBar {
   private JToggleButton showArrowsButton = null;
   private JToggleButton showBackgroundButton = null;
   private JButton newButton = null;
-  //private DeltaPanel			deltaPanel							= null;
   private JButton calculateDeltaButton = null;
 
   public EdiorToolBar(EditorFrame editorFrame) {

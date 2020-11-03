@@ -24,11 +24,11 @@ import gui.EditorFrame;
 import plugin.Plugin;
 import utils.CustomFileFilter;
 import utils.Editor;
+import utils.TrackData;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.io.File;
-import java.util.Vector;
 
 /**
  * @author Charalampos Alexopoulos
@@ -39,9 +39,8 @@ import java.util.Vector;
 public class TorcsPlugin implements Plugin {
 
   protected EditorFrame editor;
-  private Vector trackData = new Vector();
-  private ImportAction importAction;
-  private ExportAction exportAction;
+  private final ImportAction importAction;
+  private final ExportAction exportAction;
   private JMenuItem importMenuItem;
   private JMenuItem exportMenuItem;
 
@@ -91,14 +90,13 @@ public class TorcsPlugin implements Plugin {
       XmlReader.readXml(file.getAbsolutePath());
     }
     catch (Exception e) {
-      //				message(e.getMessage(), "The file " + file.getAbsolutePath()
-      // + " is not valid");
       e.printStackTrace();
     }
     editor.refresh();
   }
 
   public void exportTrack() {
+    if (TrackData.getTrackData() == null) return;
     XmlWriter.writeXml();
   }
 
@@ -153,6 +151,7 @@ public class TorcsPlugin implements Plugin {
     }
 
     public void actionPerformed(ActionEvent e) {
+      if (TrackData.getTrackData() == null) return;
       System.out.println("Call exportXml");
       exportTrack();
     }
