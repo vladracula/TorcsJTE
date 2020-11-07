@@ -12,8 +12,8 @@ import java.awt.event.ActionEvent;
 
 public class EditorMenu extends JMenuBar {
 
-  private ActionProvider actionProvider;
-  private Plugin torcsPlugin;
+  private final ActionProvider actionProvider;
+  private final Plugin torcsPlugin;
 
   // UI
   private JMenu menuFile = new JMenu();

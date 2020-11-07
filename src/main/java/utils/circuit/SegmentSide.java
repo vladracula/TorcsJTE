@@ -34,7 +34,7 @@ import java.util.Vector;
 public class SegmentSide implements Cloneable {
 
   private Vector<SegmentSideListener> sideListeners = new Vector<>();
-  private SegmentSide prev = null;
+  private SegmentSide previous = null;
   private SegmentSide props = null;
 
   //	Side
@@ -428,15 +428,15 @@ public class SegmentSide implements Cloneable {
   /**
    * @return Returns the prev.
    */
-  public SegmentSide getPrev() {
-    return prev;
+  public SegmentSide getPrevious() {
+    return previous;
   }
 
   /**
-   * @param prev The prev to set.
+   * @param previous The prev to set.
    */
-  public void setPrevius(SegmentSide previus) {
-    this.prev = previus;
+  public void setPrevious(SegmentSide previous) {
+    this.previous = previous;
   }
 
   /**
@@ -447,7 +447,7 @@ public class SegmentSide implements Cloneable {
   }
 
   /**
-   * @param props The props to set.
+   * @param properties The props to set.
    */
   public void setProperties(SegmentSide properties) {
     this.props = properties;
