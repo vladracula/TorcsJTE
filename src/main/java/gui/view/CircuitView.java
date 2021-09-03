@@ -328,14 +328,11 @@ public class CircuitView extends JComponent {
         outZoneWidth = 0;
       }
 
-      // new visible part of screen in meters
-      Rectangle2D.Double visibleRect = newVisibleRectangle(r);
-
       // set new screen size in pixels
       if (showOutZone) {
         setMaximumSize(new Dimension(
-            (int) ((newZoomFactor * (boundingRectangle.getWidth() + visibleRect.getWidth())) + 1),
-            (int) ((newZoomFactor * (boundingRectangle.getHeight() + visibleRect.getHeight()))) + 1));
+            (int) ((newZoomFactor * (boundingRectangle.getWidth() + r.getWidth())) + 1),
+            (int) ((newZoomFactor * (boundingRectangle.getHeight() + r.getHeight()))) + 1));
       }
       else {
         setMaximumSize(new Dimension(
@@ -358,34 +355,38 @@ public class CircuitView extends JComponent {
           -boundingRectangle.getY() - boundingRectangle.getHeight() / 2);
       inverseAffineTransform = affineTransform.createInverse();
 
-      Rectangle visibleRect2 = getVisibleRect();
       Point2D point = origin;
 
-      // te wartości są źle wyznaczane przy końcu ekranu
-      double scrollX = point.getX() / previousZoom * zoomFactor
-          - (point.getX() - visibleRect2.getX());
-      double scrollY = point.getY() / previousZoom * zoomFactor
-          - (point.getY() - visibleRect2.getY());
-
-
-//      System.out.println(point.getX() / previousZoom * zoomFactor);
+      // start point positions of  scroll bar
+      long scrollX = Math.round(
+          point.getX() / previousZoom * zoomFactor - (point.getX() - r.getX()));
+      long scrollY = Math.round(
+          point.getY() / previousZoom * zoomFactor - (point.getY() - r.getY()));
 
       JScrollPane scrollPane = editorFrame.getMainScrollPane();
       double w = scrollPane.getViewport().getViewRect().getWidth();
       double h = scrollPane.getViewport().getViewRect().getHeight();
-//      double w = visibleRect2.getWidth();
-//      double h = visibleRect2.getHeight();
+
+      System.out.println("scrollX:" + scrollX + " w:" + w + " zoomFactor:" + zoomFactor +
+          " size:" + scrollPane.getViewport().getViewSize().height);
+
+      if (previousZoom > zoomFactor) {
+        //if (scrollX > w * zoomFactor) {
+          System.out.println("---");
+        //}
+
+        if (zoomFactor * w + scrollX < scrollX + w) {
+//          scrollX = scrollX + 100;
+          System.out.println("problemX");
+        }
+
+        //if(w * zoomFactor > point.getX()) scrollX = (long) point.getX();
+        //if(h * zoomFactor > point.getY()) scrollY = (long) point.getY();
+      }
 
       //set visible rectangle to calculated rectangle
-      visibleRect2.setRect(scrollX, scrollY, w, h);
-      System.out.println(
-          "vr sX:" + scrollX +
-              " sY:" + scrollY +
-              " w:" + w +
-              " h:" + h);
-      scrollRectToVisible(visibleRect2);
-      System.out.println(visibleRect2);
-      System.out.println();
+      r.setRect(scrollX, scrollY, w, h);
+      scrollRectToVisible(r);
 
       // calculate and draw
       revalidate();
@@ -404,17 +405,6 @@ public class CircuitView extends JComponent {
    */
   public void paint(Graphics g) {
     if (TrackData.getTrackData() != null) {
-
-      // visible part of screen in pixels
-      Rectangle r = getVisibleRect();
-
-      // new visible part of screen in meters
-      Rectangle2D.Double visibleRect = newVisibleRectangle(r);
-
-      // visible part of screen center in meters
-      screenCenter = new Point2D.Double(
-          visibleRect.getX() + visibleRect.getWidth() / 2,
-          visibleRect.getY() + visibleRect.getHeight() / 2);
 
       // Paints background image
       if (showBackground && backgroundImg != null) {
@@ -437,7 +427,6 @@ public class CircuitView extends JComponent {
       Iterator i = TrackData.getTrackData().iterator();
       while (i.hasNext()) {
         Segment obj = (Segment) i.next();
-
         if (obj != selectedShape) {
           obj.draw(g, affineTransform);
         }
@@ -472,7 +461,7 @@ public class CircuitView extends JComponent {
       }
 
     }
-    Rectangle2D.Double br = boundingRectangle;
+    //Rectangle2D.Double br = boundingRectangle;
   }
 
 //	public Dimension getPreferredScrollableViewportSize()
@@ -726,14 +715,6 @@ public class CircuitView extends JComponent {
       segmentEditorDialog = new SegmentEditorDialog(this, editorFrame, "", false, shape);
       segmentEditorDialog.addWindowListener(new SegmentEditorDialogWindowListener(this));
     }
-  }
-
-  private Rectangle2D.Double newVisibleRectangle(Rectangle r) {
-    return new Rectangle2D.Double(
-        r.getX() / zoomFactor + boundingRectangle.getX() - (outZoneWidth * zoomFactor),
-        r.getY() / zoomFactor + boundingRectangle.getY() - (outZoneHeight * zoomFactor),
-        (r.getWidth() / zoomFactor) + 1,
-        (r.getHeight() / zoomFactor) + 1);
   }
 
   public CircuitState getCurrentState() {
